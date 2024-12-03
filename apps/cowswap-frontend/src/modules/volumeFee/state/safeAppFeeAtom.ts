@@ -18,14 +18,14 @@ const FEE_TIERS = {
 
 const FEE_PERCENTAGE_BPS = {
   REGULAR: {
-    TIER_1: 10,
-    TIER_2: 10,
-    TIER_3: 10,
+    TIER_1: 0,
+    TIER_2: 0,
+    TIER_3: 0,
   },
   STABLE: {
-    TIER_1: 10,
-    TIER_2: 7,
-    TIER_3: 5,
+    TIER_1: 0,
+    TIER_2: 0,
+    TIER_3: 0,
   },
 }
 
