@@ -1,4 +1,4 @@
-import React from 'react'
+import { ReactElement } from 'react'
 
 import { ButtonPrimary, ButtonSize } from '@cowprotocol/ui'
 
@@ -8,13 +8,13 @@ export interface PrimaryActionButtonContext {
   confirmTrade(): void
 }
 
-const buttonsMap: Record<TwapFormState, (_context: PrimaryActionButtonContext) => JSX.Element> = {
+const buttonsMap: Record<TwapFormState, (_context: PrimaryActionButtonContext) => ReactElement> = {
   [TwapFormState.LOADING_SAFE_INFO]: () => (
     <ButtonPrimary disabled={true} buttonSize={ButtonSize.BIG}>
       Loading...
     </ButtonPrimary>
   ),
-  [TwapFormState.NOT_SAFE]: () => (
+  [TwapFormState.TX_BUNDLING_NOT_SUPPORTED]: () => (
     <ButtonPrimary disabled={true} buttonSize={ButtonSize.BIG}>
       Unsupported wallet
     </ButtonPrimary>

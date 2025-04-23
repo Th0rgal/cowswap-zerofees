@@ -1,6 +1,8 @@
 import { lazy, Suspense } from 'react'
 
-import { useLocation, Outlet } from 'react-router-dom'
+import { PAGE_TITLES } from '@cowprotocol/common-const'
+
+import { Outlet, useLocation } from 'react-router'
 
 import { Loading } from 'legacy/components/FlashingLoading'
 
@@ -10,12 +12,13 @@ import { Content, Title } from 'modules/application/pure/Page'
 import { Routes as RoutesEnum } from 'common/constants/routes'
 
 import { AccountMenu } from './Menu'
-import { Container, CardsWrapper } from './styled'
-import { Wrapper, AccountPageWrapper } from './Tokens/styled'
+import { CardsWrapper, Container } from './styled'
+import { AccountPageWrapper, Wrapper } from './Tokens/styled'
 
 // Account pages
 const Balances = lazy(() => import(/* webpackChunkName: "account" */ 'pages/Account/Balances'))
 const Governance = lazy(() => import(/* webpackChunkName: "governance" */ 'pages/Account/Governance'))
+const Delegate = lazy(() => import(/* webpackChunkName: "delegate" */ 'pages/Account/Delegate'))
 
 function _getPropsFromRoute(route: string) {
   switch (route) {
@@ -35,10 +38,11 @@ export const AccountOverview = () => {
   return (
     <>
       <Container>
-        <PageTitle title="Account Overview" />
+        <PageTitle title={PAGE_TITLES.ACCOUNT_OVERVIEW} />
         <CardsWrapper>
           <Balances />
           <Governance />
+          <Delegate />
         </CardsWrapper>
       </Container>
     </>

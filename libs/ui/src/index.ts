@@ -1,9 +1,11 @@
+'use client'
+
 export * from './enum'
 export * from './types'
 export * from './consts'
 export * from './theme'
-
-export { useAnalyticsReporter } from './analytics/useAnalyticsReporter'
+export * from './styles'
+export * from './colors'
 
 export * from './pure/ButtonSecondaryAlt'
 export * from './pure/Button'
@@ -37,6 +39,7 @@ export * from './pure/Badge'
 
 export * from './containers/CowSwapSafeAppLink'
 export * from './containers/InlineBanner'
-export * from './containers/InlineBanner/banners'
 export * from './containers/Footer'
 export * from './containers/ExternalLink'
+
+export * from './theme/statusColors'

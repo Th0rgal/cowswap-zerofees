@@ -15,7 +15,7 @@ import { TradeFlowContext } from 'modules/limitOrders/services/types'
 import { limitOrdersSettingsAtom } from 'modules/limitOrders/state/limitOrdersSettingsAtom'
 import { useGeneratePermitHook, useGetCachedPermit, usePermitInfo } from 'modules/permit'
 import { useEnoughBalanceAndAllowance } from 'modules/tokens'
-import { TradeType } from 'modules/trade'
+import { TradeType, useAmountsToSign } from 'modules/trade'
 import { useTradeQuote } from 'modules/tradeQuote'
 
 import { useGP2SettlementContract } from 'common/hooks/useContract'
@@ -25,34 +25,35 @@ import { useLimitOrdersDerivedState } from './useLimitOrdersDerivedState'
 
 export function useTradeFlowContext(): TradeFlowContext | null {
   const provider = useWalletProvider()
-  const { chainId, account } = useWalletInfo()
+  const { account } = useWalletInfo()
   const { allowsOffchainSigning } = useWalletDetails()
   const state = useLimitOrdersDerivedState()
   const isSafeWallet = useIsSafeWallet()
-  const settlementContract = useGP2SettlementContract()
+  const { contract: settlementContract, chainId: settlementChainId } = useGP2SettlementContract()
   const dispatch = useDispatch<AppDispatch>()
   const appData = useAppData()
   const quoteState = useTradeQuote()
   const rateImpact = useRateImpact()
   const settingsState = useAtomValue(limitOrdersSettingsAtom)
   const permitInfo = usePermitInfo(state.inputCurrency, TradeType.LIMIT_ORDER)
+  const { maximumSendSellAmount } = useAmountsToSign() || {}
 
-  const checkAllowanceAddress = COW_PROTOCOL_VAULT_RELAYER_ADDRESS[chainId]
+  const checkAllowanceAddress = COW_PROTOCOL_VAULT_RELAYER_ADDRESS[settlementChainId]
   const { enoughAllowance } = useEnoughBalanceAndAllowance({
     account,
-    amount: state.slippageAdjustedSellAmount || undefined,
+    amount: maximumSendSellAmount || undefined,
     checkAllowanceAddress,
   })
   const generatePermitHook = useGeneratePermitHook()
   const getCachedPermit = useGetCachedPermit()
 
-  const isQuoteReady = !!quoteState.response && !quoteState.isLoading && !!quoteState.localQuoteTimestamp
+  const isQuoteReady = !!quoteState.quote && !quoteState.isLoading && !!quoteState.localQuoteTimestamp
 
   const recipientAddressOrName = state.recipient || state.recipientAddress
   const recipient = state.recipientAddress || state.recipient || account
   const sellToken = state.inputCurrency as Token
   const buyToken = state.outputCurrency as Token
-  const quoteId = quoteState.response?.id || undefined
+  const quoteId = quoteState.quote?.quoteResults.quoteResponse.id || undefined
 
   const partiallyFillable = settingsState.partialFillsEnabled
 
@@ -73,11 +74,11 @@ export function useTradeFlowContext(): TradeFlowContext | null {
     const feeAmount = CurrencyAmount.fromRawAmount(state.inputCurrency, 0)
 
     return {
-      chainId,
+      chainId: settlementChainId,
       settlementContract,
       allowsOffchainSigning,
       dispatch,
-      provider,
+      signer: provider.getSigner(),
       rateImpact,
       permitInfo: !enoughAllowance ? permitInfo : undefined,
       generatePermitHook,
@@ -87,7 +88,7 @@ export function useTradeFlowContext(): TradeFlowContext | null {
         class: OrderClass.LIMIT,
         kind: state.orderKind,
         account,
-        chainId,
+        chainId: settlementChainId,
         sellToken,
         buyToken,
         recipient,
@@ -114,11 +115,10 @@ export function useTradeFlowContext(): TradeFlowContext | null {
     settlementContract,
     isQuoteReady,
     appData,
-    chainId,
+    settlementChainId,
     settlementContract,
     allowsOffchainSigning,
     dispatch,
-    provider,
     rateImpact,
     enoughAllowance,
     permitInfo,

@@ -1,5 +1,344 @@
 # Changelog
 
+## [1.105.3](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.105.2...cowswap-v1.105.3) (2025-04-03)
+
+
+### Bug Fixes
+
+* issue [#5379](https://github.com/cowprotocol/cowswap/issues/5379): page name not updating ([#5579](https://github.com/cowprotocol/cowswap/issues/5579)) ([a21e054](https://github.com/cowprotocol/cowswap/commit/a21e054f089ab5c367858800a1ee93c4dbed4af0))
+* remove irrelevant link from cancellation modal ([#5580](https://github.com/cowprotocol/cowswap/issues/5580)) ([5c6ac46](https://github.com/cowprotocol/cowswap/commit/5c6ac46b9229d62e590799a8dfe9d01a0121b53a))
+
+## [1.105.2](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.105.1...cowswap-v1.105.2) (2025-03-31)
+
+
+### Bug Fixes
+
+* **safe-app-fee:** replace Safe App Fee recipient address ([#5581](https://github.com/cowprotocol/cowswap/issues/5581)) ([f72485b](https://github.com/cowprotocol/cowswap/commit/f72485bc8b16fff0a96b5b045b83be1fd4e53368))
+
+## [1.105.1](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.105.0...cowswap-v1.105.1) (2025-03-27)
+
+
+### Bug Fixes
+
+* **balances:** updated balances on network changes ([#5569](https://github.com/cowprotocol/cowswap/issues/5569)) ([1aaf6b5](https://github.com/cowprotocol/cowswap/commit/1aaf6b58a205be331e6668bdf411f93f6cbb32ca))
+
+## [1.105.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.104.2...cowswap-v1.105.0) (2025-03-27)
+
+
+### Features
+
+* move inside a popup "copy address" and "view details" ([#5532](https://github.com/cowprotocol/cowswap/issues/5532)) ([c060193](https://github.com/cowprotocol/cowswap/commit/c060193028b716b7ba062d55dbc5cac67a170031))
+
+
+### Bug Fixes
+
+* **bridge:** ignore buy token selection when bridging is not enabled ([#5561](https://github.com/cowprotocol/cowswap/issues/5561)) ([bd7b501](https://github.com/cowprotocol/cowswap/commit/bd7b5012c6d5b4fb98812a4d374fd01da3e11d70))
+
+## [1.104.2](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.104.1...cowswap-v1.104.2) (2025-03-24)
+
+
+### Bug Fixes
+
+* do not ask apporval for native sell token ([#5545](https://github.com/cowprotocol/cowswap/issues/5545)) ([ca29c8e](https://github.com/cowprotocol/cowswap/commit/ca29c8eb6dfd0d33f065c7c565ee7dd58378626d))
+
+## [1.104.1](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.104.0...cowswap-v1.104.1) (2025-03-24)
+
+
+### Bug Fixes
+
+* **swap:** wait for a optimal quote before eth-flow ([#5530](https://github.com/cowprotocol/cowswap/issues/5530)) ([acd0f49](https://github.com/cowprotocol/cowswap/commit/acd0f493c28af15451b9cae0af34c80917bfb586))
+* **trade:** reset recipient when turn off settings ([#5538](https://github.com/cowprotocol/cowswap/issues/5538)) ([0abfb94](https://github.com/cowprotocol/cowswap/commit/0abfb94c29a5317dd2cf920a73640adbaef14063))
+
+## [1.104.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.103.5...cowswap-v1.104.0) (2025-03-20)
+
+
+### Features
+
+* add a warning message to the order limit price tooltip modal ([#5487](https://github.com/cowprotocol/cowswap/issues/5487)) ([ebe0bf0](https://github.com/cowprotocol/cowswap/commit/ebe0bf07d07f031660cd2b9044ef57fb794f260d))
+* **bridge:** add network logo token icon ([#5511](https://github.com/cowprotocol/cowswap/issues/5511)) ([1e74585](https://github.com/cowprotocol/cowswap/commit/1e74585ebe0d4a2d9f1a535972192b820a643869))
+* **bridge:** display tokens in selector from bridge provider ([#5489](https://github.com/cowprotocol/cowswap/issues/5489)) ([b5b08ee](https://github.com/cowprotocol/cowswap/commit/b5b08ee8da9c1746bd3b2147444c2090afdf3950))
+* **bridge:** do not fetch balances too often ([#5509](https://github.com/cowprotocol/cowswap/issues/5509)) ([a673668](https://github.com/cowprotocol/cowswap/commit/a6736681aadc2e1e42dea3ca13827728976e4ce2))
+* **bridge:** select sell token from another chain ([#5521](https://github.com/cowprotocol/cowswap/issues/5521)) ([f0fc900](https://github.com/cowprotocol/cowswap/commit/f0fc900c7035e47331e07b0d5b7a31674dc7bc13))
+* bring arb1 feature flag back "Revert ([#5500](https://github.com/cowprotocol/cowswap/issues/5500))" ([#5519](https://github.com/cowprotocol/cowswap/issues/5519)) ([4aa518e](https://github.com/cowprotocol/cowswap/commit/4aa518e2bf640b0acac6201f773856fa9701554f))
+* **learn:** enhance search and article fetching functionality ([#5461](https://github.com/cowprotocol/cowswap/issues/5461)) ([8344440](https://github.com/cowprotocol/cowswap/commit/8344440e8136a2f20fc9c0888ec6a39d64f6214c))
+* remove arb1CowSwapFeePercentage feature flag ([#5500](https://github.com/cowprotocol/cowswap/issues/5500)) ([937686e](https://github.com/cowprotocol/cowswap/commit/937686e5a3770f4d99ebc95e032966a8795b86dc))
+
+
+### Bug Fixes
+
+* issue [#5490](https://github.com/cowprotocol/cowswap/issues/5490) ([#5495](https://github.com/cowprotocol/cowswap/issues/5495)) ([b98737d](https://github.com/cowprotocol/cowswap/commit/b98737de3e6ece64b92d9d62053d843e38069e7d))
+* **wallets:** disable coinbase in widget mobile ([#5516](https://github.com/cowprotocol/cowswap/issues/5516)) ([7233573](https://github.com/cowprotocol/cowswap/commit/7233573925c164de35017a3c48fc2af00d6106d2))
+* **wallets:** show MM warning only to affected/unknown versions ([#5510](https://github.com/cowprotocol/cowswap/issues/5510)) ([50c65fc](https://github.com/cowprotocol/cowswap/commit/50c65fc3b4b651534178f887c25657669ffd5f21))
+
+## [1.103.5](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.103.4...cowswap-v1.103.5) (2025-03-10)
+
+
+### Bug Fixes
+
+* **swap:** disable button when costs warning is not accepted ([#5494](https://github.com/cowprotocol/cowswap/issues/5494)) ([cfdf773](https://github.com/cowprotocol/cowswap/commit/cfdf7731d4e08225f08381a9e3eecfbb67f6feb7))
+
+## [1.103.4](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.103.3...cowswap-v1.103.4) (2025-03-10)
+
+
+### Bug Fixes
+
+* **swap:** update quote in confirm screen ([#5485](https://github.com/cowprotocol/cowswap/issues/5485)) ([91187d9](https://github.com/cowprotocol/cowswap/commit/91187d9129f571b131e381a4c1b46814b4f3b479))
+
+## [1.103.3](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.103.2...cowswap-v1.103.3) (2025-03-07)
+
+
+### Bug Fixes
+
+* revert [#5456](https://github.com/cowprotocol/cowswap/issues/5456) as Safe tx service is live again ([#5486](https://github.com/cowprotocol/cowswap/issues/5486)) ([0737eda](https://github.com/cowprotocol/cowswap/commit/0737edab51859d402361b6179668fee6d8c5b595))
+
+## [1.103.2](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.103.1...cowswap-v1.103.2) (2025-03-06)
+
+
+### Bug Fixes
+
+* **appzi:** remove open state styles ([b5f873b](https://github.com/cowprotocol/cowswap/commit/b5f873b944b947d1b6f4d9351c17b965a83a9941))
+
+## [1.103.1](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.103.0...cowswap-v1.103.1) (2025-02-27)
+
+
+### Bug Fixes
+
+* **twap:** migrate to new Safe api for orders history ([#5456](https://github.com/cowprotocol/cowswap/issues/5456)) ([03c89fe](https://github.com/cowprotocol/cowswap/commit/03c89fe227c65c3f9f2c0852ff69c5f8170dde40))
+
+## [1.103.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.102.0...cowswap-v1.103.0) (2025-02-25)
+
+
+### Features
+
+* **analytics:** migrate to GTM-based analytics ([#5360](https://github.com/cowprotocol/cowswap/issues/5360)) ([f404d02](https://github.com/cowprotocol/cowswap/commit/f404d0280d9d1d86cc249d70852a5c0ec9827475))
+
+
+### Bug Fixes
+
+* Orders table: 'Learn more' link update ([#5440](https://github.com/cowprotocol/cowswap/issues/5440)) ([49f4a26](https://github.com/cowprotocol/cowswap/commit/49f4a262a2262f56615f95e8e15d239a09a2ff81))
+* **ui:** minor layout and styling tweaks across components ([#5437](https://github.com/cowprotocol/cowswap/issues/5437)) ([2602d1c](https://github.com/cowprotocol/cowswap/commit/2602d1ca0848571d09ef94a4ee6ff7024cdc736c))
+* **volume-fee:** remove hardcoded stablecoins check for Safe fee ([#5436](https://github.com/cowprotocol/cowswap/issues/5436)) ([ce77355](https://github.com/cowprotocol/cowswap/commit/ce773552fe29fbca1571a17b9d0177522a847183))
+
+## [1.102.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.101.0...cowswap-v1.102.0) (2025-02-17)
+
+
+### Features
+
+* **correlated-tokens:** use new CMS model Correlated Tokens ([#5427](https://github.com/cowprotocol/cowswap/issues/5427)) ([6ed415a](https://github.com/cowprotocol/cowswap/commit/6ed415a05c6a7f228fda704ea27c664d6c8d3321))
+
+
+### Bug Fixes
+
+* do not check capabilities in mobile wc ([#5429](https://github.com/cowprotocol/cowswap/issues/5429)) ([26b907d](https://github.com/cowprotocol/cowswap/commit/26b907dad4c7310bdc3e560e5592fdeb3db11b95))
+* **twap:** do not show FallbackHandler warning after first order ([#5418](https://github.com/cowprotocol/cowswap/issues/5418)) ([337795a](https://github.com/cowprotocol/cowswap/commit/337795a4746e7a36c5144b0ff590c35bcad88a3f))
+
+## [1.101.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.100.1...cowswap-v1.101.0) (2025-02-12)
+
+
+### Features
+
+* support EIP-5792 batch tx for Safe via WC ([#5417](https://github.com/cowprotocol/cowswap/issues/5417)) ([8aa612f](https://github.com/cowprotocol/cowswap/commit/8aa612f7b93a40d69efa364a10634863bc743e95))
+
+
+### Bug Fixes
+
+* use quote currency on fill at tooltip ([#5421](https://github.com/cowprotocol/cowswap/issues/5421)) ([24920e8](https://github.com/cowprotocol/cowswap/commit/24920e804b636baf715335a8cabb18d4762036e1))
+
+## [1.100.1](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.100.0...cowswap-v1.100.1) (2025-02-07)
+
+
+### Bug Fixes
+
+* use address for default buy token ([#5410](https://github.com/cowprotocol/cowswap/issues/5410)) ([92c3a96](https://github.com/cowprotocol/cowswap/commit/92c3a96972b92807aa81709f08d84f9101264381))
+
+## [1.100.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.99.0...cowswap-v1.100.0) (2025-02-06)
+
+
+### Features
+
+* use new deterministic ethflow contracts ([#5334](https://github.com/cowprotocol/cowswap/issues/5334)) ([f11fb61](https://github.com/cowprotocol/cowswap/commit/f11fb613b02825aa6c571ffdc3414086557b48e9))
+
+## [1.99.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.98.2...cowswap-v1.99.0) (2025-02-05)
+
+
+### Features
+
+* **limit-orders:** upgrade and redesign ([#5249](https://github.com/cowprotocol/cowswap/issues/5249)) ([5c868bb](https://github.com/cowprotocol/cowswap/commit/5c868bb794d648363afb88371178ddc35deaf7a7))
+
+
+### Bug Fixes
+
+* **limit-orders:** do not display rate input when wrap/unwrap ([#5385](https://github.com/cowprotocol/cowswap/issues/5385)) ([d174a31](https://github.com/cowprotocol/cowswap/commit/d174a3128ec9569be4986738172076e2605e4283))
+* **orders-table:** prevent excessive transactions on approvals ([#5390](https://github.com/cowprotocol/cowswap/issues/5390)) ([fce1931](https://github.com/cowprotocol/cowswap/commit/fce1931db0d07b33d7d1d03c291c2ff1528956fd))
+* reset zero approval state ([#5387](https://github.com/cowprotocol/cowswap/issues/5387)) ([d9cd435](https://github.com/cowprotocol/cowswap/commit/d9cd43589a96084b84195df43d8fde729de66b17))
+* **safe-app:** remove approval+order placement bundling banner ([#5393](https://github.com/cowprotocol/cowswap/issues/5393)) ([571029d](https://github.com/cowprotocol/cowswap/commit/571029d11f7c2d1afe608f8dd3481c404e0efea0))
+* update chainId in TradeRouteContext from Account page ([#5348](https://github.com/cowprotocol/cowswap/issues/5348)) ([47a2787](https://github.com/cowprotocol/cowswap/commit/47a2787afe8d8b594327741fcca94433ba354baf))
+* **usd-rate-input:** keep track of usd toggle in the rate input on limit form ([#5391](https://github.com/cowprotocol/cowswap/issues/5391)) ([95c2e22](https://github.com/cowprotocol/cowswap/commit/95c2e22a5f0e6b54906b5a43ab2d94264be660ae))
+
+## [1.98.2](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.98.1...cowswap-v1.98.2) (2025-02-03)
+
+
+### Bug Fixes
+
+* display Metamask warning only for extension/mobile wallets ([#5370](https://github.com/cowprotocol/cowswap/issues/5370)) ([abb5683](https://github.com/cowprotocol/cowswap/commit/abb56834b1e21029ca66362f3b721cd47e080547))
+
+## [1.98.1](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.98.0...cowswap-v1.98.1) (2025-01-31)
+
+
+### Bug Fixes
+
+* css for Metamask warning banner ([#5365](https://github.com/cowprotocol/cowswap/issues/5365)) ([753899d](https://github.com/cowprotocol/cowswap/commit/753899d1ec9b0b613a6602e35b24cbe2024c30b3))
+
+## [1.98.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.97.1...cowswap-v1.98.0) (2025-01-31)
+
+
+### Features
+
+* warn users about metamask transactions ([#5362](https://github.com/cowprotocol/cowswap/issues/5362)) ([55e71b0](https://github.com/cowprotocol/cowswap/commit/55e71b09d512771185c75c80f291098796411689))
+
+## [1.97.1](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.97.0...cowswap-v1.97.1) (2025-01-30)
+
+
+### Bug Fixes
+
+* type guard to make sure provider is a JsonRpcProvider ([#5357](https://github.com/cowprotocol/cowswap/issues/5357)) ([6a2e030](https://github.com/cowprotocol/cowswap/commit/6a2e030aa7f88ef207fad8910750b18dcf719503))
+
+## [1.97.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.96.2...cowswap-v1.97.0) (2025-01-29)
+
+
+### Features
+
+* make useContract chainId aware and handle errors and loading state ([#5352](https://github.com/cowprotocol/cowswap/issues/5352)) ([d66e8ff](https://github.com/cowprotocol/cowswap/commit/d66e8ffc8668ad7563130228fb9bec28ae1d7e7e))
+
+
+### Bug Fixes
+
+* use provider.send('eth_chainId',[]) to avoid cached values ([#5354](https://github.com/cowprotocol/cowswap/issues/5354)) ([ad34521](https://github.com/cowprotocol/cowswap/commit/ad3452181287acb151b22d541feb156d208db482))
+
+## [1.96.2](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.96.1...cowswap-v1.96.2) (2025-01-27)
+
+
+### Bug Fixes
+
+* **wrap/unwrap:** enforce chainId when wrapping/unwrapping ([#5349](https://github.com/cowprotocol/cowswap/issues/5349)) ([7023f6e](https://github.com/cowprotocol/cowswap/commit/7023f6e449924eafc7afa0154844c78b315c6b37))
+
+## [1.96.1](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.96.0...cowswap-v1.96.1) (2025-01-09)
+
+
+### Bug Fixes
+
+* **token-lists:** remove old token lists from cache ([#5275](https://github.com/cowprotocol/cowswap/issues/5275)) ([1ca7211](https://github.com/cowprotocol/cowswap/commit/1ca7211729c552c1c834b12c2d343ce981b02cf1))
+
+## [1.96.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.95.3...cowswap-v1.96.0) (2025-01-09)
+
+
+### Features
+
+* executedSurplusFee removal ([#5262](https://github.com/cowprotocol/cowswap/issues/5262)) ([3be8a65](https://github.com/cowprotocol/cowswap/commit/3be8a65309048d4082f2ce25f5b39624e092dbf2))
+* **swap:** partial approve ([#5256](https://github.com/cowprotocol/cowswap/issues/5256)) ([f080ffd](https://github.com/cowprotocol/cowswap/commit/f080ffdb098612e729f3a3f829410ce78697979f))
+
+## [1.95.3](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.95.2...cowswap-v1.95.3) (2024-12-23)
+
+
+### Bug Fixes
+
+* fix order filled condition for permit check ([#5253](https://github.com/cowprotocol/cowswap/issues/5253)) ([b81842c](https://github.com/cowprotocol/cowswap/commit/b81842c8aed196f23a9cbcb42d637299f1e7708e))
+
+## [1.95.2](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.95.1...cowswap-v1.95.2) (2024-12-23)
+
+
+### Bug Fixes
+
+* **snackbars:** stick snackbars widget to header menu ([4582d67](https://github.com/cowprotocol/cowswap/commit/4582d67156364fe1866a40227f76c8101d11e1bd))
+* **widget:** do not display Christmas background ([6a4ae4c](https://github.com/cowprotocol/cowswap/commit/6a4ae4cc7bad90c9dc1fcb1ef71f8635415cd3cd))
+
+## [1.95.1](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.95.0...cowswap-v1.95.1) (2024-12-20)
+
+
+### Bug Fixes
+
+* **eth-flow:** set chainId explicitly when sending ethFlow tx ([#5244](https://github.com/cowprotocol/cowswap/issues/5244)) ([983536d](https://github.com/cowprotocol/cowswap/commit/983536d300a17e84dff691eb55d645b46ad1437b))
+
+## [1.95.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.94.0...cowswap-v1.95.0) (2024-12-18)
+
+
+### Features
+
+* force release to release, pleaseeee ([a59eb27](https://github.com/cowprotocol/cowswap/commit/a59eb275a96fb13c9521784a051f734d947a1b1f))
+
+## [1.94.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.93.2...cowswap-v1.94.0) (2024-12-18)
+
+
+### Features
+
+* allow 1 year max deadline ([#5227](https://github.com/cowprotocol/cowswap/issues/5227)) ([64e3f40](https://github.com/cowprotocol/cowswap/commit/64e3f40a19da19ba7d44f4ebcb1b494fd4426882))
+
+
+### Bug Fixes
+
+* account for a bad CMS request ([#5221](https://github.com/cowprotocol/cowswap/issues/5221)) ([8d2edd7](https://github.com/cowprotocol/cowswap/commit/8d2edd7d87f0622fdc5885b45175b89b49eae1ec))
+
+## [1.93.2](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.93.1...cowswap-v1.93.2) (2024-12-13)
+
+
+### Bug Fixes
+
+* **twap:** cache fb handler verification for 10min ([#5200](https://github.com/cowprotocol/cowswap/issues/5200)) ([c09f073](https://github.com/cowprotocol/cowswap/commit/c09f07338868654a89ba570987a8bc9bec59141c))
+
+## [1.93.1](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.93.0...cowswap-v1.93.1) (2024-12-12)
+
+
+### Bug Fixes
+
+* **volume-fee:** control safe app fees for stablecoins with ff ([#5187](https://github.com/cowprotocol/cowswap/issues/5187)) ([e7bc7c5](https://github.com/cowprotocol/cowswap/commit/e7bc7c5df35e233da9af8da950973a4272f10365))
+
+## [1.93.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.92.2...cowswap-v1.93.0) (2024-12-11)
+
+
+### Features
+
+* **cow-fi:** upgrade project structure to /app ([#5167](https://github.com/cowprotocol/cowswap/issues/5167)) ([ed152f7](https://github.com/cowprotocol/cowswap/commit/ed152f7ac0fa62ab2c0b9c93035a551c3b8cb4b6))
+
+## [1.92.2](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.92.1...cowswap-v1.92.2) (2024-12-05)
+
+
+### Bug Fixes
+
+* add safe apps fee in Base network ([#5161](https://github.com/cowprotocol/cowswap/issues/5161)) ([cefdb55](https://github.com/cowprotocol/cowswap/commit/cefdb55475f4989d745857fc9f8f2cfa77be5243))
+
+## [1.92.1](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.92.0...cowswap-v1.92.1) (2024-12-05)
+
+
+### Bug Fixes
+
+* **twap:** fix orders fetching ([#5157](https://github.com/cowprotocol/cowswap/issues/5157)) ([47195e2](https://github.com/cowprotocol/cowswap/commit/47195e2d326650a1fc11960077bd4861bdfcf418))
+* update safe fee tooltip label ([#5158](https://github.com/cowprotocol/cowswap/issues/5158)) ([d186042](https://github.com/cowprotocol/cowswap/commit/d186042fc75c79ccd95defe30f6b5e0d17792f17))
+
+## [1.92.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.91.0...cowswap-v1.92.0) (2024-12-04)
+
+
+### Features
+
+* upgrade react@19 and next@15 ([#5147](https://github.com/cowprotocol/cowswap/issues/5147)) ([a00b1b9](https://github.com/cowprotocol/cowswap/commit/a00b1b930602ab1e6b2f0b3cd148497f68bf4cb5))
+
+## [1.91.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.90.0...cowswap-v1.91.0) (2024-12-03)
+
+
+### Features
+
+* allow adding networks without invalidating local-storage ([#5134](https://github.com/cowprotocol/cowswap/issues/5134)) ([995b4c0](https://github.com/cowprotocol/cowswap/commit/995b4c05da90356c6621a92dc58efbd6f37349ff))
+* **base:** add base chain support ([#5044](https://github.com/cowprotocol/cowswap/issues/5044)) ([4cf0c91](https://github.com/cowprotocol/cowswap/commit/4cf0c91a300d6fcdc026364e74c45e5b2f729f2b))
+* improve custom hook validation messages ([#5123](https://github.com/cowprotocol/cowswap/issues/5123)) ([91bab8d](https://github.com/cowprotocol/cowswap/commit/91bab8dc3b124a32790c3bb1955b01dd3a75ea7b))
+* **volume-fee:** add volume fee for Safe ([#5139](https://github.com/cowprotocol/cowswap/issues/5139)) ([bb14c6a](https://github.com/cowprotocol/cowswap/commit/bb14c6a6ecfaba7d1a9a1da5366fac054efb97aa))
+
+
+### Bug Fixes
+
+* display usd value for tokens with small prices ([#5137](https://github.com/cowprotocol/cowswap/issues/5137)) ([74c27fd](https://github.com/cowprotocol/cowswap/commit/74c27fd38e0280a5cf24575bf002a9598994ff95))
+* **hooks-store:** update hooks learn link ([#5126](https://github.com/cowprotocol/cowswap/issues/5126)) ([a3b378c](https://github.com/cowprotocol/cowswap/commit/a3b378cda5be4d33fc816e9b3b4c62efe7df5c39))
+* reset trade completely if default token is duplicated ([#5140](https://github.com/cowprotocol/cowswap/issues/5140)) ([32e1ca0](https://github.com/cowprotocol/cowswap/commit/32e1ca0108e8bf789d2bad01f8129d9343875bce))
+* **wallet:** remove change wallet feature ([#5136](https://github.com/cowprotocol/cowswap/issues/5136)) ([329c1df](https://github.com/cowprotocol/cowswap/commit/329c1df3aa2e2617b0bb15a94904b51c6063ff3d))
+
 ## [1.90.0](https://github.com/cowprotocol/cowswap/compare/cowswap-v1.89.0...cowswap-v1.90.0) (2024-11-21)
 
 

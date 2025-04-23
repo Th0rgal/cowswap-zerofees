@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'
 
-import { Media } from '@cowprotocol/ui'
+import { Color, Media } from '@cowprotocol/ui'
 
 import SupportIcon from 'assets/img/support.png'
 import { BlockExplorerLink } from 'components/common/BlockExplorerLink'
-import { useParams } from 'react-router'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router'
 import styled from 'styled-components/macro'
 
 import { Search } from '../../../explorer/components/common/Search'
@@ -33,7 +32,7 @@ const Title = styled.h1`
 const Content = styled.div`
   width: 100%;
   font-size: 16px;
-  border: 0.1rem solid ${({ theme }): string => theme.borderPrimary};
+  border: 0.1rem solid ${Color.explorer_border};
   padding: 20px;
   border-radius: 0.4rem;
 
@@ -43,7 +42,7 @@ const Content = styled.div`
   }
 
   strong {
-    color: ${({ theme }): string => theme.textSecondary2};
+    color: ${Color.explorer_textSecondary2};
   }
 `
 
@@ -51,7 +50,7 @@ const SearchSection = styled.div`
   margin-top: 6rem;
   padding: 20px;
   border-radius: 0.4rem;
-  background-color: ${({ theme }): string => theme.bg2};
+  background-color: ${Color.explorer_bg2};
 `
 
 const LinkData = styled.p`
@@ -83,7 +82,7 @@ const SearchContent = styled.div`
 
 const Support = styled.a`
   height: 5rem;
-  border: 1px solid ${({ theme }): string => theme.borderPrimary};
+  border: 1px solid ${Color.explorer_border};
   border-radius: 0.6rem;
   width: 160px;
   display: flex;
@@ -91,10 +90,10 @@ const Support = styled.a`
   justify-content: center;
   gap: 1rem;
   cursor: pointer;
-  color: ${({ theme }): string => theme.white} !important;
+  color: ${Color.neutral100} !important;
 
   :hover {
-    background-color: ${({ theme }): string => theme.greyOpacity};
+    background-color: ${Color.explorer_greyOpacity};
     text-decoration: none;
   }
 `

@@ -1,5 +1,7 @@
-import { Stylesheet } from 'cytoscape'
-import styled, { css, DefaultTheme } from 'styled-components/macro'
+import { Color } from '@cowprotocol/ui'
+
+import { StylesheetCSS } from 'cytoscape'
+import styled, { css } from 'styled-components/macro'
 
 // TODO: update icon
 import CowProtocolIcon from '../../../assets/img/CoW-protocol.svg'
@@ -32,15 +34,15 @@ export const FloatingWrapper = styled.div`
 
 const FloatingButton = css`
   cursor: pointer;
-  color: ${({ theme }): string => theme.white};
+  color: ${(): string => Color.neutral100};
   height: 3rem;
-  border: 1px solid ${({ theme }): string => theme.borderPrimary};
+  border: 1px solid ${Color.explorer_border};
   border-radius: 0.5rem;
-  background: ${({ theme }): string => theme.bg2};
+  background: ${Color.explorer_bg2};
 
   &:hover {
     transition: all 0.2s ease-in-out;
-    color: ${({ theme }): string => theme.textActive1};
+    color: ${Color.explorer_textActive};
   }
 
   @media ${MEDIA.mediumDown} {
@@ -59,7 +61,7 @@ export const ResetButton = styled.button`
 export const LayoutButton = styled.span`
   ${FloatingButton} {
     display: flex;
-    color: ${({ theme }): string => theme.textPrimary1};
+    color: ${Color.explorer_textPrimary};
     font-size: ${({ theme }): string => theme.fontSizeDefault};
     font-weight: normal;
     white-space: nowrap;
@@ -70,45 +72,30 @@ export const LayoutButton = styled.span`
 
 export const DropdownWrapper = styled(Dropdown)`
   &.dropdown-container {
-    ${ArrowIconCSS} {
-      width: 100%;
-      height: 100%;
+    ${ArrowIconCSS}
+    div:first-child {
       display: flex;
       align-items: center;
-
-      & div:first-child {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        @media ${MEDIA.mediumDown} {
-          justify-content: center;
-        }
-      }
-
-      > .dropdown-options {
-        min-width: 7rem;
-      }
+      gap: 0.6rem;
     }
   }
 `
 
-export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
+export function STYLESHEET(): StylesheetCSS[] {
   return [
     {
       selector: 'node[label]',
-      style: {
+      css: {
         label: 'data(label)',
-        color: theme.textSecondary1,
+        color: Color.neutral100,
         height: 50,
         width: 50,
-        'background-color': theme.bg2,
+        'background-color': Color.explorer_bg2,
       },
     },
     {
       selector: 'node',
-      style: {
+      css: {
         'border-style': 'solid',
         'border-width': 3,
         'border-opacity': 0,
@@ -116,8 +103,8 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
     },
     {
       selector: 'node.hover',
-      style: {
-        'border-color': theme.orange,
+      css: {
+        'border-color': Color.explorer_orange1,
         'border-style': 'solid',
         'border-width': 3,
         'border-opacity': 0.75,
@@ -125,16 +112,16 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
     },
     {
       selector: 'edge[label]',
-      style: {
+      css: {
         label: 'data(label)',
         width: 2,
         'target-arrow-shape': 'triangle',
-        'target-arrow-color': theme.grey,
+        'target-arrow-color': Color.explorer_grey,
         'curve-style': 'unbundled-bezier',
-        color: theme.black,
-        'line-color': theme.grey,
+        color: Color.neutral0,
+        'line-color': Color.explorer_grey,
         'line-opacity': 0.8,
-        'text-background-color': theme.labelTextOpen,
+        'text-background-color': Color.explorer_labelTextOpen,
         'text-background-opacity': 1,
         'text-background-padding': '4px',
         'text-background-shape': 'roundrectangle',
@@ -145,7 +132,7 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
     },
     {
       selector: 'edge.many-bidirectional',
-      style: {
+      css: {
         'curve-style': 'bezier',
         'font-size': '15px',
         'text-background-padding': '3px',
@@ -153,37 +140,37 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
     },
     {
       selector: 'edge.sell,edge.amm',
-      style: {
-        'line-color': theme.error,
-        'target-arrow-color': theme.error,
+      css: {
+        'line-color': Color.explorer_textError,
+        'target-arrow-color': Color.explorer_textError,
       },
     },
     {
       selector: 'edge.buy,edge.user',
-      style: {
-        'line-color': theme.green1,
-        'target-arrow-color': theme.green1,
+      css: {
+        'line-color': Color.explorer_green1,
+        'target-arrow-color': Color.explorer_green1,
       },
     },
     {
       selector: 'edge.amm,edge.user',
-      style: {
+      css: {
         'curve-style': 'bezier',
       },
     },
     {
       selector: 'edge.hover',
-      style: {
+      css: {
         width: 3,
-        'line-color': theme.orange1,
-        'target-arrow-color': theme.orange1,
-        'text-background-color': theme.orange,
-        color: theme.white,
+        'line-color': Color.explorer_orange1,
+        'target-arrow-color': Color.explorer_orange1,
+        'text-background-color': Color.explorer_orange1,
+        color: Color.neutral100,
       },
     },
     {
       selector: 'node[type="trader"]',
-      style: {
+      css: {
         'background-image': `url(${TraderIcon})`,
         'text-valign': 'bottom',
         'text-margin-y': 8,
@@ -191,7 +178,7 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
     },
     {
       selector: 'node[type="special"]',
-      style: {
+      css: {
         'background-image': `url(${SpecialIcon})`,
         'text-valign': 'bottom',
         'text-margin-y': 8,
@@ -199,7 +186,7 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
     },
     {
       selector: 'node[type="dex"]',
-      style: {
+      css: {
         'background-image': `url(${DexIcon})`,
         'text-max-width': '5rem',
         'text-valign': 'bottom',
@@ -208,7 +195,7 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
     },
     {
       selector: 'node[type="token"]',
-      style: {
+      css: {
         'background-image': `url(${TokenIcon})`,
         'text-max-width': '5rem',
         'text-valign': 'bottom',
@@ -217,8 +204,8 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
     },
     {
       selector: 'node[type="hyper"]',
-      style: {
-        'background-color': theme.error,
+      css: {
+        'background-color': Color.explorer_textError,
         width: '10',
         height: '10',
         'text-max-width': '5rem',
@@ -228,7 +215,7 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
     },
     {
       selector: 'node[type="cowProtocol"]',
-      style: {
+      css: {
         'background-image': `url(${CowProtocolIcon})`,
         height: '90',
         width: '90',
@@ -238,7 +225,7 @@ export function STYLESHEET(theme: DefaultTheme): Stylesheet[] {
     },
     {
       selector: 'node[type="networkNode"]',
-      style: {
+      css: {
         'border-style': 'dashed',
         'border-opacity': 0.8,
         'border-width': 1,

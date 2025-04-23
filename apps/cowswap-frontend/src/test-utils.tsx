@@ -3,7 +3,6 @@ import { useHydrateAtoms } from 'jotai/utils'
 import { createStore } from 'jotai/vanilla'
 import { ReactElement, ReactNode, useMemo } from 'react'
 
-import { isInjectedWidget } from '@cowprotocol/common-utils'
 import { Web3Provider } from '@cowprotocol/wallet'
 import { initializeConnector, Web3ReactHooks, Web3ReactProvider } from '@web3-react/core'
 import { Connector } from '@web3-react/types'
@@ -11,9 +10,8 @@ import { Connector } from '@web3-react/types'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
 import { render } from '@testing-library/react'
-import { LocationDescriptorObject } from 'history'
 import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router'
 import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components/macro'
 import { getCowswapTheme } from 'theme'
 
@@ -28,9 +26,8 @@ const MockedI18nProvider = ({ children }: any) => <I18nProvider i18n={i18n}>{chi
 
 const MockThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const darkMode = useIsDarkMode()
-  const isInjectedWidgetMode = isInjectedWidget()
 
-  const themeObject = useMemo(() => getCowswapTheme(darkMode, isInjectedWidgetMode), [darkMode, isInjectedWidgetMode])
+  const themeObject = useMemo(() => getCowswapTheme(darkMode), [darkMode])
 
   return <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>
 }
@@ -65,10 +62,10 @@ class MockedConnector extends Connector {
 }
 
 export const [mockedConnector, mockedConnectorHooks] = initializeConnector<MockedConnector>(
-  (actions) => new MockedConnector(actions)
+  (actions) => new MockedConnector(actions),
 )
 
-export function WithMockedWeb3({ children, location }: { children?: ReactNode; location?: LocationDescriptorObject }) {
+export function WithMockedWeb3({ children, location }: { children?: ReactNode; location?: Location }) {
   const connectors: [Connector, Web3ReactHooks][] = [[mockedConnector, mockedConnectorHooks]]
 
   return (

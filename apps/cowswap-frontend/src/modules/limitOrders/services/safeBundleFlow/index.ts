@@ -1,10 +1,13 @@
+import { SigningScheme } from '@cowprotocol/cow-sdk'
 import { Command, UiOrderType } from '@cowprotocol/types'
 import { MetaTransactionData } from '@safe-global/safe-core-sdk-types'
 import { Percent } from '@uniswap/sdk-core'
 
+import { tradingSdk } from 'tradingSdk/tradingSdk'
+
 import { PriceImpact } from 'legacy/hooks/usePriceImpact'
 import { partialOrderUpdate } from 'legacy/state/orders/utils'
-import { signAndPostOrder } from 'legacy/utils/trade'
+import { getOrderSubmitSummary, mapUnsignedOrderToOrder, wrapErrorInOperatorError } from 'legacy/utils/trade'
 
 import { removePermitHookFromAppData } from 'modules/appData'
 import { LOW_RATE_THRESHOLD_PERCENT } from 'modules/limitOrders/const/trade'
@@ -12,14 +15,14 @@ import { PriceImpactDeclineError, SafeBundleFlowContext } from 'modules/limitOrd
 import { LimitOrdersSettingsState } from 'modules/limitOrders/state/limitOrdersSettingsAtom'
 import { calculateLimitOrdersDeadline } from 'modules/limitOrders/utils/calculateLimitOrdersDeadline'
 import { buildApproveTx } from 'modules/operations/bundle/buildApproveTx'
-import { buildPresignTx } from 'modules/operations/bundle/buildPresignTx'
 import { buildZeroApproveTx } from 'modules/operations/bundle/buildZeroApproveTx'
 import { emitPostedOrderEvent } from 'modules/orders'
 import { addPendingOrderStep } from 'modules/trade/utils/addPendingOrderStep'
 import { logTradeFlow } from 'modules/trade/utils/logger'
-import { getSwapErrorMessage } from 'modules/trade/utils/swapErrorHelper'
-import { TradeFlowAnalyticsContext, tradeFlowAnalytics } from 'modules/trade/utils/tradeFlowAnalytics'
+import { TradeFlowAnalytics, TradeFlowAnalyticsContext } from 'modules/trade/utils/tradeFlowAnalytics'
 import { shouldZeroApprove as shouldZeroApproveFn } from 'modules/zeroApproval'
+
+import { getSwapErrorMessage } from 'common/utils/getSwapErrorMessage'
 
 const LOG_PREFIX = 'LIMIT ORDER SAFE BUNDLE FLOW'
 
@@ -28,6 +31,7 @@ export async function safeBundleFlow(
   priceImpact: PriceImpact,
   settingsState: LimitOrdersSettingsState,
   confirmPriceImpactWithoutFee: (priceImpact: Percent) => Promise<boolean>,
+  analytics: TradeFlowAnalytics,
   beforeTrade?: Command,
 ): Promise<string> {
   logTradeFlow(LOG_PREFIX, 'STEP 1: confirm price impact')
@@ -51,11 +55,10 @@ export async function safeBundleFlow(
   }
 
   logTradeFlow(LOG_PREFIX, 'STEP 2: send transaction')
-  tradeFlowAnalytics.approveAndPresign(swapFlowAnalyticsContext)
+  analytics.approveAndPresign(swapFlowAnalyticsContext)
   beforeTrade?.()
 
-  const { chainId, postOrderParams, provider, erc20Contract, spender, dispatch, settlementContract, safeAppsSdk } =
-    params
+  const { chainId, postOrderParams, erc20Contract, spender, dispatch, sendBatchTransactions } = params
 
   const validTo = calculateLimitOrdersDeadline(settingsState, params.quoteState)
 
@@ -70,10 +73,44 @@ export async function safeBundleFlow(
     })
 
     logTradeFlow(LOG_PREFIX, 'STEP 3: post order')
-    const { id: orderId, order } = await signAndPostOrder({
-      ...postOrderParams,
-      signer: provider.getSigner(),
-      validTo,
+    const {
+      orderId,
+      signature,
+      signingScheme,
+      orderToSign: unsignedOrder,
+    } = await wrapErrorInOperatorError(() =>
+      tradingSdk.postLimitOrder(
+        {
+          sellAmount: postOrderParams.inputAmount.quotient.toString(),
+          buyAmount: postOrderParams.outputAmount.quotient.toString(),
+          sellToken: postOrderParams.sellToken.address,
+          buyToken: postOrderParams.buyToken.address,
+          sellTokenDecimals: postOrderParams.sellToken.decimals,
+          buyTokenDecimals: postOrderParams.buyToken.decimals,
+          kind: postOrderParams.kind,
+          partiallyFillable: postOrderParams.partiallyFillable,
+          receiver: postOrderParams.recipient,
+          validTo,
+          quoteId: postOrderParams.quoteId,
+        },
+        {
+          appData: postOrderParams.appData.doc,
+          additionalParams: {
+            signingScheme: SigningScheme.PRESIGN,
+          },
+        },
+      ),
+    )
+
+    const order = mapUnsignedOrderToOrder({
+      unsignedOrder,
+      additionalParams: {
+        ...postOrderParams,
+        orderId,
+        summary: getOrderSubmitSummary(postOrderParams),
+        signingScheme,
+        signature,
+      },
     })
 
     logTradeFlow(LOG_PREFIX, 'STEP 4: add order, but hidden')
@@ -91,12 +128,12 @@ export async function safeBundleFlow(
     )
 
     logTradeFlow(LOG_PREFIX, 'STEP 5: build presign tx')
-    const presignTx = await buildPresignTx({ settlementContract, orderId })
+    const presignTx = await tradingSdk.getPreSignTransaction({ orderId, account })
 
     logTradeFlow(LOG_PREFIX, 'STEP 6: send safe tx')
     const safeTransactionData: MetaTransactionData[] = [
       { to: approveTx.to!, data: approveTx.data!, value: '0', operation: 0 },
-      { to: presignTx.to!, data: presignTx.data!, value: '0', operation: 0 },
+      { to: presignTx.to, data: presignTx.data, value: '0', operation: 0 },
     ]
 
     const shouldZeroApprove = await shouldZeroApproveFn({
@@ -120,8 +157,7 @@ export async function safeBundleFlow(
       })
     }
 
-    const safeTx = await safeAppsSdk.txs.send({ txs: safeTransactionData })
-    const safeTxHash = safeTx.safeTxHash
+    const safeTxHash = await sendBatchTransactions(safeTransactionData)
 
     emitPostedOrderEvent({
       chainId,
@@ -141,21 +177,21 @@ export async function safeBundleFlow(
         chainId: chainId,
         order: {
           id: order.id,
-          presignGnosisSafeTxHash: safeTx.safeTxHash,
+          presignGnosisSafeTxHash: safeTxHash,
           isHidden: false,
         },
         isSafeWallet,
       },
       dispatch,
     )
-    tradeFlowAnalytics.sign(swapFlowAnalyticsContext)
+    analytics.sign(swapFlowAnalyticsContext)
 
     return orderId
   } catch (error: any) {
     logTradeFlow(LOG_PREFIX, 'STEP 8: ERROR: ', error)
     const swapErrorMessage = getSwapErrorMessage(error)
 
-    tradeFlowAnalytics.error(error, swapErrorMessage, swapFlowAnalyticsContext)
+    analytics.error(error, swapErrorMessage, swapFlowAnalyticsContext)
 
     throw error
   }

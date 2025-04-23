@@ -7,7 +7,6 @@ import { useNativeTokenBalance } from '@cowprotocol/balances-and-allowances'
 import { getCurrencyAddress, getEtherscanLink, getIsNativeToken } from '@cowprotocol/common-utils'
 import { Command } from '@cowprotocol/types'
 import { ButtonPrimary, ExternalLink, Loader, TokenAmount } from '@cowprotocol/ui'
-import { useWalletInfo } from '@cowprotocol/wallet'
 import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
 
 import ms from 'ms.macro'
@@ -20,6 +19,7 @@ import { useTransactionAdder } from 'legacy/state/enhancedTransactions/hooks'
 import {
   SelectTokenWidget,
   useOpenTokenSelectWidget,
+  useSourceChainId,
   useSelectTokenWidgetState,
   useUpdateSelectTokenWidgetState,
 } from 'modules/tokensList'
@@ -110,13 +110,13 @@ export function RecoverFundsFromProxy({ onDismiss }: { onDismiss: Command }) {
   const hasBalance = !!tokenBalance?.greaterThan(0)
   const isNativeToken = !!selectedCurrency && getIsNativeToken(selectedCurrency)
 
-  const { chainId } = useWalletInfo()
   const { ErrorModal, handleSetError } = useErrorModal()
   const addTransaction = useTransactionAdder()
-  const erc20Contract = useTokenContract(selectedTokenAddress)
+  const { contract: erc20Contract, chainId: erc20ChainId } = useTokenContract(selectedTokenAddress)
   const onSelectToken = useOpenTokenSelectWidget()
   const updateSelectTokenWidget = useUpdateSelectTokenWidgetState()
   const { open: isSelectTokenWidgetOpen } = useSelectTokenWidgetState()
+  const sourceChainId = useSourceChainId()
 
   const onDismissCallback = useCallback(() => {
     updateSelectTokenWidget({ open: false })
@@ -143,6 +143,7 @@ export function RecoverFundsFromProxy({ onDismiss }: { onDismiss: Command }) {
 
   const { isLoading: isNativeBalanceLoading, data: nativeTokenBalance } = useNativeTokenBalance(
     isNativeToken ? proxyAddress : undefined,
+    sourceChainId,
     BALANCE_SWR_CFG,
   )
 
@@ -168,10 +169,10 @@ export function RecoverFundsFromProxy({ onDismiss }: { onDismiss: Command }) {
   }, [recoverFundsCallback, addTransaction, handleSetError])
 
   const onCurrencySelectClick = useCallback(() => {
-    onSelectToken(selectedTokenAddress, undefined, undefined, setSelectedCurrency)
-  }, [onSelectToken, selectedTokenAddress, setSelectedCurrency])
+    onSelectToken(selectedCurrency, undefined, undefined, setSelectedCurrency)
+  }, [onSelectToken, selectedCurrency, setSelectedCurrency])
 
-  const explorerLink = proxyAddress ? getEtherscanLink(chainId, 'address', proxyAddress) : undefined
+  const explorerLink = proxyAddress ? getEtherscanLink(erc20ChainId, 'address', proxyAddress) : undefined
 
   return (
     <Wrapper>

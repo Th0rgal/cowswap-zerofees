@@ -4,62 +4,17 @@ import { X } from 'react-feather'
 import SVG from 'react-inlinesvg'
 import styled from 'styled-components/macro'
 
-import { BannerOrientation } from './banners'
-
 import { UI } from '../../enum'
 import { Icon, IconType } from '../../pure/Icon'
+import { StatusColorEnums, StatusColorVariant, getStatusColorEnums } from '../../theme/statusColors'
 
-export type BannerType = 'alert' | 'information' | 'success' | 'danger' | 'savings'
-
-interface ColorEnums {
-  icon?: IconType
-  iconColor?: string
-  iconText?: string
-  color: UI
-  bg: string
-  text: string
-}
-
-const colorEnumsMap: Record<BannerType, ColorEnums> = {
-  alert: {
-    icon: IconType.ALERT,
-    color: UI.COLOR_ALERT_TEXT,
-    bg: UI.COLOR_ALERT_BG,
-    text: UI.COLOR_ALERT_TEXT,
-  },
-  information: {
-    icon: IconType.INFORMATION,
-    color: UI.COLOR_INFO_TEXT,
-    bg: UI.COLOR_INFO_BG,
-    text: UI.COLOR_INFO_TEXT,
-  },
-  success: {
-    icon: IconType.SUCCESS,
-    iconColor: UI.COLOR_SUCCESS,
-    color: UI.COLOR_SUCCESS_TEXT,
-    bg: UI.COLOR_SUCCESS_BG,
-    text: UI.COLOR_SUCCESS_TEXT,
-  },
-  danger: {
-    icon: IconType.DANGER,
-    color: UI.COLOR_DANGER_TEXT,
-    bg: UI.COLOR_DANGER_BG,
-    text: UI.COLOR_DANGER_TEXT,
-  },
-  savings: {
-    iconText: '💸',
-    color: UI.COLOR_SUCCESS_TEXT,
-    bg: UI.COLOR_SUCCESS_BG,
-    text: UI.COLOR_SUCCESS_TEXT,
-  },
-}
-
-function getColorEnums(bannerType: BannerType): ColorEnums {
-  return colorEnumsMap[bannerType] || colorEnumsMap.alert
+export enum BannerOrientation {
+  Horizontal = 'horizontal',
+  Vertical = 'vertical',
 }
 
 const Wrapper = styled.span<{
-  colorEnums: ColorEnums
+  colorEnums: StatusColorEnums
   borderRadius?: string
   orientation?: BannerOrientation
   iconSize?: number
@@ -164,7 +119,7 @@ export interface InlineBannerProps {
   children?: ReactNode
   className?: string
   hideIcon?: boolean
-  bannerType?: BannerType
+  bannerType?: StatusColorVariant
   borderRadius?: string
   orientation?: BannerOrientation
   iconSize?: number
@@ -182,7 +137,7 @@ export function InlineBanner({
   children,
   className,
   hideIcon,
-  bannerType = 'information',
+  bannerType = StatusColorVariant.Info,
   borderRadius,
   orientation,
   iconSize,
@@ -195,7 +150,7 @@ export function InlineBanner({
   noWrapContent,
   backDropBlur,
 }: InlineBannerProps) {
-  const colorEnums = getColorEnums(bannerType)
+  const colorEnums = getStatusColorEnums(bannerType)
 
   return (
     <Wrapper
@@ -218,7 +173,7 @@ export function InlineBanner({
           )
         ) : !hideIcon && colorEnums.icon ? (
           <Icon
-            image={colorEnums.icon}
+            image={colorEnums.icon as IconType}
             size={iconSize}
             color={colorEnums.color}
             description={bannerType}

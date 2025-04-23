@@ -1,5 +1,66 @@
 # Changelog
 
+## [1.17.0](https://github.com/cowprotocol/cowswap/compare/tokens-v1.16.0...tokens-v1.17.0) (2025-03-27)
+
+
+### Features
+
+* **bridge:** disable bridging sc wallets ([#5536](https://github.com/cowprotocol/cowswap/issues/5536)) ([98372ec](https://github.com/cowprotocol/cowswap/commit/98372ec6b5d2fd8b4f97147197154ae3830497d8))
+
+## [1.16.0](https://github.com/cowprotocol/cowswap/compare/tokens-v1.15.0...tokens-v1.16.0) (2025-03-20)
+
+
+### Features
+
+* **bridge:** add network logo token icon ([#5511](https://github.com/cowprotocol/cowswap/issues/5511)) ([1e74585](https://github.com/cowprotocol/cowswap/commit/1e74585ebe0d4a2d9f1a535972192b820a643869))
+* **bridge:** do not fetch balances too often ([#5509](https://github.com/cowprotocol/cowswap/issues/5509)) ([a673668](https://github.com/cowprotocol/cowswap/commit/a6736681aadc2e1e42dea3ca13827728976e4ce2))
+* **bridge:** select sell token from another chain ([#5521](https://github.com/cowprotocol/cowswap/issues/5521)) ([f0fc900](https://github.com/cowprotocol/cowswap/commit/f0fc900c7035e47331e07b0d5b7a31674dc7bc13))
+
+## [1.15.0](https://github.com/cowprotocol/cowswap/compare/tokens-v1.14.1...tokens-v1.15.0) (2025-03-10)
+
+
+### Features
+
+* **trade:** cache quotes ([#5473](https://github.com/cowprotocol/cowswap/issues/5473)) ([edf8d5f](https://github.com/cowprotocol/cowswap/commit/edf8d5fb239e1491c30a0de474cbc5d1fca7b2a7))
+
+## [1.14.1](https://github.com/cowprotocol/cowswap/compare/tokens-v1.14.0...tokens-v1.14.1) (2025-02-05)
+
+
+### Bug Fixes
+
+* display error message for token import ([#5312](https://github.com/cowprotocol/cowswap/issues/5312)) ([3991be9](https://github.com/cowprotocol/cowswap/commit/3991be9d3f343612a96cced47abfd75da5741aa1))
+
+## [1.14.0](https://github.com/cowprotocol/cowswap/compare/tokens-v1.13.1...tokens-v1.14.0) (2025-01-09)
+
+
+### Features
+
+* **token-lists:** remove outdated token lists ([#5233](https://github.com/cowprotocol/cowswap/issues/5233)) ([6f73dfc](https://github.com/cowprotocol/cowswap/commit/6f73dfc1c604393f4c4a54fe207893b698bba4a8))
+
+## [1.13.1](https://github.com/cowprotocol/cowswap/compare/tokens-v1.13.0...tokens-v1.13.1) (2024-12-18)
+
+
+### Bug Fixes
+
+* remove Kleros token list because it's too big ([#5217](https://github.com/cowprotocol/cowswap/issues/5217)) ([745e17f](https://github.com/cowprotocol/cowswap/commit/745e17f1515024f67c162091a42f3fd2864f894e))
+
+## [1.13.0](https://github.com/cowprotocol/cowswap/compare/tokens-v1.12.0...tokens-v1.13.0) (2024-12-11)
+
+
+### Features
+
+* **cow-fi:** upgrade project structure to /app ([#5167](https://github.com/cowprotocol/cowswap/issues/5167)) ([ed152f7](https://github.com/cowprotocol/cowswap/commit/ed152f7ac0fa62ab2c0b9c93035a551c3b8cb4b6))
+
+## [1.12.0](https://github.com/cowprotocol/cowswap/compare/tokens-v1.11.0...tokens-v1.12.0) (2024-12-03)
+
+
+### Features
+
+* add default list for tokens in base ([#5141](https://github.com/cowprotocol/cowswap/issues/5141)) ([973b93a](https://github.com/cowprotocol/cowswap/commit/973b93a3bb11658bbfba51224a8062588655f5ef))
+* allow adding networks without invalidating local-storage ([#5134](https://github.com/cowprotocol/cowswap/issues/5134)) ([995b4c0](https://github.com/cowprotocol/cowswap/commit/995b4c05da90356c6621a92dc58efbd6f37349ff))
+* **base:** add base chain support ([#5044](https://github.com/cowprotocol/cowswap/issues/5044)) ([4cf0c91](https://github.com/cowprotocol/cowswap/commit/4cf0c91a300d6fcdc026364e74c45e5b2f729f2b))
+* improve custom hook validation messages ([#5123](https://github.com/cowprotocol/cowswap/issues/5123)) ([91bab8d](https://github.com/cowprotocol/cowswap/commit/91bab8dc3b124a32790c3bb1955b01dd3a75ea7b))
+
 ## [1.11.0](https://github.com/cowprotocol/cowswap/compare/tokens-v1.10.0...tokens-v1.11.0) (2024-11-06)
 
 

@@ -1,5 +1,47 @@
 # Changelog
 
+## [1.3.3](https://github.com/cowprotocol/cowswap/compare/balances-and-allowances-v1.3.2...balances-and-allowances-v1.3.3) (2025-04-01)
+
+
+### Bug Fixes
+
+* do not use RPC node when wallet is connected ([#5585](https://github.com/cowprotocol/cowswap/issues/5585)) ([d51fe53](https://github.com/cowprotocol/cowswap/commit/d51fe5394f6c13ed28ac1725331bfb505b8275a5))
+
+## [1.3.2](https://github.com/cowprotocol/cowswap/compare/balances-and-allowances-v1.3.1...balances-and-allowances-v1.3.2) (2025-03-27)
+
+
+### Bug Fixes
+
+* **balances:** updated balances on network changes ([#5569](https://github.com/cowprotocol/cowswap/issues/5569)) ([1aaf6b5](https://github.com/cowprotocol/cowswap/commit/1aaf6b58a205be331e6668bdf411f93f6cbb32ca))
+
+## [1.3.1](https://github.com/cowprotocol/cowswap/compare/balances-and-allowances-v1.3.0...balances-and-allowances-v1.3.1) (2025-03-24)
+
+
+### Bug Fixes
+
+* **swap:** wait for a optimal quote before eth-flow ([#5530](https://github.com/cowprotocol/cowswap/issues/5530)) ([acd0f49](https://github.com/cowprotocol/cowswap/commit/acd0f493c28af15451b9cae0af34c80917bfb586))
+
+## [1.3.0](https://github.com/cowprotocol/cowswap/compare/balances-and-allowances-v1.2.0...balances-and-allowances-v1.3.0) (2025-03-20)
+
+
+### Features
+
+* **bridge:** display tokens in selector from bridge provider ([#5489](https://github.com/cowprotocol/cowswap/issues/5489)) ([b5b08ee](https://github.com/cowprotocol/cowswap/commit/b5b08ee8da9c1746bd3b2147444c2090afdf3950))
+* **bridge:** do not fetch balances too often ([#5509](https://github.com/cowprotocol/cowswap/issues/5509)) ([a673668](https://github.com/cowprotocol/cowswap/commit/a6736681aadc2e1e42dea3ca13827728976e4ce2))
+
+
+### Bug Fixes
+
+* **balances:** do not false skip balances fetching ([#5529](https://github.com/cowprotocol/cowswap/issues/5529)) ([f1de831](https://github.com/cowprotocol/cowswap/commit/f1de831143689d12cea15f0348d00561d77bcf68))
+
+## [1.2.0](https://github.com/cowprotocol/cowswap/compare/balances-and-allowances-v1.1.1...balances-and-allowances-v1.2.0) (2024-12-03)
+
+
+### Features
+
+* allow adding networks without invalidating local-storage ([#5134](https://github.com/cowprotocol/cowswap/issues/5134)) ([995b4c0](https://github.com/cowprotocol/cowswap/commit/995b4c05da90356c6621a92dc58efbd6f37349ff))
+* improve custom hook validation messages ([#5123](https://github.com/cowprotocol/cowswap/issues/5123)) ([91bab8d](https://github.com/cowprotocol/cowswap/commit/91bab8dc3b124a32790c3bb1955b01dd3a75ea7b))
+
 ## [1.1.1](https://github.com/cowprotocol/cowswap/compare/balances-and-allowances-v1.1.0...balances-and-allowances-v1.1.1) (2024-11-21)
 
 

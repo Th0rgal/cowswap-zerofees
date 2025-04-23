@@ -1,8 +1,10 @@
-import { ExternalLink, InlineBanner } from '@cowprotocol/ui'
+import { ExternalLink, InlineBanner, StatusColorVariant } from '@cowprotocol/ui'
 
 import styled from 'styled-components/macro'
 
 import { UNSUPPORTED_SAFE_LINK } from 'modules/twap/const'
+
+import { CowSwapAnalyticsCategory, toCowSwapGtmEvent } from 'common/analytics/types'
 
 const Wrapper = styled.div`
   display: flex;
@@ -65,6 +67,11 @@ export function FallbackHandlerWarning({
         type="checkbox"
         checked={isFallbackHandlerSetupAccepted}
         onChange={(event) => toggleFallbackHandlerSetupFlag(event.currentTarget.checked)}
+        data-click-event={toCowSwapGtmEvent({
+          category: CowSwapAnalyticsCategory.TWAP,
+          action: 'Modify safe handler checkbox',
+          label: isFallbackHandlerSetupAccepted ? 'enabled' : 'disabled',
+        })}
       />
       <span>Make the modification when placing order</span>
     </WarningCheckbox>
@@ -73,7 +80,7 @@ export function FallbackHandlerWarning({
   if (isFallbackHandlerSetupAccepted) {
     return (
       <Wrapper>
-        <InlineBanner hideIcon={true} bannerType="information">
+        <InlineBanner hideIcon={true} bannerType={StatusColorVariant.Info}>
           <CheckboxWrapper>{fallbackHandlerCheckbox}</CheckboxWrapper>
         </InlineBanner>
       </Wrapper>
@@ -81,7 +88,7 @@ export function FallbackHandlerWarning({
   } else {
     return (
       <Wrapper>
-        <InlineBannerWithCheckbox bannerType="alert">
+        <InlineBannerWithCheckbox bannerType={StatusColorVariant.Alert}>
           <strong>Your Safe needs a modification</strong>
           <p>
             TWAP orders require a one-time update to your Safe to enable automated execution of scheduled transactions.

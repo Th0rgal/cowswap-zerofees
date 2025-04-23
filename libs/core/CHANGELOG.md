@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.7.0](https://github.com/cowprotocol/cowswap/compare/core-v1.6.0...core-v1.7.0) (2025-02-12)
+
+
+### Features
+
+* support EIP-5792 batch tx for Safe via WC ([#5417](https://github.com/cowprotocol/cowswap/issues/5417)) ([8aa612f](https://github.com/cowprotocol/cowswap/commit/8aa612f7b93a40d69efa364a10634863bc743e95))
+
+## [1.6.0](https://github.com/cowprotocol/cowswap/compare/core-v1.5.0...core-v1.6.0) (2024-12-18)
+
+
+### Features
+
+* **announcements:** load announcements from cms ([#5212](https://github.com/cowprotocol/cowswap/issues/5212)) ([b70703c](https://github.com/cowprotocol/cowswap/commit/b70703c7a206d5e040bbd29439dcc7eeddf72f42))
+
+## [1.5.0](https://github.com/cowprotocol/cowswap/compare/core-v1.4.0...core-v1.5.0) (2024-12-11)
+
+
+### Features
+
+* **cow-fi:** upgrade project structure to /app ([#5167](https://github.com/cowprotocol/cowswap/issues/5167)) ([ed152f7](https://github.com/cowprotocol/cowswap/commit/ed152f7ac0fa62ab2c0b9c93035a551c3b8cb4b6))
+
+## [1.4.0](https://github.com/cowprotocol/cowswap/compare/core-v1.3.0...core-v1.4.0) (2024-12-03)
+
+
+### Features
+
+* **base:** add base chain support ([#5044](https://github.com/cowprotocol/cowswap/issues/5044)) ([4cf0c91](https://github.com/cowprotocol/cowswap/commit/4cf0c91a300d6fcdc026364e74c45e5b2f729f2b))
+
 ## [1.3.0](https://github.com/cowprotocol/cowswap/compare/core-v1.2.0...core-v1.3.0) (2024-08-27)
 
 

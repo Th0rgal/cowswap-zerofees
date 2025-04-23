@@ -12,6 +12,9 @@ const compat = new FlatCompat({
 
 module.exports = [
   {
+    ignores: ['static-files/'],
+  },
+  {
     plugins: {
       '@nx': nxEslintPlugin,
       'unused-imports': unusedImports,
@@ -146,7 +149,7 @@ module.exports = [
         {
           paths: [
             {
-              name: 'react-router-dom',
+              name: 'react-router',
               importNames: ['useNavigate'],
               message: "Please import useNavigate from our own common package instead: 'common/hooks/useNavigate'",
             },

@@ -1,13 +1,16 @@
 import React, { useCallback, useMemo } from 'react'
 
 import ICON_ORDERS from '@cowprotocol/assets/svg/orders.svg'
+import { useFeatureFlags } from '@cowprotocol/common-hooks'
 import { isInjectedWidget, maxAmountSpend } from '@cowprotocol/common-utils'
-import { ButtonOutlined, Media, MY_ORDERS_ID } from '@cowprotocol/ui'
+import { SupportedChainId } from '@cowprotocol/cow-sdk'
+import { ButtonOutlined, Media, MY_ORDERS_ID, SWAP_HEADER_OFFSET } from '@cowprotocol/ui'
 import { useIsSafeWallet, useWalletDetails, useWalletInfo } from '@cowprotocol/wallet'
 import { Currency } from '@uniswap/sdk-core'
 
 import { t } from '@lingui/macro'
 import SVG from 'react-inlinesvg'
+import { Nullish } from 'types'
 
 import { AccountElement } from 'legacy/components/Header/AccountElement'
 import { upToLarge, useMediaQuery } from 'legacy/hooks/useMediaQuery'
@@ -15,7 +18,6 @@ import { Field } from 'legacy/state/types'
 
 import { useToggleAccountModal } from 'modules/account'
 import { useInjectedWidgetParams } from 'modules/injectedWidget'
-import { SetRecipient } from 'modules/swap/containers/SetRecipient'
 import { useOpenTokenSelectWidget } from 'modules/tokensList'
 import { useIsAlternativeOrderModalVisible } from 'modules/trade/state/alternativeOrder'
 import { TradeFormValidation, useGetTradeFormValidation } from 'modules/tradeFormValidation'
@@ -31,7 +33,12 @@ import * as styledEl from './styled'
 import { TradeWidgetProps } from './types'
 
 import { useTradeStateFromUrl } from '../../hooks/setupTradeState/useTradeStateFromUrl'
+import { useIsCurrentTradeBridging } from '../../hooks/useIsCurrentTradeBridging'
+import { useIsEoaEthFlow } from '../../hooks/useIsEoaEthFlow'
 import { useIsWrapOrUnwrap } from '../../hooks/useIsWrapOrUnwrap'
+import { useLimitOrdersPromoBanner } from '../../hooks/useLimitOrdersPromoBanner'
+import { SetRecipient } from '../../pure/SetRecipient'
+import { LimitOrdersPromoBannerWrapper } from '../LimitOrdersPromoBannerWrapper'
 import { TradeWarnings } from '../TradeWarnings'
 import { TradeWidgetLinks } from '../TradeWidgetLinks'
 import { WrapFlowActionButton } from '../WrapFlowActionButton'
@@ -39,7 +46,8 @@ import { WrapFlowActionButton } from '../WrapFlowActionButton'
 const scrollToMyOrders = () => {
   const element = document.getElementById(MY_ORDERS_ID)
   if (element) {
-    element.scrollIntoView({ behavior: 'smooth' })
+    const elementTop = element.getBoundingClientRect().top + window.scrollY - SWAP_HEADER_OFFSET
+    window.scrollTo({ top: elementTop, behavior: 'smooth' })
   }
 }
 
@@ -51,6 +59,8 @@ export function TradeWidgetForm(props: TradeWidgetProps) {
   const isAlternativeOrderModalVisible = useIsAlternativeOrderModalVisible()
   const { pendingActivity } = useCategorizeRecentActivity()
   const isWrapOrUnwrap = useIsWrapOrUnwrap()
+  const { isLimitOrdersUpgradeBannerEnabled, isBridgingEnabled } = useFeatureFlags()
+  const isCurrentTradeBridging = useIsCurrentTradeBridging()
 
   const { slots, actions, params, disableOutput } = props
   const { settingsWidget, lockScreen, topContent, middleContent, bottomContent, outerContent } = slots
@@ -60,13 +70,14 @@ export function TradeWidgetForm(props: TradeWidgetProps) {
     compactView,
     showRecipient,
     isTradePriceUpdating,
-    isEoaEthFlow = false,
     priceImpact,
     recipient,
     hideTradeWarnings,
     enableSmartSlippage,
     displayTokenName = false,
+    displayChainName = isBridgingEnabled && isCurrentTradeBridging,
     isMarketOrderWidget = false,
+    isSellingEthSupported = false,
   } = params
 
   const inputCurrencyInfo = useMemo(
@@ -90,9 +101,13 @@ export function TradeWidgetForm(props: TradeWidgetProps) {
   const tradeStateFromUrl = useTradeStateFromUrl()
   const alternativeOrderModalVisible = useIsAlternativeOrderModalVisible()
   const primaryFormValidation = useGetTradeFormValidation()
+  const { shouldBeVisible: isLimitOrdersPromoBannerVisible } = useLimitOrdersPromoBanner()
+  const isEoaEthFlow = useIsEoaEthFlow()
 
-  const areCurrenciesLoading = !inputCurrencyInfo.currency && !outputCurrencyInfo.currency
-  const bothCurrenciesSet = !!inputCurrencyInfo.currency && !!outputCurrencyInfo.currency
+  const sellToken = inputCurrencyInfo.currency
+  const buyToken = outputCurrencyInfo.currency
+  const areCurrenciesLoading = !sellToken && !buyToken
+  const bothCurrenciesSet = !!sellToken && !!buyToken
 
   const hasRecipientInUrl = !!tradeStateFromUrl?.recipient
   const withRecipient = !isWrapOrUnwrap && (showRecipient || hasRecipientInUrl)
@@ -130,20 +145,21 @@ export function TradeWidgetForm(props: TradeWidgetProps) {
     allowsOffchainSigning,
     tokenSelectorDisabled: alternativeOrderModalVisible,
     displayTokenName,
+    displayChainName,
   }
 
   const openSellTokenSelect = useCallback(
-    (selectedToken: string | undefined, field: Field | undefined, onSelectToken: (currency: Currency) => void) => {
-      openTokenSelectWidget(selectedToken, field, outputCurrencyInfo.currency || undefined, onSelectToken)
+    (selectedToken: Nullish<Currency>, field: Field | undefined, onSelectToken: (currency: Currency) => void) => {
+      openTokenSelectWidget(selectedToken, field, buyToken || undefined, onSelectToken)
     },
-    [openTokenSelectWidget, outputCurrencyInfo.currency],
+    [openTokenSelectWidget, buyToken],
   )
 
   const openBuyTokenSelect = useCallback(
-    (selectedToken: string | undefined, field: Field | undefined, onSelectToken: (currency: Currency) => void) => {
-      openTokenSelectWidget(selectedToken, field, inputCurrencyInfo.currency || undefined, onSelectToken)
+    (selectedToken: Nullish<Currency>, field: Field | undefined, onSelectToken: (currency: Currency) => void) => {
+      openTokenSelectWidget(selectedToken, field, sellToken || undefined, onSelectToken)
     },
-    [openTokenSelectWidget, inputCurrencyInfo.currency],
+    [openTokenSelectWidget, sellToken],
   )
 
   const toggleAccountModal = useToggleAccountModal()
@@ -155,6 +171,8 @@ export function TradeWidgetForm(props: TradeWidgetProps) {
       scrollToMyOrders()
     }
   }, [isMarketOrderWidget, toggleAccountModal])
+
+  const isOutputTokenUnsupported = !!buyToken && !(buyToken.chainId in SupportedChainId)
 
   return (
     <>
@@ -174,72 +192,81 @@ export function TradeWidgetForm(props: TradeWidgetProps) {
           {!lockScreen && settingsWidget}
         </styledEl.Header>
 
-        {lockScreen ? (
-          lockScreen
-        ) : (
+        <LimitOrdersPromoBannerWrapper>
           <>
-            {topContent}
-            <div>
-              <CurrencyInputPanel
-                id="input-currency-input"
-                currencyInfo={inputCurrencyInfo}
-                showSetMax={showSetMax}
-                maxBalance={maxBalance}
-                topLabel={isWrapOrUnwrap ? undefined : inputCurrencyInfo.label}
-                topContent={inputCurrencyInfo.topContent}
-                openTokenSelectWidget={openSellTokenSelect}
-                customSelectTokenButton={params.customSelectTokenButton}
-                {...currencyInputCommonProps}
-              />
-            </div>
-            {!isWrapOrUnwrap && middleContent}
-            <styledEl.CurrencySeparatorBox compactView={compactView}>
-              <CurrencyArrowSeparator
-                isCollapsed={compactView}
-                hasSeparatorLine={!compactView}
-                onSwitchTokens={isChainIdUnsupported ? () => void 0 : throttledOnSwitchTokens}
-                isLoading={Boolean(inputCurrencyInfo.currency && outputCurrencyInfo.currency && isTradePriceUpdating)}
-                disabled={isAlternativeOrderModalVisible}
-              />
-            </styledEl.CurrencySeparatorBox>
-            <div>
-              <CurrencyInputPanel
-                id="output-currency-input"
-                inputDisabled={isEoaEthFlow || isWrapOrUnwrap || disableOutput}
-                inputTooltip={
-                  isEoaEthFlow
-                    ? t`You cannot edit this field when selling ${inputCurrencyInfo?.currency?.symbol}`
-                    : undefined
-                }
-                currencyInfo={outputCurrencyInfo}
-                priceImpactParams={!disablePriceImpact ? priceImpact : undefined}
-                topLabel={isWrapOrUnwrap ? undefined : outputCurrencyInfo.label}
-                topContent={outputCurrencyInfo.topContent}
-                openTokenSelectWidget={openBuyTokenSelect}
-                customSelectTokenButton={params.customSelectTokenButton}
-                {...currencyInputCommonProps}
-              />
-            </div>
-            {withRecipient && <SetRecipient recipient={recipient || ''} onChangeRecipient={onChangeRecipient} />}
-
-            {isWrapOrUnwrap ? (
-              <WrapFlowActionButton />
+            {lockScreen ? (
+              lockScreen
             ) : (
-              bottomContent?.(
-                hideTradeWarnings ? null : (
-                  <TradeWarnings
-                    enableSmartSlippage={enableSmartSlippage}
-                    isTradePriceUpdating={isTradePriceUpdating}
+              <>
+                {topContent}
+                <div>
+                  <CurrencyInputPanel
+                    id="input-currency-input"
+                    currencyInfo={inputCurrencyInfo}
+                    showSetMax={showSetMax}
+                    maxBalance={maxBalance}
+                    topLabel={isWrapOrUnwrap ? undefined : inputCurrencyInfo.label}
+                    topContent={inputCurrencyInfo.topContent}
+                    openTokenSelectWidget={openSellTokenSelect}
+                    customSelectTokenButton={params.customSelectTokenButton}
+                    {...currencyInputCommonProps}
                   />
-                ),
-              )
-            )}
-          </>
-        )}
+                </div>
+                {!isWrapOrUnwrap && middleContent}
 
-        {isInjectedWidgetMode && <PoweredFooter />}
+                <styledEl.CurrencySeparatorBox compactView={compactView}>
+                  <CurrencyArrowSeparator
+                    isCollapsed={compactView}
+                    hasSeparatorLine={!compactView}
+                    onSwitchTokens={isChainIdUnsupported ? () => void 0 : throttledOnSwitchTokens}
+                    isLoading={Boolean(sellToken && outputCurrencyInfo.currency && isTradePriceUpdating)}
+                    disabled={isAlternativeOrderModalVisible || isOutputTokenUnsupported}
+                  />
+                </styledEl.CurrencySeparatorBox>
+                <div>
+                  <CurrencyInputPanel
+                    id="output-currency-input"
+                    inputDisabled={(isSellingEthSupported && isEoaEthFlow) || isWrapOrUnwrap || disableOutput}
+                    inputTooltip={
+                      isSellingEthSupported && isEoaEthFlow
+                        ? t`You cannot edit this field when selling ${inputCurrencyInfo?.currency?.symbol}`
+                        : undefined
+                    }
+                    currencyInfo={outputCurrencyInfo}
+                    priceImpactParams={!disablePriceImpact ? priceImpact : undefined}
+                    topLabel={isWrapOrUnwrap ? undefined : outputCurrencyInfo.label}
+                    topContent={outputCurrencyInfo.topContent}
+                    openTokenSelectWidget={openBuyTokenSelect}
+                    customSelectTokenButton={params.customSelectTokenButton}
+                    {...currencyInputCommonProps}
+                  />
+                </div>
+                {withRecipient && <SetRecipient recipient={recipient || ''} onChangeRecipient={onChangeRecipient} />}
+
+                {isWrapOrUnwrap ? (
+                  sellToken ? (
+                    <WrapFlowActionButton sellToken={sellToken} />
+                  ) : null
+                ) : (
+                  bottomContent?.(
+                    hideTradeWarnings ? null : (
+                      <TradeWarnings
+                        enableSmartSlippage={enableSmartSlippage}
+                        isTradePriceUpdating={isTradePriceUpdating}
+                      />
+                    ),
+                  )
+                )}
+              </>
+            )}
+
+            {isInjectedWidgetMode && <PoweredFooter />}
+          </>
+        </LimitOrdersPromoBannerWrapper>
       </styledEl.ContainerBox>
-      <styledEl.OuterContentWrapper>{outerContent}</styledEl.OuterContentWrapper>
+      {!isLimitOrdersPromoBannerVisible && !isLimitOrdersUpgradeBannerEnabled && outerContent && (
+        <styledEl.OuterContentWrapper>{outerContent}</styledEl.OuterContentWrapper>
+      )}
     </>
   )
 }

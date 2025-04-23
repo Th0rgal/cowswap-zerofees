@@ -1,3 +1,5 @@
+import { ReactElement } from 'react'
+
 import { Media, UI } from '@cowprotocol/ui'
 
 import styled from 'styled-components/macro'
@@ -9,7 +11,7 @@ export function SideMenu({
 }: {
   longList?: boolean
   className?: string
-  children: JSX.Element
+  children: ReactElement
 }) {
   return (
     <Wrapper longList={longList} className={className}>
@@ -24,13 +26,13 @@ const Wrapper = styled.div<{ longList?: boolean }>`
   font-size: 16px;
   font-weight: 500;
   line-height: 1;
-  margin: 0 24px 0 0;
+  margin: 0;
   color: inherit;
   height: max-content;
   position: sticky;
   top: 0;
   width: 100%;
-  padding: 38px 0 0;
+  padding: 84px 0 0;
 
   ${({ longList }) => (longList ? Media.upToMedium : Media.upToSmall)()} {
     padding: 0;

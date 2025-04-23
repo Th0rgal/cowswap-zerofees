@@ -1,13 +1,15 @@
 import { lazy, PropsWithChildren, Suspense, useMemo } from 'react'
 
+import { initPixelAnalytics, useAnalyticsReporter, useCowAnalytics, WebVitalsAnalytics } from '@cowprotocol/analytics'
 import { ACTIVE_CUSTOM_THEME, CustomTheme } from '@cowprotocol/common-const'
-import { useMediaQuery } from '@cowprotocol/common-hooks'
-import { useFeatureFlags } from '@cowprotocol/common-hooks'
+import { useFeatureFlags, useMediaQuery } from '@cowprotocol/common-hooks'
 import { isInjectedWidget } from '@cowprotocol/common-utils'
-import { Color, Footer, GlobalCoWDAOStyles, Media, MenuBar, CowSwapTheme } from '@cowprotocol/ui'
+import { Color, Footer, GlobalCoWDAOStyles, Media, MenuBar } from '@cowprotocol/ui'
+import { useWalletDetails, useWalletInfo } from '@cowprotocol/wallet'
 
 import SVG from 'react-inlinesvg'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
+import Snowfall from 'react-snowfall'
 import { ThemeProvider } from 'theme'
 
 import ErrorBoundary from 'legacy/components/ErrorBoundary'
@@ -19,14 +21,15 @@ import TopLevelModals from 'legacy/components/TopLevelModals'
 import { useDarkModeManager } from 'legacy/state/user/hooks'
 
 import { OrdersPanel } from 'modules/account'
-import { useAnalyticsReporterCowSwap } from 'modules/analytics'
-import { useInjectedWidgetParams } from 'modules/injectedWidget'
-import { parameterizeTradeRoute, useTradeRouteContext } from 'modules/trade'
+import { useInjectedWidgetMetaData, useInjectedWidgetParams } from 'modules/injectedWidget'
+import { parameterizeTradeRoute, useGetTradeUrlParams } from 'modules/trade'
 import { useInitializeUtm } from 'modules/utm'
 
+import { APP_HEADER_ELEMENT_ID } from 'common/constants/common'
 import { CoWAmmBanner } from 'common/containers/CoWAmmBanner'
 import { InvalidLocalTimeWarning } from 'common/containers/InvalidLocalTimeWarning'
 import { useCategorizeRecentActivity } from 'common/hooks/useCategorizeRecentActivity'
+import { useGetMarketDimension } from 'common/hooks/useGetMarketDimension'
 import { useMenuItems } from 'common/hooks/useMenuItems'
 import { LoadingApp } from 'common/pure/LoadingApp'
 import { CoWDAOFonts } from 'common/styles/CoWDAOFonts'
@@ -39,6 +42,9 @@ const RoutesApp = lazy(() => import('./RoutesApp').then((module) => ({ default: 
 
 const GlobalStyles = GlobalCoWDAOStyles(CoWDAOFonts, 'transparent')
 
+// Initialize static analytics instance
+const pixel = initPixelAnalytics()
+
 const LinkComponent = ({ href, children }: PropsWithChildren<{ href: string }>) => {
   const external = href.startsWith('http')
 
@@ -50,11 +56,28 @@ const LinkComponent = ({ href, children }: PropsWithChildren<{ href: string }>) 
 }
 
 export function App() {
-  useAnalyticsReporterCowSwap()
+  const { chainId, account } = useWalletInfo()
+  const { walletName } = useWalletDetails()
+  const cowAnalytics = useCowAnalytics()
+  const webVitals = new WebVitalsAnalytics(cowAnalytics)
+
+  useAnalyticsReporter({
+    account,
+    chainId,
+    walletName,
+    cowAnalytics,
+    pixelAnalytics: pixel,
+    webVitalsAnalytics: webVitals,
+    marketDimension: useGetMarketDimension() || undefined,
+    injectedWidgetAppId: useInjectedWidgetMetaData()?.appCode,
+  })
+
   useInitializeUtm()
 
-  const featureFlags = useFeatureFlags()
-  const { isYieldEnabled } = featureFlags
+  const { isYieldEnabled } = useFeatureFlags()
+  // TODO: load them from feature flags when we want to enable again
+  const isChristmasEnabled = false
+  const isHalloweenEnabled = false
 
   const isInjectedWidgetMode = isInjectedWidget()
   const menuItems = useMenuItems()
@@ -71,14 +94,14 @@ export function App() {
     [darkMode, toggleDarkMode],
   )
 
-  const tradeContext = useTradeRouteContext()
+  const getTradeUrlParams = useGetTradeUrlParams()
 
   const navItems = useMemo(() => {
     return [
       {
         label: 'Trade',
         children: menuItems.map((item) => {
-          const href = parameterizeTradeRoute(tradeContext, item.route, true)
+          const href = parameterizeTradeRoute(getTradeUrlParams(item), item.route, true)
 
           return {
             href,
@@ -91,17 +114,20 @@ export function App() {
       },
       ...NAV_ITEMS,
     ]
-  }, [tradeContext, menuItems])
+  }, [menuItems, getTradeUrlParams])
 
   const { hideNetworkSelector } = useInjectedWidgetParams()
   const { pendingActivity } = useCategorizeRecentActivity()
   const isMobile = useMediaQuery(Media.upToMedium(false))
   const customTheme = useMemo(() => {
-    if (ACTIVE_CUSTOM_THEME === CustomTheme.HALLOWEEN && darkMode && featureFlags.isHalloweenEnabled) {
-      return 'darkHalloween' as CowSwapTheme
+    if (ACTIVE_CUSTOM_THEME === CustomTheme.HALLOWEEN && darkMode && isHalloweenEnabled) {
+      return 'darkHalloween'
+    }
+    if (ACTIVE_CUSTOM_THEME === CustomTheme.CHRISTMAS && isChristmasEnabled) {
+      return darkMode ? 'darkChristmas' : 'lightChristmas'
     }
     return undefined
-  }, [darkMode, featureFlags.isHalloweenEnabled])
+  }, [darkMode, isHalloweenEnabled, isChristmasEnabled])
 
   const persistentAdditionalContent = (
     <HeaderControls>
@@ -111,6 +137,8 @@ export function App() {
       </HeaderElement>
     </HeaderControls>
   )
+
+  const isChristmasTheme = ACTIVE_CUSTOM_THEME === CustomTheme.CHRISTMAS && isChristmasEnabled
 
   return (
     <ErrorBoundary>
@@ -128,6 +156,7 @@ export function App() {
           {!isInjectedWidgetMode && (
             // TODO: Move hard-coded colors to theme
             <MenuBar
+              id={APP_HEADER_ELEMENT_ID}
               navItems={navItems}
               productVariant={PRODUCT_VARIANT}
               customTheme={customTheme}
@@ -151,11 +180,27 @@ export function App() {
 
           <styledEl.BodyWrapper customTheme={customTheme}>
             <TopLevelModals />
-
             <RoutesApp />
-
             <styledEl.Marginer />
           </styledEl.BodyWrapper>
+
+          {!isInjectedWidgetMode && isChristmasTheme && (
+            <Snowfall
+              style={{
+                position: 'fixed',
+                width: '100vw',
+                height: '100vh',
+                zIndex: 3,
+                pointerEvents: 'none',
+                top: 0,
+                left: 0,
+              }}
+              snowflakeCount={isMobile ? 25 : darkMode ? 75 : 200}
+              radius={[0.5, 2.0]}
+              speed={[0.5, 2.0]}
+              wind={[-0.5, 1.0]}
+            />
+          )}
 
           {!isInjectedWidgetMode && (
             <Footer

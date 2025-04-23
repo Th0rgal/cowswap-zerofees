@@ -1,5 +1,10 @@
+import { TokenWithLogo } from '@cowprotocol/common-const'
+import { SupportedChainId } from '@cowprotocol/cow-sdk'
 import { LpTokenProvider, PersistentStateByChain, TokenInfo } from '@cowprotocol/types'
+import { StatusColorVariant } from '@cowprotocol/ui'
 import type { TokenList as UniTokenList } from '@uniswap/token-lists'
+
+import { TokensBySymbol } from './state/tokens/allTokensAtom'
 
 export enum TokenListCategory {
   ERC20 = 'ERC20',
@@ -18,6 +23,9 @@ export type ListSourceConfig = {
   source: string
 }
 
+export type ActiveTokensState = { tokens: TokenWithLogo[]; chainId: SupportedChainId }
+export type TokensBySymbolState = { tokens: TokensBySymbol; chainId: SupportedChainId }
+
 export type ListsSourcesByNetwork = PersistentStateByChain<Array<ListSourceConfig>>
 
 export type TokensMap = { [address: string]: TokenInfo }
@@ -34,3 +42,13 @@ export interface ListState extends Pick<ListSourceConfig, 'source' | 'priority' 
 export type TokenListsState = { [source: string]: ListState }
 
 export type TokenListsByChainState = PersistentStateByChain<TokenListsState>
+
+export type TagInfo = {
+  id: string
+  name: string
+  description: string
+  icon?: string
+  color?: StatusColorVariant
+}
+
+export type TokenListTags = Record<string, TagInfo>

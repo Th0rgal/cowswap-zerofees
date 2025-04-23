@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.19.0](https://github.com/cowprotocol/cowswap/compare/widget-lib-v0.18.1...widget-lib-v0.19.0) (2025-03-27)
+
+
+### Features
+
+* **widget:** allow passing targetChainId for bridge ([#5523](https://github.com/cowprotocol/cowswap/issues/5523)) ([8572095](https://github.com/cowprotocol/cowswap/commit/85720957f2aaf1e8f67d745642f09bf3403ed8a5))
+
+## [0.18.1](https://github.com/cowprotocol/cowswap/compare/widget-lib-v0.18.0...widget-lib-v0.18.1) (2025-02-05)
+
+
+### Bug Fixes
+
+* **safe-app:** remove approval+order placement bundling banner ([#5393](https://github.com/cowprotocol/cowswap/issues/5393)) ([571029d](https://github.com/cowprotocol/cowswap/commit/571029d11f7c2d1afe608f8dd3481c404e0efea0))
+
+## [0.18.0](https://github.com/cowprotocol/cowswap/compare/widget-lib-v0.17.0...widget-lib-v0.18.0) (2024-12-03)
+
+
+### Features
+
+* **widget:** add maxHeight parameter for the widget ([#5127](https://github.com/cowprotocol/cowswap/issues/5127)) ([db8b509](https://github.com/cowprotocol/cowswap/commit/db8b509d2d46d1ef5e52a18347d20bbebe96dbbd))
+
 ## [0.17.0](https://github.com/cowprotocol/cowswap/compare/widget-lib-v0.16.0...widget-lib-v0.17.0) (2024-10-29)
 
 

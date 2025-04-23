@@ -1,8 +1,9 @@
 import { useCallback } from 'react'
 
+import { getIsNativeToken } from '@cowprotocol/common-utils'
+
 import { Order } from 'legacy/state/orders/actions'
 
-import { getIsEthFlowOrder } from 'modules/swap/containers/EthFlowStepper'
 import { useCancelTwapOrder } from 'modules/twap/hooks/useCancelTwapOrder'
 
 import {
@@ -15,12 +16,20 @@ import { getIsComposableCowParentOrder } from 'utils/orderUtils/getIsComposableC
 import { getIsTheLastTwapPart } from 'utils/orderUtils/getIsTheLastTwapPart'
 
 export function useGetOnChainCancellation(): (order: Order) => Promise<OnChainCancellation> {
-  const ethFlowContract = useEthFlowContract()
-  const settlementContract = useGP2SettlementContract()
+  const {
+    result: { contract: ethFlowContract, chainId: ethFlowChainId },
+  } = useEthFlowContract()
+  const { contract: settlementContract, chainId: settlementChainId } = useGP2SettlementContract()
   const cancelTwapOrder = useCancelTwapOrder()
 
   return useCallback(
     (order: Order) => {
+      if (ethFlowChainId !== settlementChainId) {
+        throw new Error(
+          `Chain Id from contracts should match (ethFlow=${ethFlowChainId}, settlement=${settlementChainId})`,
+        )
+      }
+
       if (getIsTheLastTwapPart(order.composableCowInfo)) {
         return cancelTwapOrder(order.composableCowInfo!.parentId!, order)
       }
@@ -29,7 +38,7 @@ export function useGetOnChainCancellation(): (order: Order) => Promise<OnChainCa
         return cancelTwapOrder(order.composableCowInfo!.id!, order)
       }
 
-      const isEthFlowOrder = getIsEthFlowOrder(order.inputToken.address)
+      const isEthFlowOrder = getIsNativeToken(order.inputToken)
 
       if (isEthFlowOrder) {
         return getEthFlowCancellation(ethFlowContract!, order)
@@ -37,6 +46,6 @@ export function useGetOnChainCancellation(): (order: Order) => Promise<OnChainCa
 
       return getOnChainCancellation(settlementContract!, order)
     },
-    [ethFlowContract, settlementContract, cancelTwapOrder]
+    [ethFlowContract, settlementContract, cancelTwapOrder, ethFlowChainId, settlementChainId],
   )
 }

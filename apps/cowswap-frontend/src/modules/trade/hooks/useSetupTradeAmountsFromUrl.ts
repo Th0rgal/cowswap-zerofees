@@ -1,9 +1,9 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 
-import { FractionUtils, getIntOrFloat, tryParseCurrencyAmount } from '@cowprotocol/common-utils'
+import { FractionUtils, getIntOrFloat, isFractionFalsy, tryParseCurrencyAmount } from '@cowprotocol/common-utils'
 import { OrderKind } from '@cowprotocol/cow-sdk'
 
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import { Writeable } from 'types'
 
 import {
@@ -38,7 +38,10 @@ export function useSetupTradeAmountsFromUrl({ onAmountsUpdate, onlySell }: Setup
   const params = useMemo(() => new URLSearchParams(search), [search])
   const { updateState } = useTradeState()
   const state = useDerivedTradeState()
-  const { inputCurrency, outputCurrency } = state || {}
+  const { inputCurrency, outputCurrency, inputCurrencyAmount, outputCurrencyAmount } = state || {}
+
+  const isAtLeastOneAmountIsSetRef = useRef(false)
+  isAtLeastOneAmountIsSetRef.current = Boolean(inputCurrencyAmount || outputCurrencyAmount)
 
   const cleanParams = useCallback(() => {
     if (!search) return
@@ -64,11 +67,14 @@ export function useSetupTradeAmountsFromUrl({ onAmountsUpdate, onlySell }: Setup
     const sellCurrencyAmount = isSellAmountValid ? tryParseCurrencyAmount(sellAmount, inputCurrency) : null
     const buyCurrencyAmount = isBuyAmountValid ? tryParseCurrencyAmount(buyAmount, outputCurrency) : null
 
-    if (buyCurrencyAmount) {
+    const hasSellAmount = !isFractionFalsy(sellCurrencyAmount)
+    const hasBuyAmount = !isFractionFalsy(buyCurrencyAmount)
+
+    if (hasBuyAmount) {
       update.outputCurrencyAmount = FractionUtils.serializeFractionToJSON(buyCurrencyAmount)
     }
 
-    if (sellCurrencyAmount) {
+    if (hasSellAmount) {
       update.inputCurrencyAmount = FractionUtils.serializeFractionToJSON(sellCurrencyAmount)
     }
 
@@ -77,7 +83,17 @@ export function useSetupTradeAmountsFromUrl({ onAmountsUpdate, onlySell }: Setup
 
       update.orderKind = OrderKind.SELL
     } else {
-      update.orderKind = orderKind || (!buyCurrencyAmount ? OrderKind.SELL : OrderKind.BUY)
+      if (orderKind) {
+        update.orderKind = orderKind
+      } else if (hasSellAmount || hasBuyAmount) {
+        update.orderKind = !hasSellAmount && hasBuyAmount ? OrderKind.BUY : OrderKind.SELL
+      }
+    }
+
+    // When both sell and buy amount are not set
+    // Then set 1 unit to sell by default
+    if (!isAtLeastOneAmountIsSetRef.current && !update.inputCurrencyAmount && inputCurrency) {
+      update.inputCurrencyAmount = FractionUtils.serializeFractionToJSON(tryParseCurrencyAmount('1', inputCurrency))
     }
 
     const hasUpdates = Object.keys(update).length > 0

@@ -1,6 +1,7 @@
-import { Erc20, GPv2Settlement, Weth } from '@cowprotocol/abis'
+import type { Erc20, GPv2Settlement, Weth } from '@cowprotocol/abis'
+import { QuoteAndPost } from '@cowprotocol/cow-sdk'
 import type { Command } from '@cowprotocol/types'
-import type SafeAppsSDK from '@safe-global/safe-apps-sdk'
+import type { SendBatchTxCallback } from '@cowprotocol/wallet'
 import type { Currency, CurrencyAmount } from '@uniswap/sdk-core'
 
 import type { AppDispatch } from 'legacy/state'
@@ -10,6 +11,7 @@ import type { TypedAppDataHooks } from 'modules/appData'
 import type { GeneratePermitHook, IsTokenPermittableResult, useGetCachedPermit } from 'modules/permit'
 import type { TradeConfirmActions } from 'modules/trade'
 import type { TradeFlowAnalyticsContext } from 'modules/trade/utils/tradeFlowAnalytics'
+import type { TradeQuoteState } from 'modules/tradeQuote'
 
 export enum FlowType {
   REGULAR = 'REGULAR',
@@ -19,6 +21,8 @@ export enum FlowType {
 }
 
 export interface TradeFlowContext {
+  tradeQuote: QuoteAndPost
+  tradeQuoteState: TradeQuoteState
   context: {
     chainId: number
     inputAmount: CurrencyAmount<Currency>
@@ -42,9 +46,8 @@ export interface TradeFlowContext {
 }
 
 export interface SafeBundleFlowContext {
-  settlementContract: GPv2Settlement
   spender: string
-  safeAppsSdk: SafeAppsSDK
+  sendBatchTransactions: SendBatchTxCallback
   wrappedNativeContract: Weth
   needsApproval: boolean
   erc20Contract: Erc20

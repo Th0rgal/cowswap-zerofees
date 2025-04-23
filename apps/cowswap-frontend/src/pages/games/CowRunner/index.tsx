@@ -1,12 +1,15 @@
 import { useEffect } from 'react'
 
+import { useCowAnalytics } from '@cowprotocol/analytics'
+import { PAGE_TITLES } from '@cowprotocol/common-const'
 import { CowGame } from '@cowprotocol/cow-runner-game'
 
 import styled from 'styled-components/macro'
 
-import { gameAnalytics } from 'modules/analytics'
 import { PageTitle } from 'modules/application/containers/PageTitle'
 import { Page, Content } from 'modules/application/pure/Page'
+
+import { CowSwapAnalyticsCategory } from 'common/analytics/types'
 
 const Wrapper = styled(Page)`
   min-height: initial;
@@ -35,13 +38,18 @@ const Wrapper = styled(Page)`
 `
 
 export default function CowRunnerPage() {
+  const cowAnalytics = useCowAnalytics()
+
   useEffect(() => {
-    gameAnalytics('CoW Runner')
-  }, [])
+    cowAnalytics.sendEvent({
+      category: CowSwapAnalyticsCategory.GAMES,
+      action: 'Playing CoW Runner game',
+    })
+  }, [cowAnalytics])
 
   return (
     <Wrapper>
-      <PageTitle title="CoW Runner" />
+      <PageTitle title={PAGE_TITLES.COW_RUNNER} />
       <p>
         Run! ...and try not getting sandwiched{' '}
         <span role="img" aria-label="sandwich-icon">

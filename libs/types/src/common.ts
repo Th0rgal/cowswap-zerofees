@@ -27,6 +27,7 @@ export type TokenInfo = {
   logoURI?: string
   tokens?: string[]
   lpTokenProvider?: LpTokenProvider
+  tags?: string[]
 }
 
 export enum LpTokenProvider {
@@ -36,6 +37,19 @@ export enum LpTokenProvider {
   BALANCERV2 = 'BALANCERV2',
   SUSHI = 'SUSHI',
   PANCAKE = 'PANCAKE',
+}
+
+export interface ChainInfo {
+  id: number
+  name: string
+  nativeCurrency: TokenInfo
+  isEvmChain: boolean
+  blockExplorer: string
+  logoUrl: {
+    light: string
+    dark: string
+  }
+  mainColor: string
 }
 
 /**

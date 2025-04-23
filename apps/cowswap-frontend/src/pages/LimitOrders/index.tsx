@@ -1,6 +1,8 @@
+import { PAGE_TITLES } from '@cowprotocol/common-const'
 import { percentToBps } from '@cowprotocol/common-utils'
 
 import { AppDataUpdater } from 'modules/appData'
+import { PageTitle } from 'modules/application/containers/PageTitle'
 import {
   AlternativeLimitOrderUpdater,
   ExecutionPriceUpdater,
@@ -10,12 +12,12 @@ import {
   QuoteObserverUpdater,
   SetupLimitOrderAmountsFromUrlUpdater,
   TriggerAppziLimitOrdersSurveyUpdater,
+  PromoBannerUpdater,
 } from 'modules/limitOrders'
 import { useIsAlternativeOrderModalVisible } from 'modules/trade/state/alternativeOrder'
 
 import { AlternativeLimitOrder } from './AlternativeLimitOrder'
 import { RegularLimitOrders } from './RegularLimitOrders'
-
 export default function LimitOrderPage() {
   const isAlternative = useIsAlternativeOrderModalVisible()
 
@@ -25,6 +27,7 @@ export default function LimitOrderPage() {
       <QuoteObserverUpdater />
       <FillLimitOrdersDerivedStateUpdater />
       <ExecutionPriceUpdater />
+      <PromoBannerUpdater />
       {isAlternative ? (
         <>
           <AlternativeLimitOrderUpdater />
@@ -38,6 +41,7 @@ export default function LimitOrderPage() {
           <RegularLimitOrders />
         </>
       )}
+      <PageTitle title={PAGE_TITLES.LIMIT_ORDERS} />
     </>
   )
 }

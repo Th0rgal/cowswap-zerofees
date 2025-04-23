@@ -7,7 +7,7 @@ import type { TradeType } from '@cowprotocol/widget-lib'
 import { Trans } from '@lingui/macro'
 import IMAGE_CARET from 'assets/icon/caret.svg'
 import SVG from 'react-inlinesvg'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 
 import { useInjectedWidgetParams } from 'modules/injectedWidget'
 import { ModalHeader } from 'modules/tokensList/pure/ModalHeader'
@@ -17,9 +17,10 @@ import { useMenuItems } from 'common/hooks/useMenuItems'
 
 import * as styledEl from './styled'
 
+import { useGetTradeUrlParams } from '../../hooks/useGetTradeUrlParams'
 import { useTradeRouteContext } from '../../hooks/useTradeRouteContext'
 import { useGetTradeStateByRoute } from '../../hooks/useTradeState'
-import { getDefaultTradeRawState, TradeUrlParams } from '../../types/TradeRawState'
+import { getDefaultTradeRawState, TradeUrlParams } from '../../types'
 import { addChainIdToRoute, parameterizeTradeRoute } from '../../utils/parameterizeTradeRoute'
 
 interface MenuItemConfig {
@@ -48,6 +49,7 @@ export function TradeWidgetLinks({ isDropdown = false }: TradeWidgetLinksProps) 
   const { enabledTradeTypes } = useInjectedWidgetParams()
   const menuItems = useMenuItems()
   const getTradeStateByType = useGetTradeStateByRoute()
+  const getTradeUrlParams = useGetTradeUrlParams()
 
   const handleMenuItemClick = useCallback((_item?: MenuItemConfig): void => {
     setDropdownVisible(false)
@@ -61,29 +63,27 @@ export function TradeWidgetLinks({ isDropdown = false }: TradeWidgetLinksProps) 
     })
   }, [menuItems, enabledTradeTypes])
 
-  const menuItemsElements: JSX.Element[] = useMemo(() => {
+  const menuItemsElements = useMemo(() => {
     return enabledItems.map((item) => {
       const isItemYield = item.route === Routes.YIELD
       const chainId = tradeContext.chainId
 
       const isCurrentPathYield = location.pathname.startsWith(addChainIdToRoute(Routes.YIELD, chainId))
       const itemTradeState = getTradeStateByType(item.route)
+      const defaultState = chainId ? getDefaultTradeRawState(+chainId) : null
+
+      const tradeUrlParams = isCurrentPathYield
+        ? ({
+          chainId,
+          inputCurrencyId: itemTradeState.inputCurrencyId || defaultState?.inputCurrencyId || null,
+          outputCurrencyId: itemTradeState.outputCurrencyId,
+        } as TradeUrlParams)
+        : getTradeUrlParams(item)
 
       const routePath =
         isItemYield && !isCurrentPathYield
           ? addChainIdToRoute(item.route, chainId)
-          : parameterizeTradeRoute(
-              isCurrentPathYield
-                ? ({
-                    chainId,
-                    inputCurrencyId:
-                      itemTradeState.inputCurrencyId || (chainId && getDefaultTradeRawState(+chainId).inputCurrencyId),
-                    outputCurrencyId: itemTradeState.outputCurrencyId,
-                  } as TradeUrlParams)
-                : tradeContext,
-              item.route,
-              !isCurrentPathYield,
-            )
+          : parameterizeTradeRoute(tradeUrlParams, item.route, !isCurrentPathYield)
 
       const isActive = location.pathname.startsWith(routePath.split('?')[0])
 
@@ -106,6 +106,7 @@ export function TradeWidgetLinks({ isDropdown = false }: TradeWidgetLinksProps) 
     location.pathname,
     handleMenuItemClick,
     getTradeStateByType,
+    getTradeUrlParams,
   ])
 
   const singleMenuItem = menuItemsElements.length === 1
@@ -118,10 +119,10 @@ export function TradeWidgetLinks({ isDropdown = false }: TradeWidgetLinksProps) 
         onClick={() => !singleMenuItem && setDropdownVisible(!isDropdownVisible)}
         isDropdownVisible={isDropdownVisible}
       >
-        <styledEl.Link to={selectedMenuItem.props.routePath || '#'}>
+        <styledEl.DropdownButton>
           {selectedMenuItem.props.item.label}
           {!singleMenuItem ? <SVG src={IMAGE_CARET} title="select" /> : null}
-        </styledEl.Link>
+        </styledEl.DropdownButton>
       </styledEl.MenuItem>
 
       {isDropdownVisible && (

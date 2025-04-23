@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.6.0](https://github.com/cowprotocol/cowswap/compare/types-v1.5.1...types-v1.6.0) (2025-03-20)
+
+
+### Features
+
+* **bridge:** add network logo token icon ([#5511](https://github.com/cowprotocol/cowswap/issues/5511)) ([1e74585](https://github.com/cowprotocol/cowswap/commit/1e74585ebe0d4a2d9f1a535972192b820a643869))
+* **bridge:** display tokens in selector from bridge provider ([#5489](https://github.com/cowprotocol/cowswap/issues/5489)) ([b5b08ee](https://github.com/cowprotocol/cowswap/commit/b5b08ee8da9c1746bd3b2147444c2090afdf3950))
+
+## [1.5.1](https://github.com/cowprotocol/cowswap/compare/types-v1.5.0...types-v1.5.1) (2025-02-03)
+
+
+### Bug Fixes
+
+* display Metamask warning only for extension/mobile wallets ([#5370](https://github.com/cowprotocol/cowswap/issues/5370)) ([abb5683](https://github.com/cowprotocol/cowswap/commit/abb56834b1e21029ca66362f3b721cd47e080547))
+
+## [1.5.0](https://github.com/cowprotocol/cowswap/compare/types-v1.4.0...types-v1.5.0) (2024-12-03)
+
+
+### Features
+
+* allow adding networks without invalidating local-storage ([#5134](https://github.com/cowprotocol/cowswap/issues/5134)) ([995b4c0](https://github.com/cowprotocol/cowswap/commit/995b4c05da90356c6621a92dc58efbd6f37349ff))
+
 ## [1.4.0](https://github.com/cowprotocol/cowswap/compare/types-v1.3.0...types-v1.4.0) (2024-11-06)
 
 

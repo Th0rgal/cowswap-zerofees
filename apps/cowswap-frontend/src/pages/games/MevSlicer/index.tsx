@@ -1,11 +1,13 @@
 import ninjaCowImg from '@cowprotocol/assets/cow-swap/ninja-cow.png'
+import { PAGE_TITLES } from '@cowprotocol/common-const'
 import { ButtonPrimary } from '@cowprotocol/ui'
 
 import styled from 'styled-components/macro'
 
-import { gameAnalytics } from 'modules/analytics'
 import { PageTitle } from 'modules/application/containers/PageTitle'
 import { Page, Content } from 'modules/application/pure/Page'
+
+import { CowSwapAnalyticsCategory, toCowSwapGtmEvent } from 'common/analytics/types'
 
 const GAME_URL = 'https://mevslicer.netlify.app/'
 
@@ -44,13 +46,12 @@ const Wrapper = styled(Page)`
 
 function openGame() {
   window?.open(GAME_URL, '_blank')?.focus()
-  gameAnalytics('MEV Slicer')
 }
 
 export default function MevSlicer() {
   return (
     <Wrapper>
-      <PageTitle title="Mev Slicer" />
+      <PageTitle title={PAGE_TITLES.MEV_SLICER} />
       <p>This CoW doesn&apos;t run away any more! Not from MEV!</p>
       <p>
         Now is the time to take some action! -{' '}
@@ -66,7 +67,15 @@ export default function MevSlicer() {
         <img src={ninjaCowImg} alt="Ninja Cow" />
       </p>
 
-      <ButtonPrimary padding="8px" $borderRadius="8px" onClick={openGame}>
+      <ButtonPrimary
+        padding="8px"
+        $borderRadius="8px"
+        onClick={openGame}
+        data-click-event={toCowSwapGtmEvent({
+          category: CowSwapAnalyticsCategory.GAMES,
+          action: 'Playing MEV Slicer game',
+        })}
+      >
         Play MEV Slicer
       </ButtonPrimary>
 

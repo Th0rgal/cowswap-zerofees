@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.13.0](https://github.com/cowprotocol/cowswap/compare/assets-v1.12.0...assets-v1.13.0) (2025-02-05)
+
+
+### Features
+
+* **limit-orders:** upgrade and redesign ([#5249](https://github.com/cowprotocol/cowswap/issues/5249)) ([5c868bb](https://github.com/cowprotocol/cowswap/commit/5c868bb794d648363afb88371178ddc35deaf7a7))
+
+## [1.12.0](https://github.com/cowprotocol/cowswap/compare/assets-v1.11.0...assets-v1.12.0) (2024-12-18)
+
+
+### Features
+
+* add winter theme 🎅 ([#5213](https://github.com/cowprotocol/cowswap/issues/5213)) ([7db4b72](https://github.com/cowprotocol/cowswap/commit/7db4b72d54759394087e4c816dce9eeb6f282588))
+
+## [1.11.0](https://github.com/cowprotocol/cowswap/compare/assets-v1.10.0...assets-v1.11.0) (2024-12-03)
+
+
+### Features
+
+* **base:** add base chain support ([#5044](https://github.com/cowprotocol/cowswap/issues/5044)) ([4cf0c91](https://github.com/cowprotocol/cowswap/commit/4cf0c91a300d6fcdc026364e74c45e5b2f729f2b))
+
 ## [1.10.0](https://github.com/cowprotocol/cowswap/compare/assets-v1.9.0...assets-v1.10.0) (2024-11-21)
 
 

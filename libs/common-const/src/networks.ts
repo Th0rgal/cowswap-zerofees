@@ -24,8 +24,6 @@ const DEFAULT_RPC_URL: Record<SupportedChainId, { url: string; usesInfura: boole
  */
 export const RPC_URLS: Record<SupportedChainId, string> = mapSupportedNetworks(getRpcUrl)
 
-export const MAINNET_PROVIDER = new JsonRpcProvider(RPC_URLS[SupportedChainId.MAINNET])
-
 function getRpcUrl(chainId: SupportedChainId): string {
   const envKey = `REACT_APP_NETWORK_URL_${chainId}`
   const rpcUrl = RPC_URL_ENVS[chainId]
@@ -40,4 +38,21 @@ function getRpcUrl(chainId: SupportedChainId): string {
   }
 
   return defaultRpc.url
+}
+
+const rpcProviderCache: Record<number, JsonRpcProvider> = {}
+
+export function getRpcProvider(chainId: number): JsonRpcProvider | null {
+  if (!rpcProviderCache[chainId]) {
+    const url = RPC_URLS[chainId as SupportedChainId]
+    if (!url) return null
+
+    const provider = new JsonRpcProvider(url, chainId)
+
+    rpcProviderCache[chainId] = provider
+
+    return provider
+  }
+
+  return rpcProviderCache[chainId]
 }

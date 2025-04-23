@@ -1,10 +1,9 @@
 import { useSetAtom } from 'jotai'
-import { useEffect, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router'
 
-import { tradeStateFromUrlAtom } from 'modules/trade/state/tradeStateFromUrlAtom'
-
+import { tradeStateFromUrlAtom } from '../../state/tradeStateFromUrlAtom'
 import { TradeRawState } from '../../types/TradeRawState'
 import { useTradeState } from '../useTradeState'
 
@@ -23,8 +22,14 @@ export function useSetupTradeStateFromUrl(): null {
   const tradeStateRef = useRef(state)
   tradeStateRef.current = state
 
-  useEffect(() => {
+  /**
+   * useEffect() runs after the render completes and useMemo() runs during rendering.
+   * In order to update tradeStateFromUrlAtom faster we use useMemo() here.
+   * We need this, because useSetupTradeState() depends on the atom value and needs it to be udpated ASAP.
+   */
+  useMemo(() => {
     const searchParams = new URLSearchParams(location.search)
+    const targetChainId = searchParams.get('targetChainId')
     const recipient = searchParams.get('recipient')
     const recipientAddress = searchParams.get('recipientAddress')
     const { chainId, inputCurrencyId, outputCurrencyId } = JSON.parse(stringifiedParams)
@@ -32,6 +37,7 @@ export function useSetupTradeStateFromUrl(): null {
 
     const state: TradeRawState = {
       chainId: chainIdAsNumber,
+      targetChainId: targetChainId ? +targetChainId : null,
       inputCurrencyId: inputCurrencyId || searchParams.get('inputCurrency') || null,
       outputCurrencyId: outputCurrencyId || searchParams.get('outputCurrency') || null,
       ...(recipient ? { recipient } : undefined),

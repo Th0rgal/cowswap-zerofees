@@ -169,20 +169,6 @@ export interface CowSwapWidgetImages {
   emptyOrders?: string | null
 }
 
-export interface CowSwapWidgetBanners {
-  /**
-   * Banner text: "Use Safe web app..."
-   *
-   * Conditions for displaying the banner:
-   *  - Safe-like app is connected to CoW Swap via WalletConnect
-   *  - Selling native token via Swap
-   *  - Sell token needs approval
-   *
-   *  If the flag is set to true, the banner will not be displayed
-   */
-  hideSafeWebAppBanner?: boolean
-}
-
 export interface CowSwapWidgetContent {
   feeLabel?: string
   feeTooltipMarkdown?: string
@@ -213,10 +199,17 @@ export interface CowSwapWidgetParams {
    * Network ID.
    */
   chainId?: SupportedChainId
+
+  /**
+   * An id of a network to bridge the output token.
+   */
+  targetChainId?: number
+
   /**
    * The token lists urls to use in the widget
    */
   tokenLists?: string[]
+
   /**
    * Swap, Limit or Advanced (Twap).
    */
@@ -327,11 +320,6 @@ export interface CowSwapWidgetParams {
    * Sounds configuration for the app.
    */
   sounds?: CowSwapWidgetSounds
-
-  /**
-   * Flags to control the display of banners in the widget.
-   */
-  banners?: CowSwapWidgetBanners
 
   /**
    * In case when widget does not support some tokens, you can provide a list of tokens to be used in the widget

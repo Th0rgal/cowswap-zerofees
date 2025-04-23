@@ -1,10 +1,10 @@
 import '@reach/dialog/styles.css'
 import 'inter-ui'
-import './sentry'
 import { Provider as AtomProvider } from 'jotai'
 import { ReactNode, StrictMode } from 'react'
+import './sentry'
 
-import { CowAnalyticsProvider } from '@cowprotocol/analytics'
+import { CowAnalyticsProvider, initGtm } from '@cowprotocol/analytics'
 import { nodeRemoveChildFix } from '@cowprotocol/common-utils'
 import { jotaiStore } from '@cowprotocol/core'
 import { SnackbarsWidget } from '@cowprotocol/snackbars'
@@ -12,22 +12,25 @@ import { Web3Provider } from '@cowprotocol/wallet'
 
 import { LanguageProvider } from 'i18n'
 import { createRoot } from 'react-dom/client'
+import SvgCacheProvider from 'react-inlinesvg/provider'
 import { Provider } from 'react-redux'
-import { HashRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router'
 import * as serviceWorkerRegistration from 'serviceWorkerRegistration'
 import { ThemedGlobalStyle, ThemeProvider } from 'theme'
 
 import { cowSwapStore } from 'legacy/state'
 import { useAppSelector } from 'legacy/state/hooks'
 
-import { cowAnalytics } from 'modules/analytics'
 import { App } from 'modules/application/containers/App'
 import { Updaters } from 'modules/application/containers/App/Updaters'
 import { WithLDProvider } from 'modules/application/containers/WithLDProvider'
 import { useInjectedWidgetParams } from 'modules/injectedWidget'
 
+import { APP_HEADER_ELEMENT_ID } from '../common/constants/common'
 import { WalletUnsupportedNetworkBanner } from '../common/containers/WalletUnsupportedNetworkBanner'
 import { BlockNumberProvider } from '../common/hooks/useBlockNumber'
+
+const cowAnalytics = initGtm()
 
 // Node removeChild hackaround
 // based on: https://github.com/facebook/react/issues/11538#issuecomment-417504600
@@ -40,30 +43,31 @@ if (window.ethereum) {
 function Main() {
   return (
     <StrictMode>
-      <Provider store={cowSwapStore}>
-        <AtomProvider store={jotaiStore}>
-          <HashRouter>
-            <LanguageProvider>
-              <Web3ProviderInstance>
-                <ThemeProvider>
-                  <ThemedGlobalStyle />
-                  <BlockNumberProvider>
-                    <WithLDProvider>
-                      <CowAnalyticsProvider cowAnalytics={cowAnalytics}>
-                        <WalletUnsupportedNetworkBanner />
-                        <Updaters />
-
-                        <Toasts />
-                        <App />
-                      </CowAnalyticsProvider>
-                    </WithLDProvider>
-                  </BlockNumberProvider>
-                </ThemeProvider>
-              </Web3ProviderInstance>
-            </LanguageProvider>
-          </HashRouter>
-        </AtomProvider>
-      </Provider>
+      <SvgCacheProvider>
+        <Provider store={cowSwapStore}>
+          <AtomProvider store={jotaiStore}>
+            <HashRouter>
+              <LanguageProvider>
+                <Web3ProviderInstance>
+                  <ThemeProvider>
+                    <ThemedGlobalStyle />
+                    <BlockNumberProvider>
+                      <WithLDProvider>
+                        <CowAnalyticsProvider cowAnalytics={cowAnalytics}>
+                          <WalletUnsupportedNetworkBanner />
+                          <Updaters />
+                          <Toasts />
+                          <App />
+                        </CowAnalyticsProvider>
+                      </WithLDProvider>
+                    </BlockNumberProvider>
+                  </ThemeProvider>
+                </Web3ProviderInstance>
+              </LanguageProvider>
+            </HashRouter>
+          </AtomProvider>
+        </Provider>
+      </SvgCacheProvider>
     </StrictMode>
   )
 }
@@ -82,7 +86,7 @@ function Web3ProviderInstance({ children }: { children: ReactNode }) {
 function Toasts() {
   const { disableToastMessages = false } = useInjectedWidgetParams()
 
-  return <SnackbarsWidget hidden={disableToastMessages} />
+  return <SnackbarsWidget hidden={disableToastMessages} anchorElementId={APP_HEADER_ELEMENT_ID} />
 }
 
 const container = document.getElementById('root')

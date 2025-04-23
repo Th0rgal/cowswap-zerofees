@@ -1,14 +1,14 @@
 import React from 'react'
 
+import { useCowAnalytics } from '@cowprotocol/analytics'
 import { ExplorerDataType, getExplorerLink } from '@cowprotocol/common-utils'
 import { SupportedChainId } from '@cowprotocol/cow-sdk'
 import { Command } from '@cowprotocol/types'
-import { Media } from '@cowprotocol/ui'
+import { Color, Icon, Media, UI } from '@cowprotocol/ui'
 import { TruncatedText } from '@cowprotocol/ui/pure/TruncatedText'
 
 import { faFill, faGroupArrowsRotate, faHistory, faProjectDiagram } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { clickOnOrderDetails } from 'analytics'
 import DecodeAppData from 'components/AppData/DecodeAppData'
 import { DateDisplay } from 'components/common/DateDisplay'
 import { LinkWithPrefixNetwork } from 'components/common/LinkWithPrefixNetwork'
@@ -23,14 +23,16 @@ import { OrderSurplusDisplay } from 'components/orders/OrderSurplusDisplay'
 import { StatusLabel } from 'components/orders/StatusLabel'
 import { HelpTooltip } from 'components/Tooltip'
 import { TAB_QUERY_PARAM_KEY } from 'explorer/const'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import styled from 'styled-components/macro'
 import { capitalize } from 'utils'
 
 import { Order } from 'api/operator'
+import { ExplorerCategory } from 'common/analytics/types'
 import { getUiOrderType } from 'utils/getUiOrderType'
 
 import { OrderHooksDetails } from '../OrderHooksDetails'
+import { UnsignedOrderWarning } from '../UnsignedOrderWarning'
 
 const tooltip = {
   orderID: 'A unique identifier ID for this order.',
@@ -90,6 +92,10 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
 
+  ${Media.MediumAndUp()} {
+    align-items: center;
+  }
+
   ${Media.upToSmall()} {
     flex-direction: column;
   }
@@ -102,9 +108,9 @@ export const LinkButton = styled(LinkWithPrefixNetwork)`
   text-align: center;
   font-weight: ${({ theme }): string => theme.fontBold};
   font-size: 1.3rem;
-  color: ${({ theme }): string => theme.orange1};
-  border: 1px solid ${({ theme }): string => theme.orange1};
-  background-color: ${({ theme }): string => theme.orangeOpacity};
+  color: ${Color.explorer_orange1};
+  border: 1px solid ${() => Color.explorer_orange1};
+  background-color: ${Color.explorer_orangeOpacity};
   border-radius: 0.4rem;
   padding: 0.8rem 1.5rem;
   margin: 0 0 0 2rem;
@@ -117,13 +123,17 @@ export const LinkButton = styled(LinkWithPrefixNetwork)`
 
   &:hover {
     opacity: 0.8;
-    color: ${({ theme }): string => theme.white};
+    color: ${Color.neutral100};
     text-decoration: none;
   }
 
   svg {
     margin-right: 0.5rem;
   }
+`
+
+const WarningRow = styled.tr`
+  background-color: ${Color.explorer_bg};
 `
 
 export type Props = {
@@ -138,6 +148,7 @@ export type Props = {
 
 export function DetailsTable(props: Props): React.ReactNode | null {
   const { chainId, order, areTradesLoading, showFillsButton, viewFills, isPriceInverted, invertPrice } = props
+  const cowAnalytics = useCowAnalytics()
   const {
     uid,
     owner,
@@ -166,13 +177,27 @@ export function DetailsTable(props: Props): React.ReactNode | null {
     return null
   }
 
-  const onCopy = (label: string): void => clickOnOrderDetails('Copy', label)
+  const onCopy = (label: string): void => {
+    cowAnalytics.sendEvent({
+      category: ExplorerCategory.ORDER_DETAILS,
+      action: 'Copy',
+      label,
+    })
+  }
+  const isSigning = status === 'signing'
 
   return (
     <SimpleTable
       columnViewMobile
       body={
         <>
+          {isSigning && (
+            <WarningRow>
+              <td colSpan={2}>
+                <UnsignedOrderWarning />
+              </td>
+            </WarningRow>
+          )}
           <tr>
             <td>
               <span>
@@ -195,6 +220,12 @@ export function DetailsTable(props: Props): React.ReactNode | null {
             </td>
             <td>
               <Wrapper>
+                {isSigning && (
+                  <>
+                    <Icon image="ALERT" color={UI.COLOR_ALERT_TEXT} />
+                    &nbsp;
+                  </>
+                )}
                 <RowWithCopyButton
                   textToCopy={owner}
                   onCopy={(): void => onCopy('ownerAddress')}

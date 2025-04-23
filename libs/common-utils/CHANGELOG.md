@@ -1,5 +1,72 @@
 # Changelog
 
+## [1.13.1](https://github.com/cowprotocol/cowswap/compare/common-utils-v1.13.0...common-utils-v1.13.1) (2025-03-27)
+
+
+### Bug Fixes
+
+* **bridge:** fix getIsNativeToken ([#5565](https://github.com/cowprotocol/cowswap/issues/5565)) ([240134e](https://github.com/cowprotocol/cowswap/commit/240134ecf8ed46bd495bad78547b2c120920e1a1))
+
+## [1.13.0](https://github.com/cowprotocol/cowswap/compare/common-utils-v1.12.0...common-utils-v1.13.0) (2025-03-20)
+
+
+### Features
+
+* **bridge:** display tokens in selector from bridge provider ([#5489](https://github.com/cowprotocol/cowswap/issues/5489)) ([b5b08ee](https://github.com/cowprotocol/cowswap/commit/b5b08ee8da9c1746bd3b2147444c2090afdf3950))
+
+
+### Bug Fixes
+
+* **wallets:** disable coinbase in widget mobile ([#5516](https://github.com/cowprotocol/cowswap/issues/5516)) ([7233573](https://github.com/cowprotocol/cowswap/commit/7233573925c164de35017a3c48fc2af00d6106d2))
+
+## [1.12.0](https://github.com/cowprotocol/cowswap/compare/common-utils-v1.11.0...common-utils-v1.12.0) (2025-03-10)
+
+
+### Features
+
+* **swap:** unificate swap widget with other trade widgets ([#5443](https://github.com/cowprotocol/cowswap/issues/5443)) ([f8d47da](https://github.com/cowprotocol/cowswap/commit/f8d47da493e0e6203fac3d1c6cc5abe2af1de403))
+
+## [1.11.0](https://github.com/cowprotocol/cowswap/compare/common-utils-v1.10.0...common-utils-v1.11.0) (2025-02-25)
+
+
+### Features
+
+* **analytics:** migrate to GTM-based analytics ([#5360](https://github.com/cowprotocol/cowswap/issues/5360)) ([f404d02](https://github.com/cowprotocol/cowswap/commit/f404d0280d9d1d86cc249d70852a5c0ec9827475))
+
+## [1.10.0](https://github.com/cowprotocol/cowswap/compare/common-utils-v1.9.1...common-utils-v1.10.0) (2025-02-05)
+
+
+### Features
+
+* **limit-orders:** upgrade and redesign ([#5249](https://github.com/cowprotocol/cowswap/issues/5249)) ([5c868bb](https://github.com/cowprotocol/cowswap/commit/5c868bb794d648363afb88371178ddc35deaf7a7))
+
+## [1.9.1](https://github.com/cowprotocol/cowswap/compare/common-utils-v1.9.0...common-utils-v1.9.1) (2025-01-30)
+
+
+### Bug Fixes
+
+* type guard to make sure provider is a JsonRpcProvider ([#5357](https://github.com/cowprotocol/cowswap/issues/5357)) ([6a2e030](https://github.com/cowprotocol/cowswap/commit/6a2e030aa7f88ef207fad8910750b18dcf719503))
+
+## [1.9.0](https://github.com/cowprotocol/cowswap/compare/common-utils-v1.8.0...common-utils-v1.9.0) (2025-01-29)
+
+
+### Features
+
+* make useContract chainId aware and handle errors and loading state ([#5352](https://github.com/cowprotocol/cowswap/issues/5352)) ([d66e8ff](https://github.com/cowprotocol/cowswap/commit/d66e8ffc8668ad7563130228fb9bec28ae1d7e7e))
+
+
+### Bug Fixes
+
+* use provider.send('eth_chainId',[]) to avoid cached values ([#5354](https://github.com/cowprotocol/cowswap/issues/5354)) ([ad34521](https://github.com/cowprotocol/cowswap/commit/ad3452181287acb151b22d541feb156d208db482))
+
+## [1.8.0](https://github.com/cowprotocol/cowswap/compare/common-utils-v1.7.2...common-utils-v1.8.0) (2024-12-03)
+
+
+### Features
+
+* **base:** add base chain support ([#5044](https://github.com/cowprotocol/cowswap/issues/5044)) ([4cf0c91](https://github.com/cowprotocol/cowswap/commit/4cf0c91a300d6fcdc026364e74c45e5b2f729f2b))
+* improve custom hook validation messages ([#5123](https://github.com/cowprotocol/cowswap/issues/5123)) ([91bab8d](https://github.com/cowprotocol/cowswap/commit/91bab8dc3b124a32790c3bb1955b01dd3a75ea7b))
+
 ## [1.7.2](https://github.com/cowprotocol/cowswap/compare/common-utils-v1.7.1...common-utils-v1.7.2) (2024-09-30)
 
 

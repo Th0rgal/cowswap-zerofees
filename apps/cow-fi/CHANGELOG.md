@@ -1,5 +1,110 @@
 # Changelog
 
+## [1.22.0](https://github.com/cowprotocol/cowswap/compare/cow-fi-v1.21.1...cow-fi-v1.22.0) (2025-03-20)
+
+
+### Features
+
+* **learn:** enhance search and article fetching functionality ([#5461](https://github.com/cowprotocol/cowswap/issues/5461)) ([8344440](https://github.com/cowprotocol/cowswap/commit/8344440e8136a2f20fc9c0888ec6a39d64f6214c))
+
+
+### Bug Fixes
+
+* **cow.fi:** update navigation to relevant links on Daos and CoW Protocol pages ([#5518](https://github.com/cowprotocol/cowswap/issues/5518)) ([64c057a](https://github.com/cowprotocol/cowswap/commit/64c057a7d9f28fcae8a6e4ae1728c61708d88e2c))
+
+## [1.21.1](https://github.com/cowprotocol/cowswap/compare/cow-fi-v1.21.0...cow-fi-v1.21.1) (2025-03-10)
+
+
+### Bug Fixes
+
+* some typos on the terms page ([#5468](https://github.com/cowprotocol/cowswap/issues/5468)) ([7dcaa06](https://github.com/cowprotocol/cowswap/commit/7dcaa06b90a6f6ae69027a2d8e958f5032fab73c))
+
+## [1.21.0](https://github.com/cowprotocol/cowswap/compare/cow-fi-v1.20.0...cow-fi-v1.21.0) (2025-02-27)
+
+
+### Features
+
+* **cow-fi:** update base token reward T&C ([#5460](https://github.com/cowprotocol/cowswap/issues/5460)) ([485f2b4](https://github.com/cowprotocol/cowswap/commit/485f2b494848aaf8816854fe0c604d8bda84ac5b))
+
+
+### Bug Fixes
+
+* TX amount change on MEV blocker page ([#5453](https://github.com/cowprotocol/cowswap/issues/5453)) ([9ee3d08](https://github.com/cowprotocol/cowswap/commit/9ee3d088a0e2d21c60ac7d632c18170ca44aa50a))
+
+## [1.20.0](https://github.com/cowprotocol/cowswap/compare/cow-fi-v1.19.4...cow-fi-v1.20.0) (2025-02-25)
+
+
+### Features
+
+* **analytics:** migrate to GTM-based analytics ([#5360](https://github.com/cowprotocol/cowswap/issues/5360)) ([f404d02](https://github.com/cowprotocol/cowswap/commit/f404d0280d9d1d86cc249d70852a5c0ec9827475))
+
+
+### Bug Fixes
+
+* update email contact from people@cow.fi to jobs@cow.fi ([#5438](https://github.com/cowprotocol/cowswap/issues/5438)) ([297c2f4](https://github.com/cowprotocol/cowswap/commit/297c2f406c83bc4f8554dcd33b2d8e913c5455d9))
+* update some stats on Cow.fi pages ([#5441](https://github.com/cowprotocol/cowswap/issues/5441)) ([4ec735f](https://github.com/cowprotocol/cowswap/commit/4ec735fdf0f9620422b24d585f3eccb8fb27aa1a))
+
+## [1.19.4](https://github.com/cowprotocol/cowswap/compare/cow-fi-v1.19.3...cow-fi-v1.19.4) (2025-02-05)
+
+
+### Bug Fixes
+
+* **cow-fi:** add loading effect for widget and daos page ([#5319](https://github.com/cowprotocol/cowswap/issues/5319)) ([94a6e44](https://github.com/cowprotocol/cowswap/commit/94a6e441544a66db2b2857217b5129ff3d856780))
+* **legal:** update legal page links ([#5259](https://github.com/cowprotocol/cowswap/issues/5259)) ([94b4437](https://github.com/cowprotocol/cowswap/commit/94b4437a36e7dbf3667b6e1bdd461ba46716392c))
+* **mev-blocker:** fix typo on /maxbackruns endpoint ([#5377](https://github.com/cowprotocol/cowswap/issues/5377)) ([c7c9d9e](https://github.com/cowprotocol/cowswap/commit/c7c9d9e861607df0325bec80030109e0cb4d7d50))
+
+## [1.19.3](https://github.com/cowprotocol/cowswap/compare/cow-fi-v1.19.2...cow-fi-v1.19.3) (2024-12-16)
+
+
+### Bug Fixes
+
+* **cowfi:** fix pages crashes ([#5206](https://github.com/cowprotocol/cowswap/issues/5206)) ([525d079](https://github.com/cowprotocol/cowswap/commit/525d0794c10e0950dc0036f2f9c2e8e728117969))
+
+## [1.19.2](https://github.com/cowprotocol/cowswap/compare/cow-fi-v1.19.1...cow-fi-v1.19.2) (2024-12-12)
+
+
+### Bug Fixes
+
+* **cowfi:** reduce cms requests cache time to 5 min ([#5196](https://github.com/cowprotocol/cowswap/issues/5196)) ([8893f35](https://github.com/cowprotocol/cowswap/commit/8893f35e177f86eef15ad2790034b705cf91e349))
+
+## [1.19.1](https://github.com/cowprotocol/cowswap/compare/cow-fi-v1.19.0...cow-fi-v1.19.1) (2024-12-12)
+
+
+### Bug Fixes
+
+* **cow-fi:** add info about base launch ([#5194](https://github.com/cowprotocol/cowswap/issues/5194)) ([6bd2015](https://github.com/cowprotocol/cowswap/commit/6bd20155a2211bba95e5cdd8dab2e108b4783a13))
+
+## [1.19.0](https://github.com/cowprotocol/cowswap/compare/cow-fi-v1.18.0...cow-fi-v1.19.0) (2024-12-11)
+
+
+### Features
+
+* **cow-fi:** upgrade project structure to /app ([#5167](https://github.com/cowprotocol/cowswap/issues/5167)) ([ed152f7](https://github.com/cowprotocol/cowswap/commit/ed152f7ac0fa62ab2c0b9c93035a551c3b8cb4b6))
+
+
+### Bug Fixes
+
+* add Base to CoW Protocol FAQ on cow.fi ([#5179](https://github.com/cowprotocol/cowswap/issues/5179)) ([a38a3e5](https://github.com/cowprotocol/cowswap/commit/a38a3e5b0cb82d3ad1863f980cfa062d3e8d9954))
+
+## [1.18.0](https://github.com/cowprotocol/cowswap/compare/cow-fi-v1.17.0...cow-fi-v1.18.0) (2024-12-09)
+
+
+### Features
+
+* **cow-fi:** cache data and pages ([#5169](https://github.com/cowprotocol/cowswap/issues/5169)) ([39c94cc](https://github.com/cowprotocol/cowswap/commit/39c94cca11db8a97d9add3ac05c1623755ecd2b3))
+
+## [1.17.0](https://github.com/cowprotocol/cowswap/compare/cow-fi-v1.16.0...cow-fi-v1.17.0) (2024-12-04)
+
+
+### Features
+
+* upgrade react@19 and next@15 ([#5147](https://github.com/cowprotocol/cowswap/issues/5147)) ([a00b1b9](https://github.com/cowprotocol/cowswap/commit/a00b1b930602ab1e6b2f0b3cd148497f68bf4cb5))
+
+
+### Bug Fixes
+
+* remove props from mevblocker page ([#5148](https://github.com/cowprotocol/cowswap/issues/5148)) ([a20de89](https://github.com/cowprotocol/cowswap/commit/a20de895471fbe957e223fad039f89a182b674bd))
+
 ## [1.16.0](https://github.com/cowprotocol/cowswap/compare/cow-fi-v1.15.0...cow-fi-v1.16.0) (2024-10-29)
 
 

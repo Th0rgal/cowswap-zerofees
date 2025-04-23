@@ -1,7 +1,7 @@
-import { InlineBanner } from '@cowprotocol/ui'
-import { useIsBundlingSupported, useIsSmartContractWallet } from '@cowprotocol/wallet'
+import { InlineBanner, StatusColorVariant } from '@cowprotocol/ui'
+import { useIsTxBundlingSupported, useIsSmartContractWallet } from '@cowprotocol/wallet'
 
-import { useIsNativeIn, useWrappedToken } from 'modules/trade'
+import { useIsHooksTradeType, useIsNativeIn, useWrappedToken } from 'modules/trade'
 
 import useNativeCurrency from 'lib/hooks/useNativeCurrency'
 
@@ -9,15 +9,16 @@ export function BundleTxWrapBanner() {
   const nativeCurrencySymbol = useNativeCurrency().symbol || 'ETH'
   const wrappedCurrencySymbol = useWrappedToken().symbol || 'WETH'
 
-  const isBundlingSupported = useIsBundlingSupported()
+  const isHooksStore = useIsHooksTradeType()
+  const isBundlingSupported = useIsTxBundlingSupported()
   const isNativeIn = useIsNativeIn()
   const isSmartContractWallet = useIsSmartContractWallet()
-  const showWrapBundlingBanner = Boolean(isNativeIn && isSmartContractWallet && isBundlingSupported)
+  const showWrapBundlingBanner = Boolean(isNativeIn && isSmartContractWallet && isBundlingSupported) && !isHooksStore
 
   if (!showWrapBundlingBanner) return null
 
   return (
-    <InlineBanner bannerType="information" iconSize={32}>
+    <InlineBanner bannerType={StatusColorVariant.Info} iconSize={32}>
       <strong>Token wrapping bundling</strong>
       <p>
         For your convenience, CoW Swap will bundle all the necessary actions for this trade into a single transaction.

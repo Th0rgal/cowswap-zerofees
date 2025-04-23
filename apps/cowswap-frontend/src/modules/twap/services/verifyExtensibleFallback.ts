@@ -30,7 +30,8 @@ export async function verifyExtensibleFallback(
     }
 
     return ExtensibleFallbackVerification.HAS_EXTENSIBLE_FALLBACK
-  } catch {
+  } catch (e) {
+    console.log('FALLBACK HANDLER CHECKED, error: ', e)
     return ExtensibleFallbackVerification.HAS_NOTHING
   }
 }

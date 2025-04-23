@@ -1,5 +1,94 @@
 # Changelog
 
+## [2.45.0](https://github.com/cowprotocol/cowswap/compare/explorer-v2.44.0...explorer-v2.45.0) (2025-03-27)
+
+
+### Features
+
+* enhance event tracking and analytics integration ([#5507](https://github.com/cowprotocol/cowswap/issues/5507)) ([39ea64d](https://github.com/cowprotocol/cowswap/commit/39ea64d7e7c7fe908327590b998bf6efc82c1b07))
+
+## [2.44.0](https://github.com/cowprotocol/cowswap/compare/explorer-v2.43.0...explorer-v2.44.0) (2025-02-27)
+
+
+### Features
+
+* add dummy change to force release ([0a5a954](https://github.com/cowprotocol/cowswap/commit/0a5a9547bdfe9f3bec4fd73dc11ffd0035501d90))
+
+## [2.43.0](https://github.com/cowprotocol/cowswap/compare/explorer-v2.42.2...explorer-v2.43.0) (2025-02-25)
+
+
+### Features
+
+* **analytics:** migrate to GTM-based analytics ([#5360](https://github.com/cowprotocol/cowswap/issues/5360)) ([f404d02](https://github.com/cowprotocol/cowswap/commit/f404d0280d9d1d86cc249d70852a5c0ec9827475))
+
+## [2.42.2](https://github.com/cowprotocol/cowswap/compare/explorer-v2.42.1...explorer-v2.42.2) (2025-02-12)
+
+
+### Bug Fixes
+
+* **explorer:** enhance hooks details layout ([#5416](https://github.com/cowprotocol/cowswap/issues/5416)) ([3259da8](https://github.com/cowprotocol/cowswap/commit/3259da89a791dc04a832ea7093f5b2a9fa441b95))
+* tooltip placement inside an order in cow  explorer ([#5400](https://github.com/cowprotocol/cowswap/issues/5400)) ([8288fa6](https://github.com/cowprotocol/cowswap/commit/8288fa6dad18c951c16d428ac6c8f318fce35ca1))
+
+## [2.42.1](https://github.com/cowprotocol/cowswap/compare/explorer-v2.42.0...explorer-v2.42.1) (2025-02-05)
+
+
+### Bug Fixes
+
+* **explorer:** fix navigation between tabs is not working using browser arrows ([#5280](https://github.com/cowprotocol/cowswap/issues/5280)) ([3e1bcfe](https://github.com/cowprotocol/cowswap/commit/3e1bcfe153986f91fa5cd06ee0f3625c8419bba8))
+* **explorer:** ui Adjustment ([#5268](https://github.com/cowprotocol/cowswap/issues/5268)) ([7d3242c](https://github.com/cowprotocol/cowswap/commit/7d3242c19f50993babcc71bf988e089c3962f61d))
+
+## [2.42.0](https://github.com/cowprotocol/cowswap/compare/explorer-v2.41.0...explorer-v2.42.0) (2025-01-09)
+
+
+### Features
+
+* executedSurplusFee removal ([#5262](https://github.com/cowprotocol/cowswap/issues/5262)) ([3be8a65](https://github.com/cowprotocol/cowswap/commit/3be8a65309048d4082f2ce25f5b39624e092dbf2))
+
+## [2.41.0](https://github.com/cowprotocol/cowswap/compare/explorer-v2.40.1...explorer-v2.41.0) (2024-12-19)
+
+
+### Features
+
+* fix pagination for fills ([#5228](https://github.com/cowprotocol/cowswap/issues/5228)) ([9563df4](https://github.com/cowprotocol/cowswap/commit/9563df4c55da2e985d303552cc16851cd5b9b533))
+
+## [2.40.1](https://github.com/cowprotocol/cowswap/compare/explorer-v2.40.0...explorer-v2.40.1) (2024-12-18)
+
+
+### Bug Fixes
+
+* fix lint issues ([#5229](https://github.com/cowprotocol/cowswap/issues/5229)) ([25d30bb](https://github.com/cowprotocol/cowswap/commit/25d30bb6496a1fa51719b639948cc4d7b8ec5f20))
+
+## [2.40.0](https://github.com/cowprotocol/cowswap/compare/explorer-v2.39.0...explorer-v2.40.0) (2024-12-18)
+
+
+### Features
+
+* improve orders table when hidden orders ([#5226](https://github.com/cowprotocol/cowswap/issues/5226)) ([a4aaff9](https://github.com/cowprotocol/cowswap/commit/a4aaff94980fad15030bb057bbc45baa20f8336c))
+
+## [2.39.0](https://github.com/cowprotocol/cowswap/compare/explorer-v2.38.0...explorer-v2.39.0) (2024-12-17)
+
+
+### Features
+
+* warn about unsigned orders, and hide not relevant orders ([#5214](https://github.com/cowprotocol/cowswap/issues/5214)) ([0d19616](https://github.com/cowprotocol/cowswap/commit/0d196168076fda10e8e5d823d0288ce0ed1bd612))
+
+## [2.38.0](https://github.com/cowprotocol/cowswap/compare/explorer-v2.37.0...explorer-v2.38.0) (2024-12-04)
+
+
+### Features
+
+* upgrade react@19 and next@15 ([#5147](https://github.com/cowprotocol/cowswap/issues/5147)) ([a00b1b9](https://github.com/cowprotocol/cowswap/commit/a00b1b930602ab1e6b2f0b3cd148497f68bf4cb5))
+
+## [2.37.0](https://github.com/cowprotocol/cowswap/compare/explorer-v2.36.1...explorer-v2.37.0) (2024-12-03)
+
+
+### Features
+
+* allow adding networks without invalidating local-storage ([#5134](https://github.com/cowprotocol/cowswap/issues/5134)) ([995b4c0](https://github.com/cowprotocol/cowswap/commit/995b4c05da90356c6621a92dc58efbd6f37349ff))
+* **base:** add base chain support ([#5044](https://github.com/cowprotocol/cowswap/issues/5044)) ([4cf0c91](https://github.com/cowprotocol/cowswap/commit/4cf0c91a300d6fcdc026364e74c45e5b2f729f2b))
+* **explorer:** add search bar in order view ([#5118](https://github.com/cowprotocol/cowswap/issues/5118)) ([d708dcf](https://github.com/cowprotocol/cowswap/commit/d708dcf7e8428eaef611a9288f45f2c3f51bc689))
+* improve custom hook validation messages ([#5123](https://github.com/cowprotocol/cowswap/issues/5123)) ([91bab8d](https://github.com/cowprotocol/cowswap/commit/91bab8dc3b124a32790c3bb1955b01dd3a75ea7b))
+
 ## [2.36.1](https://github.com/cowprotocol/cowswap/compare/explorer-v2.36.0...explorer-v2.36.1) (2024-11-06)
 
 

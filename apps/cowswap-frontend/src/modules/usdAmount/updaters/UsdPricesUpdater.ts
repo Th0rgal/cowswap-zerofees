@@ -1,16 +1,15 @@
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 
-import { USDC } from '@cowprotocol/common-const'
-import { FractionUtils, getWrappedToken } from '@cowprotocol/common-utils'
-import { SupportedChainId } from '@cowprotocol/cow-sdk'
+import { getWrappedToken } from '@cowprotocol/common-utils'
 import { useWalletInfo } from '@cowprotocol/wallet'
 import { Fraction, Token } from '@uniswap/sdk-core'
 
 import ms from 'ms.macro'
 import useSWR, { SWRConfiguration } from 'swr'
 
-import { getCowProtocolNativePrice } from '../apis/getCowProtocolNativePrice'
+import { useIsProviderNetworkUnsupported } from 'common/hooks/useIsProviderNetworkUnsupported'
+
 import { fetchCurrencyUsdPrice } from '../services/fetchCurrencyUsdPrice'
 import {
   currenciesUsdPriceQueueAtom,
@@ -19,6 +18,7 @@ import {
   usdRawPricesAtom,
   UsdRawPriceState,
 } from '../state/usdRawPricesAtom'
+import { usdcPriceLoader } from '../utils/usdcPriceLoader'
 
 const swrOptions: SWRConfiguration = {
   refreshInterval: ms`60s`,
@@ -28,11 +28,14 @@ const swrOptions: SWRConfiguration = {
   revalidateOnFocus: true,
 }
 
+const EMPTY_USD_PRICES: UsdRawPrices = {}
+
 export function UsdPricesUpdater() {
   const { chainId } = useWalletInfo()
   const setUsdPrices = useSetAtom(usdRawPricesAtom)
   const setUsdPricesLoading = useSetAtom(setUsdPricesLoadingAtom)
   const currenciesUsdPriceQueue = useAtomValue(currenciesUsdPriceQueueAtom)
+  const isProviderNetworkUnsupported = useIsProviderNetworkUnsupported()
 
   const queue = useMemo(() => Object.values(currenciesUsdPriceQueue), [currenciesUsdPriceQueue])
 
@@ -51,6 +54,11 @@ export function UsdPricesUpdater() {
   useEffect(() => {
     const { data, isLoading, error } = swrResponse
 
+    if (isProviderNetworkUnsupported) {
+      setUsdPrices(EMPTY_USD_PRICES)
+      return
+    }
+
     if (error) {
       console.error('Error loading USD prices', error)
       return
@@ -61,24 +69,9 @@ export function UsdPricesUpdater() {
     }
 
     setUsdPrices(data)
-  }, [swrResponse, setUsdPrices])
+  }, [swrResponse, setUsdPrices, isProviderNetworkUnsupported])
 
   return null
-}
-
-function usdcPriceLoader(chainId: SupportedChainId): () => Promise<Fraction | null> {
-  let usdcPricePromise: Promise<number | null> | null = null
-
-  return () => {
-    // Cache the result to avoid fetching it multiple times
-    if (!usdcPricePromise) {
-      usdcPricePromise = getCowProtocolNativePrice(USDC[chainId])
-    }
-
-    return usdcPricePromise.then((usdcPrice) =>
-      typeof usdcPrice === 'number' ? FractionUtils.fromNumber(usdcPrice) : null,
-    )
-  }
 }
 
 async function processQueue(queue: Token[], getUsdcPrice: () => Promise<Fraction | null>): Promise<UsdRawPrices> {

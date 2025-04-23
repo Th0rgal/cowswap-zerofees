@@ -5,17 +5,18 @@ import { useWalletInfo } from '@cowprotocol/wallet'
 import { useDerivedTradeState } from './useDerivedTradeState'
 import { useTradeState } from './useTradeState'
 
-import { getDefaultTradeRawState, TradeUrlParams } from '../types/TradeRawState'
+import { getDefaultTradeRawState, TradeUrlParams } from '../types'
 
 export function useTradeRouteContext(): TradeUrlParams {
   const { chainId: walletChainId } = useWalletInfo()
   const { state } = useTradeState()
   const derivedState = useDerivedTradeState()
-  const prevContextRef = useRef<TradeUrlParams>()
+  const prevContextRef = useRef<TradeUrlParams>(undefined)
 
   const { orderKind, inputCurrencyAmount, outputCurrencyAmount } = derivedState || {}
-  const targetChainId = state?.chainId || walletChainId
-  const { inputCurrencyId, outputCurrencyId } = state || getDefaultTradeRawState(targetChainId)
+  const hasState = !!state
+  const sourceChainId = state?.chainId || walletChainId
+  const { inputCurrencyId, outputCurrencyId, targetChainId } = state || getDefaultTradeRawState(sourceChainId)
 
   const prevContext = prevContextRef.current
 
@@ -28,17 +29,24 @@ export function useTradeRouteContext(): TradeUrlParams {
       outputCurrencyId: outputCurrencyId || undefined,
       inputCurrencyAmount: inputCurrencyAmountStr,
       outputCurrencyAmount: outputCurrencyAmountStr,
-      chainId: targetChainId?.toString(),
+      chainId: sourceChainId.toString(),
+      targetChainId: targetChainId?.toString(),
       orderKind,
     }),
-    [orderKind, inputCurrencyId, outputCurrencyId, targetChainId, inputCurrencyAmountStr, outputCurrencyAmountStr]
+    [
+      orderKind,
+      inputCurrencyId,
+      outputCurrencyId,
+      sourceChainId,
+      targetChainId,
+      inputCurrencyAmountStr,
+      outputCurrencyAmountStr,
+    ],
   )
 
   useEffect(() => {
-    if (state) {
-      prevContextRef.current = context
-    }
-  }, [state, context])
+    prevContextRef.current = hasState ? context : undefined
+  }, [hasState, context])
 
   /**
    * If there is no state, it means that current page is not a trade widget page. For example: account page.

@@ -1,5 +1,41 @@
 # Changelog
 
+## [1.8.0](https://github.com/cowprotocol/cowswap/compare/common-hooks-v1.7.0...common-hooks-v1.8.0) (2025-03-27)
+
+
+### Features
+
+* **bridge:** disable bridging sc wallets ([#5536](https://github.com/cowprotocol/cowswap/issues/5536)) ([98372ec](https://github.com/cowprotocol/cowswap/commit/98372ec6b5d2fd8b4f97147197154ae3830497d8))
+* move inside a popup "copy address" and "view details" ([#5532](https://github.com/cowprotocol/cowswap/issues/5532)) ([c060193](https://github.com/cowprotocol/cowswap/commit/c060193028b716b7ba062d55dbc5cac67a170031))
+
+## [1.7.0](https://github.com/cowprotocol/cowswap/compare/common-hooks-v1.6.1...common-hooks-v1.7.0) (2025-02-25)
+
+
+### Features
+
+* **analytics:** migrate to GTM-based analytics ([#5360](https://github.com/cowprotocol/cowswap/issues/5360)) ([f404d02](https://github.com/cowprotocol/cowswap/commit/f404d0280d9d1d86cc249d70852a5c0ec9827475))
+
+## [1.6.1](https://github.com/cowprotocol/cowswap/compare/common-hooks-v1.6.0...common-hooks-v1.6.1) (2025-01-09)
+
+
+### Bug Fixes
+
+* **feature-flags:** remove isBaseEnabled feature flag ([#5234](https://github.com/cowprotocol/cowswap/issues/5234)) ([1626a04](https://github.com/cowprotocol/cowswap/commit/1626a04e2c0b530c2efae842776ba5af6014a1da))
+
+## [1.6.0](https://github.com/cowprotocol/cowswap/compare/common-hooks-v1.5.0...common-hooks-v1.6.0) (2024-12-11)
+
+
+### Features
+
+* **cow-fi:** upgrade project structure to /app ([#5167](https://github.com/cowprotocol/cowswap/issues/5167)) ([ed152f7](https://github.com/cowprotocol/cowswap/commit/ed152f7ac0fa62ab2c0b9c93035a551c3b8cb4b6))
+
+## [1.5.0](https://github.com/cowprotocol/cowswap/compare/common-hooks-v1.4.0...common-hooks-v1.5.0) (2024-12-03)
+
+
+### Features
+
+* **base:** add base chain support ([#5044](https://github.com/cowprotocol/cowswap/issues/5044)) ([4cf0c91](https://github.com/cowprotocol/cowswap/commit/4cf0c91a300d6fcdc026364e74c45e5b2f729f2b))
+
 ## [1.4.0](https://github.com/cowprotocol/cowswap/compare/common-hooks-v1.3.0...common-hooks-v1.4.0) (2024-09-30)
 
 

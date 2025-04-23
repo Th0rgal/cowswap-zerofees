@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from 'react'
+import { ReactElement, ReactNode, useMemo } from 'react'
 
 import { COW, V_COW, V_COW_CONTRACT_ADDRESS } from '@cowprotocol/common-const'
 import { ExplorerDataType, getExplorerLink, shortenAddress } from '@cowprotocol/common-utils'
@@ -6,15 +6,7 @@ import { SupportedChainId } from '@cowprotocol/cow-sdk'
 import { useENS } from '@cowprotocol/ens'
 import { TokenLogo, useTokenBySymbolOrAddress } from '@cowprotocol/tokens'
 import { UiOrderType } from '@cowprotocol/types'
-import {
-  BannerOrientation,
-  CustomRecipientWarningBanner,
-  ExternalLink,
-  Icon,
-  IconType,
-  TokenAmount,
-  UI,
-} from '@cowprotocol/ui'
+import { BannerOrientation, ExternalLink, Icon, IconType, TokenAmount, UI } from '@cowprotocol/ui'
 import { CurrencyAmount } from '@uniswap/sdk-core'
 
 import { getActivityState } from 'legacy/hooks/useActivityDerivedState'
@@ -22,24 +14,26 @@ import { ActivityStatus } from 'legacy/hooks/useRecentActivity'
 import { OrderStatus } from 'legacy/state/orders/actions'
 
 import { useToggleAccountModal } from 'modules/account'
+import { EthFlowStepper } from 'modules/ethFlow'
 import { useInjectedWidgetParams } from 'modules/injectedWidget'
-import { EthFlowStepper } from 'modules/swap/containers/EthFlowStepper'
 
 import { OrderHooksDetails } from 'common/containers/OrderHooksDetails'
+import { useAddOrderToSurplusQueue } from 'common/containers/SurplusModalSetup/surplusModal'
 import { useCancelOrder } from 'common/hooks/useCancelOrder'
 import { isPending } from 'common/hooks/useCategorizeRecentActivity'
 import { useGetSurplusData } from 'common/hooks/useGetSurplusFiatValue'
+import { CustomRecipientWarningBanner } from 'common/pure/CustomRecipientWarningBanner'
 import { RateInfo, RateInfoParams } from 'common/pure/RateInfo'
 import { SafeWalletLink } from 'common/pure/SafeWalletLink'
 import {
   useHideReceiverWalletBanner,
   useIsReceiverWalletBannerHidden,
 } from 'common/state/receiverWalletBannerVisibility'
+import { getIsCustomRecipient } from 'utils/orderUtils/getIsCustomRecipient'
 import { getUiOrderType } from 'utils/orderUtils/getUiOrderType'
 
 import { StatusDetails } from './StatusDetails'
 import {
-  TransactionState as ActivityLink,
   ActivityVisual,
   CreationTimeText,
   FiatWrapper,
@@ -49,9 +43,8 @@ import {
   SummaryInnerRow,
   TextAlert,
   TransactionInnerDetail,
+  TransactionState as ActivityLink,
 } from './styled'
-
-import { useAddOrderToSurplusQueue } from '../../../swap/state/surplusModal'
 
 import { ActivityDerivedState } from './index'
 
@@ -65,7 +58,7 @@ const DEFAULT_ORDER_SUMMARY = {
 export function GnosisSafeTxDetails(props: {
   chainId: number
   activityDerivedState: ActivityDerivedState
-}): JSX.Element | null {
+}): ReactElement | null {
   const { chainId, activityDerivedState } = props
   const { gnosisSafeInfo, enhancedTransaction, status, isOrder, order, isExpired, isCancelled, isFailed } =
     activityDerivedState
@@ -93,7 +86,7 @@ export function GnosisSafeTxDetails(props: {
   const pendingSignaturesCount = gnosisSafeThreshold - numConfirmations
   const isPendingSignatures = pendingSignaturesCount > 0
 
-  let signaturesMessage: JSX.Element
+  let signaturesMessage: ReactElement
 
   const areIsMessage = pendingSignaturesCount > 1 ? 's are' : ' is'
 
@@ -298,7 +291,7 @@ export function ActivityDetails(props: {
     outputToken = COW[chainId as SupportedChainId]
   }
 
-  const isCustomRecipient = Boolean(order?.receiver && order.owner !== order.receiver)
+  const isCustomRecipient = !!order && getIsCustomRecipient(order)
 
   return (
     <>

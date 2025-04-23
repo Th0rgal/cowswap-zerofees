@@ -1,5 +1,85 @@
 # Changelog
 
+## [1.23.0](https://github.com/cowprotocol/cowswap/compare/ui-v1.22.0...ui-v1.23.0) (2025-03-27)
+
+
+### Features
+
+* move inside a popup "copy address" and "view details" ([#5532](https://github.com/cowprotocol/cowswap/issues/5532)) ([c060193](https://github.com/cowprotocol/cowswap/commit/c060193028b716b7ba062d55dbc5cac67a170031))
+
+## [1.22.0](https://github.com/cowprotocol/cowswap/compare/ui-v1.21.0...ui-v1.22.0) (2025-03-20)
+
+
+### Features
+
+* **bridge:** display tokens in selector from bridge provider ([#5489](https://github.com/cowprotocol/cowswap/issues/5489)) ([b5b08ee](https://github.com/cowprotocol/cowswap/commit/b5b08ee8da9c1746bd3b2147444c2090afdf3950))
+
+
+### Bug Fixes
+
+* Add custom token - Update update link ([a896981](https://github.com/cowprotocol/cowswap/commit/a8969814dd4ce72605b2c03d9fff44fba1ad2f9a))
+
+## [1.21.0](https://github.com/cowprotocol/cowswap/compare/ui-v1.20.0...ui-v1.21.0) (2025-03-10)
+
+
+### Features
+
+* **swap:** unificate swap widget with other trade widgets ([#5443](https://github.com/cowprotocol/cowswap/issues/5443)) ([f8d47da](https://github.com/cowprotocol/cowswap/commit/f8d47da493e0e6203fac3d1c6cc5abe2af1de403))
+
+## [1.20.0](https://github.com/cowprotocol/cowswap/compare/ui-v1.19.0...ui-v1.20.0) (2025-02-25)
+
+
+### Features
+
+* **analytics:** migrate to GTM-based analytics ([#5360](https://github.com/cowprotocol/cowswap/issues/5360)) ([f404d02](https://github.com/cowprotocol/cowswap/commit/f404d0280d9d1d86cc249d70852a5c0ec9827475))
+
+## [1.19.0](https://github.com/cowprotocol/cowswap/compare/ui-v1.18.0...ui-v1.19.0) (2025-02-05)
+
+
+### Features
+
+* **limit-orders:** upgrade and redesign ([#5249](https://github.com/cowprotocol/cowswap/issues/5249)) ([5c868bb](https://github.com/cowprotocol/cowswap/commit/5c868bb794d648363afb88371178ddc35deaf7a7))
+
+
+### Bug Fixes
+
+* **ui:** get rid of flickering in HelpTooltip ([#5324](https://github.com/cowprotocol/cowswap/issues/5324)) ([bd7cb03](https://github.com/cowprotocol/cowswap/commit/bd7cb032cf623f527cc042cf1cccc2315f3d6169))
+
+## [1.18.0](https://github.com/cowprotocol/cowswap/compare/ui-v1.17.1...ui-v1.18.0) (2025-01-09)
+
+
+### Features
+
+* **swap:** partial approve ([#5256](https://github.com/cowprotocol/cowswap/issues/5256)) ([f080ffd](https://github.com/cowprotocol/cowswap/commit/f080ffdb098612e729f3a3f829410ce78697979f))
+
+## [1.17.1](https://github.com/cowprotocol/cowswap/compare/ui-v1.17.0...ui-v1.17.1) (2024-12-23)
+
+
+### Bug Fixes
+
+* **snackbars:** stick snackbars widget to header menu ([4582d67](https://github.com/cowprotocol/cowswap/commit/4582d67156364fe1866a40227f76c8101d11e1bd))
+
+## [1.17.0](https://github.com/cowprotocol/cowswap/compare/ui-v1.16.0...ui-v1.17.0) (2024-12-18)
+
+
+### Features
+
+* add winter theme 🎅 ([#5213](https://github.com/cowprotocol/cowswap/issues/5213)) ([7db4b72](https://github.com/cowprotocol/cowswap/commit/7db4b72d54759394087e4c816dce9eeb6f282588))
+
+## [1.16.0](https://github.com/cowprotocol/cowswap/compare/ui-v1.15.0...ui-v1.16.0) (2024-12-11)
+
+
+### Features
+
+* **cow-fi:** upgrade project structure to /app ([#5167](https://github.com/cowprotocol/cowswap/issues/5167)) ([ed152f7](https://github.com/cowprotocol/cowswap/commit/ed152f7ac0fa62ab2c0b9c93035a551c3b8cb4b6))
+
+## [1.15.0](https://github.com/cowprotocol/cowswap/compare/ui-v1.14.0...ui-v1.15.0) (2024-12-03)
+
+
+### Features
+
+* **volume-fee:** add volume fee for Safe ([#5139](https://github.com/cowprotocol/cowswap/issues/5139)) ([bb14c6a](https://github.com/cowprotocol/cowswap/commit/bb14c6a6ecfaba7d1a9a1da5366fac054efb97aa))
+
 ## [1.14.0](https://github.com/cowprotocol/cowswap/compare/ui-v1.13.0...ui-v1.14.0) (2024-11-21)
 
 

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, useCallback, useRef, ChangeEventHandler } from 'react'
 
 import { useTokensBalances } from '@cowprotocol/balances-and-allowances'
-import { TokenWithLogo } from '@cowprotocol/common-const'
+import { PAGE_TITLES, TokenWithLogo } from '@cowprotocol/common-const'
 import { useTheme, useDebounce, useOnClickOutside, usePrevious } from '@cowprotocol/common-hooks'
 import { isAddress, isTruthy } from '@cowprotocol/common-utils'
 import { useTokensByAddressMap, useFavoriteTokens, useResetFavoriteTokens } from '@cowprotocol/tokens'
@@ -33,6 +33,7 @@ import {
   TokenSearchInput,
 } from './styled'
 
+import Delegate from '../Delegate'
 import { CardsLoader, CardsSpinner } from '../styled'
 
 export enum PageViewKeys {
@@ -122,7 +123,9 @@ export default function TokensOverview() {
         setPage={setPage}
         balances={balances}
         tokensData={tokensData}
-      />
+      >
+        <Delegate dismissable rowOnMobile />
+      </TokensTable>
     )
   }, [balances, debouncedQuery, favoriteTokens, formattedTokens, page, prevQuery, provider, query, selectedView])
 
@@ -133,7 +136,7 @@ export default function TokensOverview() {
       setQuery(checksummedInput || input)
       if (page !== 1) setPage(1)
     },
-    [page, setPage]
+    [page, setPage],
   )
 
   const handleSearchClear = useCallback(() => {
@@ -187,7 +190,7 @@ export default function TokensOverview() {
             <TokenSearchInput
               type="text"
               id="token-search-input"
-              placeholder={t`Search by name, symbol or address`}
+              placeholder={t`Name, symbol or address`}
               autoComplete="off"
               value={query}
               onChange={handleSearch}
@@ -202,7 +205,7 @@ export default function TokensOverview() {
         </AccountHeading>
       )}
       <Overview>
-        <PageTitle title="Tokens Overview" />
+        <PageTitle title={PAGE_TITLES.TOKENS_OVERVIEW} />
 
         {isProviderNetworkUnsupported ? 'Unsupported network' : renderTableContent()}
       </Overview>

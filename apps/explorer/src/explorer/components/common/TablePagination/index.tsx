@@ -1,15 +1,15 @@
 import React, { Context, useContext } from 'react'
 
-import { Media } from '@cowprotocol/ui'
+import { Color, Media } from '@cowprotocol/ui'
 
-import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styled, { css } from 'styled-components/macro'
 
 import { Dropdown, DropdownOption } from '../Dropdown'
 
 const PaginationTextCSS = css`
-  color: ${({ theme }): string => theme.textPrimary1};
+  color: ${Color.explorer_textPrimary};
   font-size: ${({ theme }): string => theme.fontSizeDefault};
   font-weight: normal;
   white-space: nowrap;
@@ -17,7 +17,6 @@ const PaginationTextCSS = css`
 
 export const PaginationWrapper = styled.span`
   ${PaginationTextCSS};
-
   align-items: center;
   display: flex;
   justify-content: center;
@@ -56,12 +55,14 @@ const PaginationItem = styled(DropdownOption)`
 const Icon = styled(FontAwesomeIcon)`
   width: 2rem !important;
   height: 2rem;
-  color: ${({ theme }): string => theme.textSecondary1};
+  color: ${Color.explorer_textSecondary1};
   .fill {
-    color: ${({ theme }): string => theme.textActive1};
+    color: ${Color.explorer_textActive};
   }
 `
-const PaginationButton = styled.button`
+const PaginationButton = styled.button.attrs<{ disabled?: boolean }>(props => ({
+  disabled: props.disabled ?? true
+}))`
   align-items: center;
   background: none;
   border: none;
@@ -77,7 +78,7 @@ const PaginationButton = styled.button`
 
   &:hover {
     .fill {
-      color: ${({ theme }): string => theme.textActive1};
+      color: ${Color.explorer_textActive};
     }
   }
 
@@ -86,11 +87,10 @@ const PaginationButton = styled.button`
     cursor: not-allowed;
     opacity: 0.5;
     .fill {
-      color: ${({ theme }): string => theme.textSecondary1};
+      color: ${Color.explorer_textSecondary1};
     }
   }
 `
-PaginationButton.defaultProps = { disabled: true }
 
 const DropdownPagination = styled(Dropdown)`
   .dropdown-options {
@@ -99,11 +99,11 @@ const DropdownPagination = styled(Dropdown)`
 `
 const PaginationDropdownButton = styled.button`
   ${PaginationTextCSS};
-
   background: none;
   border: none;
-  white-space: nowrap;
   cursor: pointer;
+  color: ${Color.neutral100};
+
   &.selected {
     background-color: transparent;
     cursor: not-allowed;
@@ -111,7 +111,7 @@ const PaginationDropdownButton = styled.button`
     pointer-events: none;
   }
   &:hover span {
-    color: ${({ theme }): string => theme.textActive1};
+    color: ${Color.explorer_textActive};
   }
 `
 

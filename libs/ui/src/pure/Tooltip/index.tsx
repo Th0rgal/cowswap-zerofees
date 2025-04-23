@@ -1,5 +1,6 @@
-import { MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import { MouseEvent, ReactNode, RefObject, useCallback, useEffect, useRef, useState } from 'react'
 
+import { useOnClickOutside, useOnScroll } from '@cowprotocol/common-hooks'
 import { isMobile } from '@cowprotocol/common-utils'
 import { Command } from '@cowprotocol/types'
 
@@ -36,6 +37,11 @@ export interface HoverTooltipProps extends Omit<PopoverProps, 'content' | 'show'
    * Whether to disable the hover and content display
    */
   disableHover?: boolean
+
+  /**
+   * In milliseconds, the delay before the tooltip is closed
+   */
+  tooltipCloseDelay?: number
 }
 
 /**
@@ -49,12 +55,20 @@ export interface HoverTooltipProps extends Omit<PopoverProps, 'content' | 'show'
  * @returns
  */
 export function HoverTooltip(props: HoverTooltipProps) {
-  const { content, children, onOpen = undefined, disableHover, wrapInContainer = false, ...rest } = props
+  const {
+    content,
+    children,
+    onOpen = undefined,
+    disableHover,
+    wrapInContainer = false,
+    tooltipCloseDelay = TOOLTIP_CLOSE_DELAY,
+    ...rest
+  } = props
 
   // { text, className, ...rest }: TooltipProps
 
   const [show, setShow] = useState(false)
-  const cancelCloseRef = useRef<Command | null>()
+  const cancelCloseRef = useRef<Command | null>(null)
 
   const divRef = useRef<HTMLDivElement>(null)
   const open = useCallback(
@@ -67,34 +81,37 @@ export function HoverTooltip(props: HoverTooltipProps) {
   )
 
   // Close the tooltip
-  const close = useCallback((e: MouseEvent<HTMLDivElement> | null, eager = false) => {
-    e && e.preventDefault()
+  const close = useCallback(
+    (e: MouseEvent<HTMLDivElement> | null, eager = false) => {
+      e && e.preventDefault()
 
-    // Cancel any previous scheduled close
-    if (cancelCloseRef.current) {
-      cancelCloseRef.current()
-    }
-
-    const closeNow = () => {
-      cancelCloseRef.current = null
-      setShow(false)
-    }
-
-    if (eager) {
-      // Close eagerly
-      closeNow()
-    } else {
-      // Close after a delay
-      const closeTimeout = setTimeout(closeNow, TOOLTIP_CLOSE_DELAY)
-
-      cancelCloseRef.current = () => {
-        cancelCloseRef.current = null
-        clearTimeout(closeTimeout)
+      // Cancel any previous scheduled close
+      if (cancelCloseRef.current) {
+        cancelCloseRef.current()
       }
-    }
 
-    return () => cancelCloseRef.current && cancelCloseRef.current()
-  }, [])
+      const closeNow = () => {
+        cancelCloseRef.current = null
+        setShow(false)
+      }
+
+      if (eager) {
+        // Close eagerly
+        closeNow()
+      } else {
+        // Close after a delay
+        const closeTimeout = setTimeout(closeNow, tooltipCloseDelay)
+
+        cancelCloseRef.current = () => {
+          cancelCloseRef.current = null
+          clearTimeout(closeTimeout)
+        }
+      }
+
+      return () => cancelCloseRef.current && cancelCloseRef.current()
+    },
+    [tooltipCloseDelay],
+  )
 
   // Stop the delayed close when hovering the tooltip
   const stopDelayedClose = useCallback(() => {
@@ -159,6 +176,8 @@ export interface TooltipProps extends Omit<PopoverProps, 'content'> {
    * The content of the tooltip
    */
   content: ReactNode
+
+  containerRef: RefObject<HTMLElement | null>
 }
 
 /**
@@ -167,11 +186,24 @@ export interface TooltipProps extends Omit<PopoverProps, 'content'> {
  * IMPORTANT: Don't use it if you need to show the tooltip when you hover on one element. For that use `HoverTooltip`
  * @see HoverTooltip as an alternative if you need to show the tooltip on hover
  */
-export function Tooltip({ content, className, wrapInContainer, ...rest }: TooltipProps) {
+export function Tooltip({ content, className, wrapInContainer, show, containerRef, ...rest }: TooltipProps) {
+  const tooltipRef = useRef<HTMLDivElement>(null)
+
+  const handleClick = useCallback(() => {
+    if (show && rest.onClickCapture) {
+      rest.onClickCapture({} as React.MouseEvent<HTMLDivElement>)
+    }
+  }, [show, rest])
+
+  useOnClickOutside([tooltipRef], handleClick)
+
+  useOnScroll(containerRef, handleClick)
+
   return (
     <Popover
       className={className}
-      content={wrapInContainer ? <TooltipContainer>{content}</TooltipContainer> : content}
+      show={show}
+      content={<div ref={tooltipRef}>{wrapInContainer ? <TooltipContainer>{content}</TooltipContainer> : content}</div>}
       {...rest}
     />
   )

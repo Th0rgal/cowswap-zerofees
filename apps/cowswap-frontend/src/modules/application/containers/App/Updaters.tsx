@@ -1,27 +1,35 @@
+import { useCowAnalytics } from '@cowprotocol/analytics'
 import { BalancesAndAllowancesUpdater } from '@cowprotocol/balances-and-allowances'
 import { useFeatureFlags } from '@cowprotocol/common-hooks'
-import { SolversInfoUpdater } from '@cowprotocol/core'
-import { TokensListsUpdater, UnsupportedTokensUpdater, WidgetTokensListsUpdater } from '@cowprotocol/tokens'
+import { MultiCallUpdater } from '@cowprotocol/multicall'
+import {
+  TokensListsTagsUpdater,
+  TokensListsUpdater,
+  UnsupportedTokensUpdater,
+  WidgetTokensListsUpdater,
+} from '@cowprotocol/tokens'
 import { HwAccountIndexUpdater, useWalletInfo, WalletUpdater } from '@cowprotocol/wallet'
 
-import { GasPriceStrategyUpdater } from 'legacy/state/gas/gas-price-strategy-updater'
+import { TradingSdkUpdater } from 'tradingSdk/TradingSdkUpdater'
 
-import { addListAnalytics, removeListAnalytics } from 'modules/analytics'
 import { UploadToIpfsUpdater } from 'modules/appData/updater/UploadToIpfsUpdater'
+import { useBridgeSupportedNetworks } from 'modules/bridge'
 import { BalancesCombinedUpdater } from 'modules/combinedBalances/updater/BalancesCombinedUpdater'
+import { InFlightOrderFinalizeUpdater } from 'modules/ethFlow'
 import { CowEventsUpdater, InjectedWidgetUpdater, useInjectedWidgetParams } from 'modules/injectedWidget'
 import { FinalizeTxUpdater } from 'modules/onchainTransactions'
 import { OrdersNotificationsUpdater } from 'modules/orders'
-import { EthFlowDeadlineUpdater } from 'modules/swap/state/EthFlow/updaters'
-import { useOnTokenListAddingError } from 'modules/tokensList'
+import { useOnTokenListAddingError, useSourceChainId } from 'modules/tokensList'
 import { TradeType, useTradeTypeInfo } from 'modules/trade'
 import { UsdPricesUpdater } from 'modules/usdAmount'
+import { CorrelatedTokensUpdater } from 'modules/volumeFee'
 import { LpTokensWithBalancesUpdater, PoolsInfoUpdater, VampireAttackUpdater } from 'modules/yield/shared'
 
-import { ProgressBarV2ExecutingOrdersUpdater } from 'common/hooks/orderProgressBarV2'
+import { CowSwapAnalyticsCategory } from 'common/analytics/types'
+import { ProgressBarExecutingOrdersUpdater } from 'common/hooks/orderProgressBar'
 import { TotalSurplusUpdater } from 'common/state/totalSurplusState'
+import { AnnouncementsUpdater } from 'common/updaters/AnnouncementsUpdater'
 import { FeatureFlagsUpdater } from 'common/updaters/FeatureFlagsUpdater'
-import { FeesUpdater } from 'common/updaters/FeesUpdater'
 import { GasUpdater } from 'common/updaters/GasUpdater'
 import { LpBalancesAndAllowancesUpdater } from 'common/updaters/LpBalancesAndAllowancesUpdater'
 import {
@@ -33,18 +41,24 @@ import {
 } from 'common/updaters/orders'
 import { SpotPricesUpdater } from 'common/updaters/orders/SpotPricesUpdater'
 import { SentryUpdater } from 'common/updaters/SentryUpdater'
+import { SolversInfoUpdater } from 'common/updaters/SolversInfoUpdater'
 import { UserUpdater } from 'common/updaters/UserUpdater'
 
 export function Updaters() {
-  const { chainId, account } = useWalletInfo()
+  const { account } = useWalletInfo()
   const { tokenLists, appCode, customTokens, standaloneMode } = useInjectedWidgetParams()
   const onTokenListAddingError = useOnTokenListAddingError()
   const { isGeoBlockEnabled, isYieldEnabled } = useFeatureFlags()
   const tradeTypeInfo = useTradeTypeInfo()
   const isYieldWidget = tradeTypeInfo?.tradeType === TradeType.YIELD
+  const cowAnalytics = useCowAnalytics()
+  const sourceChainId = useSourceChainId()
+  const bridgeNetworkInfo = useBridgeSupportedNetworks()
 
   return (
     <>
+      <TradingSdkUpdater />
+      <MultiCallUpdater chainId={sourceChainId} />
       <FeatureFlagsUpdater />
       <WalletUpdater standaloneMode={standaloneMode} />
       <HwAccountIndexUpdater />
@@ -54,44 +68,58 @@ export function Updaters() {
       <PendingOrdersUpdater />
       <CancelledOrdersUpdater />
       <ExpiredOrdersUpdater />
-      <FeesUpdater />
       <UnfillableOrdersUpdater />
       <OrdersFromApiUpdater />
       <GasUpdater />
-      <GasPriceStrategyUpdater />
       <SentryUpdater />
       <UploadToIpfsUpdater />
-      <EthFlowDeadlineUpdater />
+      <InFlightOrderFinalizeUpdater />
       <SpotPricesUpdater />
       <InjectedWidgetUpdater />
       <CowEventsUpdater />
       <TotalSurplusUpdater />
       <UsdPricesUpdater />
       <OrdersNotificationsUpdater />
-      <ProgressBarV2ExecutingOrdersUpdater />
+      <ProgressBarExecutingOrdersUpdater />
       <SolversInfoUpdater />
+      <AnnouncementsUpdater />
 
       <TokensListsUpdater
-        chainId={chainId}
+        chainId={sourceChainId}
         isGeoBlockEnabled={isGeoBlockEnabled}
         enableLpTokensByDefault={isYieldWidget}
         isYieldEnabled={isYieldEnabled}
+        bridgeNetworkInfo={bridgeNetworkInfo?.data}
       />
+      <TokensListsTagsUpdater />
       <WidgetTokensListsUpdater
         tokenLists={tokenLists}
         customTokens={customTokens}
         appCode={appCode}
         onTokenListAddingError={onTokenListAddingError}
-        onAddList={(source) => addListAnalytics('Success', source)}
-        onRemoveList={(source) => removeListAnalytics('Confirm', source)}
+        onAddList={(source) => {
+          cowAnalytics.sendEvent({
+            category: CowSwapAnalyticsCategory.LIST,
+            action: 'Add List Success',
+            label: source,
+          })
+        }}
+        onRemoveList={(source) => {
+          cowAnalytics.sendEvent({
+            category: CowSwapAnalyticsCategory.LIST,
+            action: 'Remove List',
+            label: source,
+          })
+        }}
       />
       <UnsupportedTokensUpdater />
-      <BalancesAndAllowancesUpdater chainId={chainId} account={account} />
-      <LpBalancesAndAllowancesUpdater chainId={chainId} account={account} enablePolling={isYieldWidget} />
+      <BalancesAndAllowancesUpdater chainId={sourceChainId} account={account} />
+      <LpBalancesAndAllowancesUpdater chainId={sourceChainId} account={account} enablePolling={isYieldWidget} />
       <PoolsInfoUpdater />
       <LpTokensWithBalancesUpdater />
       <VampireAttackUpdater />
       <BalancesCombinedUpdater />
+      <CorrelatedTokensUpdater />
     </>
   )
 }

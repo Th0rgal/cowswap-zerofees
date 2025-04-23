@@ -1,7 +1,14 @@
+import { MouseEventHandler } from 'react'
+
 import { TokenWithLogo } from '@cowprotocol/common-const'
+import { getCurrencyAddress } from '@cowprotocol/common-utils'
+import { SupportedChainId } from '@cowprotocol/cow-sdk'
+import { TokenListTags } from '@cowprotocol/tokens'
 import { LoadingRows, LoadingRowSmall, TokenAmount } from '@cowprotocol/ui'
 import { BigNumber } from '@ethersproject/bignumber'
-import { CurrencyAmount } from '@uniswap/sdk-core'
+import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
+
+import { Nullish } from 'types'
 
 import * as styledEl from './styled'
 
@@ -16,35 +23,71 @@ const LoadingElement = (
 
 export interface TokenListItemProps {
   token: TokenWithLogo
-  selectedToken?: string
+  selectedToken?: Nullish<Currency>
   balance: BigNumber | undefined
+
   onSelectToken(token: TokenWithLogo): void
+
   isUnsupported: boolean
   isPermitCompatible: boolean
   isWalletConnected: boolean
+  tokenListTags: TokenListTags
 }
 
 export function TokenListItem(props: TokenListItemProps) {
-  const { token, selectedToken, balance, onSelectToken, isUnsupported, isPermitCompatible, isWalletConnected } = props
+  const {
+    token,
+    selectedToken,
+    balance,
+    onSelectToken,
+    isUnsupported,
+    isPermitCompatible,
+    isWalletConnected,
+    tokenListTags,
+  } = props
 
-  const isTokenSelected = token.address.toLowerCase() === selectedToken?.toLowerCase()
+  const handleClick: MouseEventHandler<HTMLDivElement> = (e) => {
+    if (isTokenSelected) {
+      e.preventDefault()
+      e.stopPropagation()
+    } else {
+      onSelectToken(token)
+    }
+  }
+
+  const isTokenSelected =
+    selectedToken &&
+    token.address.toLowerCase() === getCurrencyAddress(selectedToken).toLowerCase() &&
+    token.chainId === selectedToken.chainId
+
+  const isSupportedChain = token.chainId in SupportedChainId
 
   const balanceAmount = balance ? CurrencyAmount.fromRawAmount(token, balance.toHexString()) : undefined
 
   return (
     <styledEl.TokenItem
       data-address={token.address.toLowerCase()}
-      disabled={isTokenSelected}
-      onClick={() => onSelectToken(token)}
+      data-token-symbol={token.symbol || ''}
+      data-token-name={token.name || ''}
+      data-element-type="token-selection"
+      onClick={handleClick}
+      className={isTokenSelected ? 'token-item-selected' : ''}
     >
-      <TokenInfo token={token} />
+      <TokenInfo
+        token={token}
+        tags={
+          <TokenTags
+            isUnsupported={isUnsupported}
+            isPermitCompatible={isPermitCompatible}
+            tags={token.tags}
+            tokenListTags={tokenListTags}
+          />
+        }
+      />
       {isWalletConnected && (
-        <>
-          <styledEl.TokenBalance>
-            {balanceAmount ? <TokenAmount amount={balanceAmount} /> : LoadingElement}
-          </styledEl.TokenBalance>
-          <TokenTags isUnsupported={isUnsupported} isPermitCompatible={isPermitCompatible} />
-        </>
+        <styledEl.TokenBalance>
+          {isSupportedChain ? balanceAmount ? <TokenAmount amount={balanceAmount} /> : LoadingElement : null}
+        </styledEl.TokenBalance>
       )}
     </styledEl.TokenItem>
   )

@@ -1,10 +1,10 @@
 import { bpsToPercent, formatPercent, FractionUtils } from '@cowprotocol/common-utils'
-import { CowSwapWidgetContent } from '@cowprotocol/widget-lib'
 import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
 
 import { Nullish } from 'types'
 
 import { WidgetMarkdownContent } from 'modules/injectedWidget'
+import { VolumeFeeTooltip } from 'modules/volumeFee'
 
 import * as styledEl from '../../containers/TradeBasicConfirmDetails/styled'
 import { ReviewOrderModalAmountRow } from '../ReviewOrderModalAmountRow'
@@ -14,9 +14,7 @@ interface PartnerFeeRowProps {
   partnerFeeUsd: Nullish<CurrencyAmount<Currency>>
   partnerFeeBps: number | undefined
   withTimelineDot: boolean
-  alwaysRow?: boolean
-  widgetContent?: CowSwapWidgetContent
-  volumeFeeTooltip?: string
+  volumeFeeTooltip: VolumeFeeTooltip
 }
 
 export function PartnerFeeRow({
@@ -24,8 +22,6 @@ export function PartnerFeeRow({
   partnerFeeUsd,
   partnerFeeBps,
   withTimelineDot,
-  alwaysRow,
-  widgetContent,
   volumeFeeTooltip,
 }: PartnerFeeRowProps) {
   const feeAsPercent = partnerFeeBps ? formatPercent(bpsToPercent(partnerFeeBps)) : null
@@ -38,10 +34,9 @@ export function PartnerFeeRow({
           withTimelineDot={withTimelineDot}
           amount={minPartnerFeeAmount}
           fiatAmount={partnerFeeUsd}
-          alwaysRow={alwaysRow}
           tooltip={
-            volumeFeeTooltip ? (
-              <WidgetMarkdownContent>{volumeFeeTooltip}</WidgetMarkdownContent>
+            volumeFeeTooltip.content ? (
+              <WidgetMarkdownContent>{volumeFeeTooltip.content}</WidgetMarkdownContent>
             ) : (
               <>
                 This fee helps pay for maintenance & improvements to the trade experience.
@@ -51,15 +46,10 @@ export function PartnerFeeRow({
               </>
             )
           }
-          label={`${widgetContent?.feeLabel || 'Total fee'} (${feeAsPercent}%)`}
+          label={`${volumeFeeTooltip.label} (${feeAsPercent}%)`}
         />
       ) : (
-        <ReviewOrderModalAmountRow
-          withTimelineDot={withTimelineDot}
-          alwaysRow={alwaysRow}
-          tooltip="No fee for order placement!"
-          label="Fee"
-        >
+        <ReviewOrderModalAmountRow withTimelineDot={withTimelineDot} tooltip="No fee for order placement!" label="Fee">
           <styledEl.GreenText>FREE</styledEl.GreenText>
         </ReviewOrderModalAmountRow>
       )}

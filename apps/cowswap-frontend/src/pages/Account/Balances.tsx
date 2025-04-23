@@ -14,7 +14,7 @@ import { CurrencyAmount } from '@uniswap/sdk-core'
 
 import { Trans } from '@lingui/macro'
 import SVG from 'react-inlinesvg'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 import CopyHelper from 'legacy/components/Copy'
 import { useErrorModal } from 'legacy/hooks/useErrorMessageAndModal'
@@ -77,7 +77,7 @@ export default function Profile() {
   const isSwapInitial = swapVCowStatus === SwapVCowStatus.INITIAL
   const isSwapConfirmed = swapVCowStatus === SwapVCowStatus.CONFIRMED
   const isSwapDisabled = Boolean(
-    !hasVestedBalance || !isSwapInitial || isSwapPending || isSwapConfirmed || shouldUpdate
+    !hasVestedBalance || !isSwapInitial || isSwapPending || isSwapConfirmed || shouldUpdate,
   )
 
   const isCardsLoading = useMemo(() => {

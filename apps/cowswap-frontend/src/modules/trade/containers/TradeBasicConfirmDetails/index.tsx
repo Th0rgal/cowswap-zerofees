@@ -6,7 +6,6 @@ import { Percent, Price } from '@uniswap/sdk-core'
 
 import { Nullish } from 'types'
 
-import { useInjectedWidgetParams } from 'modules/injectedWidget'
 import { useUsdAmount } from 'modules/usdAmount'
 import { useVolumeFeeTooltip } from 'modules/volumeFee'
 
@@ -33,7 +32,6 @@ type Props = {
   hideLimitPrice?: boolean
   hideUsdValues?: boolean
   withTimelineDot?: boolean
-  alwaysRow?: boolean
 }
 
 type LabelsAndTooltips = {
@@ -58,13 +56,11 @@ export function TradeBasicConfirmDetails(props: Props) {
     hideLimitPrice,
     hideUsdValues,
     withTimelineDot = true,
-    alwaysRow,
     children,
     recipient,
     account,
   } = props
   const isInvertedState = useState(false)
-  const widgetParams = useInjectedWidgetParams()
   const volumeFeeTooltip = useVolumeFeeTooltip()
   const { amountAfterFees, amountAfterSlippage } = getOrderTypeReceiveAmounts(receiveAmountInfo)
   const { networkCostsSuffix, networkCostsTooltipSuffix } = labelsAndTooltips || {}
@@ -106,9 +102,7 @@ export function TradeBasicConfirmDetails(props: Props) {
 
       <TradeFeesAndCosts
         receiveAmountInfo={receiveAmountInfo}
-        widgetParams={widgetParams}
         withTimelineDot={withTimelineDot}
-        alwaysRow={alwaysRow}
         networkCostsSuffix={networkCostsSuffix}
         networkCostsTooltipSuffix={networkCostsTooltipSuffix}
         volumeFeeTooltip={volumeFeeTooltip}
@@ -118,7 +112,6 @@ export function TradeBasicConfirmDetails(props: Props) {
         highlighted={true}
         amount={amountAfterFees}
         fiatAmount={amountAfterFeesUsd}
-        alwaysRow={alwaysRow}
         label={expectReceiveLabel}
       />
 
@@ -126,12 +119,7 @@ export function TradeBasicConfirmDetails(props: Props) {
 
       {/* Slippage */}
       {
-        <ReviewOrderModalAmountRow
-          withTimelineDot={withTimelineDot}
-          tooltip={slippageTooltip}
-          label={slippageLabel}
-          alwaysRow={alwaysRow}
-        >
+        <ReviewOrderModalAmountRow withTimelineDot={withTimelineDot} tooltip={slippageTooltip} label={slippageLabel}>
           <PercentDisplay percent={slippage.toFixed(2)} />
         </ReviewOrderModalAmountRow>
       }
@@ -143,7 +131,6 @@ export function TradeBasicConfirmDetails(props: Props) {
         fiatAmount={amountAfterSlippageUsd}
         tooltip={minReceivedTooltip}
         label={minReceivedLabel}
-        alwaysRow={alwaysRow}
       />
 
       {/* Limit Price */}

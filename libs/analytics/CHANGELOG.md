@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.11.0](https://github.com/cowprotocol/cowswap/compare/analytics-v1.10.0...analytics-v1.11.0) (2025-03-27)
+
+
+### Features
+
+* enhance event tracking and analytics integration ([#5507](https://github.com/cowprotocol/cowswap/issues/5507)) ([39ea64d](https://github.com/cowprotocol/cowswap/commit/39ea64d7e7c7fe908327590b998bf6efc82c1b07))
+
+## [1.10.0](https://github.com/cowprotocol/cowswap/compare/analytics-v1.9.0...analytics-v1.10.0) (2025-02-25)
+
+
+### Features
+
+* **analytics:** migrate to GTM-based analytics ([#5360](https://github.com/cowprotocol/cowswap/issues/5360)) ([f404d02](https://github.com/cowprotocol/cowswap/commit/f404d0280d9d1d86cc249d70852a5c0ec9827475))
+
+## [1.9.0](https://github.com/cowprotocol/cowswap/compare/analytics-v1.8.0...analytics-v1.9.0) (2024-12-11)
+
+
+### Features
+
+* **cow-fi:** upgrade project structure to /app ([#5167](https://github.com/cowprotocol/cowswap/issues/5167)) ([ed152f7](https://github.com/cowprotocol/cowswap/commit/ed152f7ac0fa62ab2c0b9c93035a551c3b8cb4b6))
+
 ## [1.8.0](https://github.com/cowprotocol/cowswap/compare/analytics-v1.7.0...analytics-v1.8.0) (2024-09-30)
 
 

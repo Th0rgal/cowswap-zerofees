@@ -6,6 +6,15 @@ declare module '@metamask/jazzicon' {
   export default function (diameter: number, seed: number): HTMLElement
 }
 
+interface TelegramData {
+  auth_date: number
+  first_name: string
+  hash: string
+  id: number
+  photo_url: string
+  username: string
+}
+
 interface Window {
   console: Console & { force: Console }
   // walletLinkExtension is injected by the Coinbase Wallet extension
@@ -14,6 +23,7 @@ interface Window {
     // value that is populated and returns true by the Coinbase Wallet mobile dapp browser
     isCoinbaseWallet?: true
     isMetaMask?: true
+    isRabby?: true
     autoRefreshOnNetworkChange?: boolean
     autoConnect?: boolean
     setSelectedProvider: (any) => void
@@ -22,6 +32,11 @@ interface Window {
     isTrustWallet?: boolean
   }
   web3?: Record<string, unknown>
+  Telegram?: {
+    Login: {
+      auth(options: {bot_id: number, lang?: string, request_access?: string}, callback: (data: TelegramData | false) => void): void
+    }
+  }
 }
 
 interface Console extends Node.Console {

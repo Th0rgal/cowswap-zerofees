@@ -1,6 +1,6 @@
-import { useState, ReactNode, useEffect, useRef } from 'react'
+import { useState, ReactNode, useRef } from 'react'
 
-import { CowAnalytics, useCowAnalytics } from '@cowprotocol/analytics'
+import { Category, toGtmEvent } from '@cowprotocol/analytics'
 import IMG_ICON_ARROW_RIGHT_CIRCULAR from '@cowprotocol/assets/images/arrow-right-circular.svg'
 import IMG_ICON_SOCIAL_DISCORD from '@cowprotocol/assets/images/icon-social-discord.svg'
 import IMG_ICON_SOCIAL_FORUM from '@cowprotocol/assets/images/icon-social-forum.svg'
@@ -32,8 +32,7 @@ import {
   ToggleFooterButton,
 } from './styled'
 
-import { clickOnFooter } from '../../analytics/events'
-import { Color } from '../../consts'
+import { Color } from '../../colors'
 import { MenuItem } from '../../pure/MenuBar'
 import { ProductLogo, ProductVariant } from '../../pure/ProductLogo'
 
@@ -218,10 +217,9 @@ interface FooterLinkProps {
   utmSource?: string
   utmContent?: string
   rootDomain?: string
-  cowAnalytics: CowAnalytics
 }
 
-const FooterLink = ({ href, external, label, utmSource, utmContent, rootDomain, cowAnalytics }: FooterLinkProps) => {
+const FooterLink = ({ href, external, label, utmSource, utmContent, rootDomain }: FooterLinkProps) => {
   const finalRootDomain = rootDomain || (typeof window !== 'undefined' ? window.location.host : '')
 
   const finalHref = external
@@ -239,7 +237,11 @@ const FooterLink = ({ href, external, label, utmSource, utmContent, rootDomain, 
       href={finalHref}
       target={external ? '_blank' : '_self'}
       rel={external ? 'noopener noreferrer' : undefined}
-      onClick={() => clickOnFooter(cowAnalytics, `click-${utmContent || label?.toLowerCase().replace(/\s+/g, '-')}`)}
+      data-click-event={toGtmEvent({
+        category: Category.FOOTER,
+        action: 'click',
+        label: utmContent || label?.toLowerCase().replace(/\s+/g, '-'),
+      })}
     >
       {label}
     </Link>
@@ -289,32 +291,21 @@ export const Footer = ({
   maxWidth,
   host,
 }: FooterProps) => {
-  const cowAnalytics = useCowAnalytics()
   const [isFooterExpanded, setIsFooterExpanded] = useState(expanded)
   const footerRef = useRef<HTMLDivElement>(null)
-  const hasMounted = useRef(false)
-  const [rootDomain, setRootDomain] = useState(host || '')
-
   const theme = useTheme()
 
   const toggleFooter = () => {
-    setIsFooterExpanded(!isFooterExpanded)
-  }
-
-  useEffect(() => {
-    if (hasMounted.current) {
-      if (isFooterExpanded && footerRef.current) {
+    setIsFooterExpanded((state) => {
+      if (!state && footerRef.current) {
         setTimeout(() => {
           footerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
         }, 300) // Slight delay needed for correct scroll position calculation
       }
-    } else {
-      hasMounted.current = true
-    }
 
-    // Set the rootDomain on the client side
-    setRootDomain(host || window.location.host)
-  }, [isFooterExpanded, host])
+      return !state
+    })
+  }
 
   return (
     <FooterContainer ref={footerRef} expanded={isFooterExpanded} hasTouchFooter={hasTouchFooter}>
@@ -353,8 +344,7 @@ export const Footer = ({
                           label={child.label}
                           utmSource={child.utmSource}
                           utmContent={child.utmContent}
-                          rootDomain={rootDomain}
-                          cowAnalytics={cowAnalytics}
+                          rootDomain={host || window.location.host}
                         />
                       </li>
                     ))}

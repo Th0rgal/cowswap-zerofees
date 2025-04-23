@@ -1,5 +1,89 @@
 # Changelog
 
+## [1.17.2](https://github.com/cowprotocol/cowswap/compare/common-const-v1.17.1...common-const-v1.17.2) (2025-04-03)
+
+
+### Bug Fixes
+
+* issue [#5379](https://github.com/cowprotocol/cowswap/issues/5379): page name not updating ([#5579](https://github.com/cowprotocol/cowswap/issues/5579)) ([a21e054](https://github.com/cowprotocol/cowswap/commit/a21e054f089ab5c367858800a1ee93c4dbed4af0))
+
+## [1.17.1](https://github.com/cowprotocol/cowswap/compare/common-const-v1.17.0...common-const-v1.17.1) (2025-03-27)
+
+
+### Bug Fixes
+
+* **balances:** updated balances on network changes ([#5569](https://github.com/cowprotocol/cowswap/issues/5569)) ([1aaf6b5](https://github.com/cowprotocol/cowswap/commit/1aaf6b58a205be331e6668bdf411f93f6cbb32ca))
+
+## [1.17.0](https://github.com/cowprotocol/cowswap/compare/common-const-v1.16.0...common-const-v1.17.0) (2025-03-20)
+
+
+### Features
+
+* **bridge:** display tokens in selector from bridge provider ([#5489](https://github.com/cowprotocol/cowswap/issues/5489)) ([b5b08ee](https://github.com/cowprotocol/cowswap/commit/b5b08ee8da9c1746bd3b2147444c2090afdf3950))
+
+## [1.16.0](https://github.com/cowprotocol/cowswap/compare/common-const-v1.15.1...common-const-v1.16.0) (2025-03-10)
+
+
+### Features
+
+* **swap:** unificate swap widget with other trade widgets ([#5443](https://github.com/cowprotocol/cowswap/issues/5443)) ([f8d47da](https://github.com/cowprotocol/cowswap/commit/f8d47da493e0e6203fac3d1c6cc5abe2af1de403))
+
+## [1.15.1](https://github.com/cowprotocol/cowswap/compare/common-const-v1.15.0...common-const-v1.15.1) (2025-02-07)
+
+
+### Bug Fixes
+
+* use address for default buy token ([#5410](https://github.com/cowprotocol/cowswap/issues/5410)) ([92c3a96](https://github.com/cowprotocol/cowswap/commit/92c3a96972b92807aa81709f08d84f9101264381))
+
+## [1.15.0](https://github.com/cowprotocol/cowswap/compare/common-const-v1.14.0...common-const-v1.15.0) (2025-02-06)
+
+
+### Features
+
+* use new deterministic ethflow contracts ([#5334](https://github.com/cowprotocol/cowswap/issues/5334)) ([f11fb61](https://github.com/cowprotocol/cowswap/commit/f11fb613b02825aa6c571ffdc3414086557b48e9))
+
+## [1.14.0](https://github.com/cowprotocol/cowswap/compare/common-const-v1.13.0...common-const-v1.14.0) (2025-02-05)
+
+
+### Features
+
+* **limit-orders:** upgrade and redesign ([#5249](https://github.com/cowprotocol/cowswap/issues/5249)) ([5c868bb](https://github.com/cowprotocol/cowswap/commit/5c868bb794d648363afb88371178ddc35deaf7a7))
+
+## [1.13.0](https://github.com/cowprotocol/cowswap/compare/common-const-v1.12.2...common-const-v1.13.0) (2024-12-18)
+
+
+### Features
+
+* add winter theme 🎅 ([#5213](https://github.com/cowprotocol/cowswap/issues/5213)) ([7db4b72](https://github.com/cowprotocol/cowswap/commit/7db4b72d54759394087e4c816dce9eeb6f282588))
+
+## [1.12.2](https://github.com/cowprotocol/cowswap/compare/common-const-v1.12.1...common-const-v1.12.2) (2024-12-12)
+
+
+### Bug Fixes
+
+* add more stablecoins in fees logic ([#5192](https://github.com/cowprotocol/cowswap/issues/5192)) ([79afa5c](https://github.com/cowprotocol/cowswap/commit/79afa5cb8018cd263b7820bdcb922998a4d80527))
+
+## [1.12.1](https://github.com/cowprotocol/cowswap/compare/common-const-v1.12.0...common-const-v1.12.1) (2024-12-12)
+
+
+### Bug Fixes
+
+* **volume-fee:** control safe app fees for stablecoins with ff ([#5187](https://github.com/cowprotocol/cowswap/issues/5187)) ([e7bc7c5](https://github.com/cowprotocol/cowswap/commit/e7bc7c5df35e233da9af8da950973a4272f10365))
+
+## [1.12.0](https://github.com/cowprotocol/cowswap/compare/common-const-v1.11.0...common-const-v1.12.0) (2024-12-11)
+
+
+### Features
+
+* **cow-fi:** upgrade project structure to /app ([#5167](https://github.com/cowprotocol/cowswap/issues/5167)) ([ed152f7](https://github.com/cowprotocol/cowswap/commit/ed152f7ac0fa62ab2c0b9c93035a551c3b8cb4b6))
+
+## [1.11.0](https://github.com/cowprotocol/cowswap/compare/common-const-v1.10.1...common-const-v1.11.0) (2024-12-03)
+
+
+### Features
+
+* **base:** add base chain support ([#5044](https://github.com/cowprotocol/cowswap/issues/5044)) ([4cf0c91](https://github.com/cowprotocol/cowswap/commit/4cf0c91a300d6fcdc026364e74c45e5b2f729f2b))
+
 ## [1.10.1](https://github.com/cowprotocol/cowswap/compare/common-const-v1.10.0...common-const-v1.10.1) (2024-11-21)
 
 

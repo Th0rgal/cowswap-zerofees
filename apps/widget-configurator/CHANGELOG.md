@@ -1,5 +1,48 @@
 # Changelog
 
+## [1.13.1](https://github.com/cowprotocol/cowswap/compare/widget-configurator-v1.13.0...widget-configurator-v1.13.1) (2025-03-20)
+
+
+### Bug Fixes
+
+* **wallets:** disable coinbase in widget mobile ([#5516](https://github.com/cowprotocol/cowswap/issues/5516)) ([7233573](https://github.com/cowprotocol/cowswap/commit/7233573925c164de35017a3c48fc2af00d6106d2))
+
+## [1.13.0](https://github.com/cowprotocol/cowswap/compare/widget-configurator-v1.12.0...widget-configurator-v1.13.0) (2025-02-25)
+
+
+### Features
+
+* **analytics:** migrate to GTM-based analytics ([#5360](https://github.com/cowprotocol/cowswap/issues/5360)) ([f404d02](https://github.com/cowprotocol/cowswap/commit/f404d0280d9d1d86cc249d70852a5c0ec9827475))
+
+## [1.12.0](https://github.com/cowprotocol/cowswap/compare/widget-configurator-v1.11.0...widget-configurator-v1.12.0) (2025-02-05)
+
+
+### Features
+
+* remove mock ([#5265](https://github.com/cowprotocol/cowswap/issues/5265)) ([a5ce229](https://github.com/cowprotocol/cowswap/commit/a5ce22972d4704d5d2ed110388eb77f0dfd35ecf))
+
+## [1.11.0](https://github.com/cowprotocol/cowswap/compare/widget-configurator-v1.10.1...widget-configurator-v1.11.0) (2025-01-09)
+
+
+### Features
+
+* **token-lists:** remove outdated token lists ([#5233](https://github.com/cowprotocol/cowswap/issues/5233)) ([6f73dfc](https://github.com/cowprotocol/cowswap/commit/6f73dfc1c604393f4c4a54fe207893b698bba4a8))
+
+## [1.10.1](https://github.com/cowprotocol/cowswap/compare/widget-configurator-v1.10.0...widget-configurator-v1.10.1) (2024-12-18)
+
+
+### Bug Fixes
+
+* remove Kleros token list because it's too big ([#5217](https://github.com/cowprotocol/cowswap/issues/5217)) ([745e17f](https://github.com/cowprotocol/cowswap/commit/745e17f1515024f67c162091a42f3fd2864f894e))
+
+## [1.10.0](https://github.com/cowprotocol/cowswap/compare/widget-configurator-v1.9.0...widget-configurator-v1.10.0) (2024-12-03)
+
+
+### Features
+
+* **base:** add base chain support ([#5044](https://github.com/cowprotocol/cowswap/issues/5044)) ([4cf0c91](https://github.com/cowprotocol/cowswap/commit/4cf0c91a300d6fcdc026364e74c45e5b2f729f2b))
+* **widget:** add maxHeight parameter for the widget ([#5127](https://github.com/cowprotocol/cowswap/issues/5127)) ([db8b509](https://github.com/cowprotocol/cowswap/commit/db8b509d2d46d1ef5e52a18347d20bbebe96dbbd))
+
 ## [1.9.0](https://github.com/cowprotocol/cowswap/compare/widget-configurator-v1.8.0...widget-configurator-v1.9.0) (2024-10-29)
 
 

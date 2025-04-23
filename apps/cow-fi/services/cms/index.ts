@@ -1,11 +1,17 @@
-import { CmsClient, components } from '@cowprotocol/cms'
+import { components } from '@cowprotocol/cms'
 import { PaginationParam } from 'types'
 import qs from 'qs'
 
 import { toQueryParams } from 'util/queryParams'
 import { getCmsClient } from '@cowprotocol/core'
 
-const PAGE_SIZE = 50
+const DEFAULT_PAGE_SIZE = 100
+const CMS_CACHE_TIME = 5 * 60 // 5 min
+
+// Helper function for query serialization
+const querySerializer = (params: any) => {
+  return qs.stringify(params, { encodeValuesOnly: true, arrayFormat: 'brackets' })
+}
 
 type Schemas = components['schemas']
 export type Article = Schemas['ArticleListResponseDataItem']
@@ -22,56 +28,17 @@ export type ArticleListResponse = {
   }
 }
 
-export type SharedMediaComponent = Schemas['SharedMediaComponent']
-export type SharedQuoteComponent = Schemas['SharedQuoteComponent']
 export type SharedRichTextComponent = Schemas['SharedRichTextComponent']
-export type SharedSliderComponent = Schemas['SharedSliderComponent']
-export type SharedVideoEmbedComponent = Schemas['SharedVideoEmbedComponent']
 export type Category = Schemas['CategoryListResponseDataItem']
-export type ArticleCover = Schemas['Article']['cover']
-export type ArticleBlocks = Schemas['Article']['blocks']
-
-export type ArticleBlock =
-  | SharedMediaComponent
-  | SharedQuoteComponent
-  | SharedRichTextComponent
-  | SharedSliderComponent
-  | SharedVideoEmbedComponent
-
-export function isSharedMediaComponent(component: ArticleBlock): component is SharedMediaComponent {
-  return component.__component === 'SharedMediaComponent'
-}
-
-export function isSharedQuoteComponent(component: ArticleBlock): component is SharedQuoteComponent {
-  return component.__component === 'SharedQuoteComponent'
-}
-
-export function isSharedRichTextComponent(component: ArticleBlock): component is SharedRichTextComponent {
-  return component.__component === 'shared.rich-text'
-}
-
-export function isSharedSliderComponent(component: ArticleBlock): component is SharedMediaComponent {
-  return component.__component === 'SharedSliderComponent'
-}
-
-export function isSharedVideoEmbedComponent(component: ArticleBlock): component is SharedVideoEmbedComponent {
-  return component.__component === 'SharedVideoEmbedComponent'
-}
 
 /**
  * Open API Fetch client. See docs for usage https://openapi-ts.pages.dev/openapi-fetch/
  */
 export const client = getCmsClient()
 
-/**
- * Returns the article slugs for the given page.
- *
- * @param params pagination params
- * @returns Slugs
- */
-async function getArticlesSlugs(params: PaginationParam = {}): Promise<string[]> {
-  const articlesResponse = await getArticles(params)
-  return articlesResponse.data.map((article: Article) => article.attributes!.slug!)
+const clientAddons = {
+  // https://github.com/openapi-ts/openapi-typescript/issues/1569#issuecomment-1982247959
+  fetch: (request: unknown) => fetch(request as Request, { next: { revalidate: CMS_CACHE_TIME } }),
 }
 
 /**
@@ -80,18 +47,15 @@ async function getArticlesSlugs(params: PaginationParam = {}): Promise<string[]>
  * @returns Slugs
  */
 export async function getAllArticleSlugs(): Promise<string[]> {
-  const querySerializer = (params: any) => {
-    return qs.stringify(params, { encodeValuesOnly: true, arrayFormat: 'brackets' })
-  }
-
   const { data, error, response } = await client.GET('/articles', {
     params: {
       query: {
         fields: ['slug'],
-        'pagination[pageSize]': 100, // Adjust the page size as needed
+        'pagination[pageSize]': DEFAULT_PAGE_SIZE,
       },
     },
     querySerializer,
+    ...clientAddons,
   })
 
   if (error) {
@@ -115,10 +79,11 @@ export async function getCategories(): Promise<Category[]> {
       params: {
         pagination: {
           page: 0,
-          pageSize: 50,
+          pageSize: DEFAULT_PAGE_SIZE,
         },
         sort: 'name:asc',
       },
+      ...clientAddons,
     })
 
     if (error) {
@@ -151,13 +116,9 @@ export async function getAllCategorySlugs(): Promise<string[]> {
  */
 export async function getArticles({
   page = 0,
-  pageSize = PAGE_SIZE,
+  pageSize = DEFAULT_PAGE_SIZE,
   filters = {},
 }: PaginationParam & { filters?: any } = {}): Promise<ArticleListResponse> {
-  const querySerializer = (params: any) => {
-    return qs.stringify(params, { encodeValuesOnly: true, arrayFormat: 'brackets' })
-  }
-
   const { data, error, response } = await client.GET('/articles', {
     params: {
       query: {
@@ -174,6 +135,7 @@ export async function getArticles({
       },
     },
     querySerializer,
+    ...clientAddons,
   })
 
   if (error) {
@@ -182,6 +144,68 @@ export async function getArticles({
   }
 
   return { data: data.data, meta: data.meta }
+}
+
+/**
+ * Search for articles containing a search term across multiple fields.
+ * Uses Strapi's filtering capabilities to perform the search server-side.
+ *
+ * @param searchTerm The term to search for
+ * @param page The page number (0-indexed)
+ * @param pageSize The number of articles per page
+ * @returns Articles matching the search term with pagination info
+ */
+export async function searchArticles({
+  searchTerm,
+  page = 0,
+  pageSize = DEFAULT_PAGE_SIZE,
+}: {
+  searchTerm: string
+  page?: number
+  pageSize?: number
+}): Promise<ArticleListResponse> {
+  const trimmedSearchTerm = searchTerm.trim()
+
+  if (!trimmedSearchTerm) {
+    return { data: [], meta: { pagination: { page, pageSize, pageCount: 0, total: 0 } } }
+  }
+
+  try {
+    // Build query parameters with explicit array indices
+    const queryParams = {
+      'filters[$or][0][title][$startsWithi]': trimmedSearchTerm,
+      'filters[$or][1][title][$containsi]': trimmedSearchTerm,
+      'filters[$or][2][description][$containsi]': trimmedSearchTerm,
+      'pagination[page]': page,
+      'pagination[pageSize]': pageSize,
+      'sort[0]': 'title:asc',
+      'populate[0]': 'cover',
+      'populate[1]': 'blocks',
+      'populate[2]': 'seo',
+      'populate[3]': 'authorsBio',
+      publicationState: 'live', // Ensure published content
+    }
+
+    // Manual query string construction for absolute clarity
+    const queryString = qs.stringify(queryParams, {
+      encodeValuesOnly: true,
+      arrayFormat: 'brackets',
+      encode: false,
+    })
+
+    const url = `/articles?${queryString}`
+    const { data, error, response } = await client.GET(url, clientAddons)
+
+    if (error) {
+      console.error(`Search failed (${response.status}):`, error)
+      throw new Error(`Search failed: ${error.message}`)
+    }
+
+    return { data: data.data, meta: data.meta }
+  } catch (error) {
+    console.error('Search error:', error)
+    throw new Error('Unable to complete search. Please try again.')
+  }
 }
 
 /**
@@ -195,35 +219,7 @@ export async function getArticles({
  * @returns Article with the given slug
  */
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
-  const querySerializer = (params: any) => {
-    return qs.stringify(params, { encodeValuesOnly: true, arrayFormat: 'brackets' })
-  }
-
-  const { data, error, response } = await client.GET(`/articles`, {
-    params: {
-      query: {
-        filters: {
-          slug: {
-            $eq: slug,
-          },
-        },
-        populate: ['cover', 'blocks', 'seo', 'authorsBio', 'categories'],
-      },
-    },
-    querySerializer,
-  })
-
-  if (error) {
-    console.error(`Error ${response.status} getting article by slug: ${response.url}`, error)
-    throw error
-  }
-
-  const articles = data.data
-  if (articles.length === 0) {
-    return null
-  }
-
-  return articles[0]
+  return getBySlugAux(slug, '/articles')
 }
 
 /**
@@ -297,12 +293,11 @@ async function getBySlugAux(slug: string, endpoint: '/categories' | '/articles')
     populate,
   })
 
-  // console.log(`[getBySlugAux] get ${entity} for slug ${slug}`, query)
-
   const { data, error } = await client.GET(endpoint, {
     params: {
       query,
     },
+    ...clientAddons,
   })
 
   if (error) {

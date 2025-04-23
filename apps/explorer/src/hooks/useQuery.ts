@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { useLocation } from 'react-router'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 
 export function useQuery(): URLSearchParams {
   const { search } = useLocation()
@@ -26,8 +25,8 @@ export function useUpdateQueryString(): (key: string, value: string) => void {
     (key: string, value: string) => {
       query.set(key, value)
 
-      navigate({ search: query.toString() }, { replace: true })
+      navigate({ search: query.toString() })
     },
-    [navigate, query]
+    [navigate, query],
   )
 }

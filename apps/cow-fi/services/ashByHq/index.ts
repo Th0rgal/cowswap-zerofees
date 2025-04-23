@@ -1,4 +1,6 @@
-import { CONFIG } from '@/const/meta'
+'use server'
+
+import { CONFIG, DATA_CACHE_TIME_SECONDS } from '@/const/meta'
 
 interface AshbyResponse {
   data: {
@@ -16,15 +18,12 @@ interface AshbyResponse {
 }
 
 export async function getJobs() {
-  console.log('getJobs function called')
   const jobsData: any = {}
   const { ashbyHqApi } = CONFIG
 
-  console.log('Ashby HQ API URL:', ashbyHqApi)
-
   try {
-    console.log('Fetching data from Ashby HQ API...')
     const response = await fetch(ashbyHqApi, {
+      next: { revalidate: DATA_CACHE_TIME_SECONDS },
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -56,9 +55,8 @@ export async function getJobs() {
         `,
       }),
     })
-    console.log('Response status:', response.status)
+
     const data = (await response.json()) as AshbyResponse
-    console.log('Ashby HQ API response:', JSON.stringify(data, null, 2))
 
     if (data.data?.jobBoard?.jobPostings) {
       data.data.jobBoard.jobPostings.forEach((job) => {
@@ -73,6 +71,5 @@ export async function getJobs() {
     console.error('Error fetching jobs:', error)
   }
 
-  console.log('Processed job data:', JSON.stringify(jobsData, null, 2))
   return jobsData
 }

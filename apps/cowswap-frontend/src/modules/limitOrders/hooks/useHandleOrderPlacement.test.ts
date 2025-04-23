@@ -1,6 +1,6 @@
-import { useIsBundlingSupported } from '@cowprotocol/wallet'
+import { useIsTxBundlingSupported } from '@cowprotocol/wallet'
 
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react'
 
 import { PriceImpact } from 'legacy/hooks/usePriceImpact'
 
@@ -32,7 +32,7 @@ jest.mock('@cowprotocol/wallet', () => {
   return new Proxy(actual, {
     get: (target, property) => {
       switch (property) {
-        case 'useIsBundlingSupported': {
+        case 'useIsTxBundlingSupported': {
           return jest.fn()
         }
         default: {
@@ -42,7 +42,6 @@ jest.mock('@cowprotocol/wallet', () => {
     },
   })
 })
-jest.mock('modules/analytics/useAnalyticsReporterCowSwap')
 
 const mockTradeFlow = tradeFlow as jest.MockedFunction<typeof tradeFlow>
 const mockSafeBundleFlow = safeBundleFlow as jest.MockedFunction<typeof safeBundleFlow>
@@ -52,7 +51,7 @@ const mockUseNavigateToOpenOrdersTable = useNavigateToOpenOrdersTable as jest.Mo
 
 const mockUseSafeBundleFlowContext = useSafeBundleFlowContext as jest.MockedFunction<typeof useSafeBundleFlowContext>
 const mockUseNeedsApproval = useNeedsApproval as jest.MockedFunction<typeof useNeedsApproval>
-const mockIsBundlingSupported = useIsBundlingSupported as jest.MockedFunction<typeof useIsBundlingSupported>
+const mockIsBundlingSupported = useIsTxBundlingSupported as jest.MockedFunction<typeof useIsTxBundlingSupported>
 
 const tradeContextMock = { postOrderParams: { partiallyFillable: true } } as any as TradeFlowContext
 const priceImpactMock: PriceImpact = {
@@ -99,7 +98,7 @@ describe('useHandleOrderPlacement', () => {
 
         updateLimitOrdersState({ recipient })
       },
-      { wrapper: WithModalProvider }
+      { wrapper: WithModalProvider },
     )
 
     // Assert
@@ -111,7 +110,7 @@ describe('useHandleOrderPlacement', () => {
     // Act
     const { result } = renderHook(
       () => useHandleOrderPlacement(tradeContextMock, priceImpactMock, defaultLimitOrdersSettings, tradeConfirmActions),
-      { wrapper: WithModalProvider }
+      { wrapper: WithModalProvider },
     )
     await result.current()
 

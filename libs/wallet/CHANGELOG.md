@@ -1,5 +1,89 @@
 # Changelog
 
+## [1.12.0](https://github.com/cowprotocol/cowswap/compare/wallet-v1.11.0...wallet-v1.12.0) (2025-03-27)
+
+
+### Features
+
+* **bridge:** disable bridging sc wallets ([#5536](https://github.com/cowprotocol/cowswap/issues/5536)) ([98372ec](https://github.com/cowprotocol/cowswap/commit/98372ec6b5d2fd8b4f97147197154ae3830497d8))
+
+## [1.11.0](https://github.com/cowprotocol/cowswap/compare/wallet-v1.10.1...wallet-v1.11.0) (2025-03-20)
+
+
+### Features
+
+* **bridge:** select sell token from another chain ([#5521](https://github.com/cowprotocol/cowswap/issues/5521)) ([f0fc900](https://github.com/cowprotocol/cowswap/commit/f0fc900c7035e47331e07b0d5b7a31674dc7bc13))
+
+
+### Bug Fixes
+
+* **wallets:** disable coinbase in widget mobile ([#5516](https://github.com/cowprotocol/cowswap/issues/5516)) ([7233573](https://github.com/cowprotocol/cowswap/commit/7233573925c164de35017a3c48fc2af00d6106d2))
+
+## [1.10.1](https://github.com/cowprotocol/cowswap/compare/wallet-v1.10.0...wallet-v1.10.1) (2025-02-17)
+
+
+### Bug Fixes
+
+* do not check capabilities in mobile wc ([#5429](https://github.com/cowprotocol/cowswap/issues/5429)) ([26b907d](https://github.com/cowprotocol/cowswap/commit/26b907dad4c7310bdc3e560e5592fdeb3db11b95))
+
+## [1.10.0](https://github.com/cowprotocol/cowswap/compare/wallet-v1.9.3...wallet-v1.10.0) (2025-02-12)
+
+
+### Features
+
+* support EIP-5792 batch tx for Safe via WC ([#5417](https://github.com/cowprotocol/cowswap/issues/5417)) ([8aa612f](https://github.com/cowprotocol/cowswap/commit/8aa612f7b93a40d69efa364a10634863bc743e95))
+
+## [1.9.3](https://github.com/cowprotocol/cowswap/compare/wallet-v1.9.2...wallet-v1.9.3) (2025-02-03)
+
+
+### Bug Fixes
+
+* display Metamask warning only for extension/mobile wallets ([#5370](https://github.com/cowprotocol/cowswap/issues/5370)) ([abb5683](https://github.com/cowprotocol/cowswap/commit/abb56834b1e21029ca66362f3b721cd47e080547))
+
+## [1.9.2](https://github.com/cowprotocol/cowswap/compare/wallet-v1.9.1...wallet-v1.9.2) (2025-01-30)
+
+
+### Bug Fixes
+
+* type guard to make sure provider is a JsonRpcProvider ([#5357](https://github.com/cowprotocol/cowswap/issues/5357)) ([6a2e030](https://github.com/cowprotocol/cowswap/commit/6a2e030aa7f88ef207fad8910750b18dcf719503))
+
+## [1.9.1](https://github.com/cowprotocol/cowswap/compare/wallet-v1.9.0...wallet-v1.9.1) (2025-01-29)
+
+
+### Bug Fixes
+
+* use provider.send('eth_chainId',[]) to avoid cached values ([#5354](https://github.com/cowprotocol/cowswap/issues/5354)) ([ad34521](https://github.com/cowprotocol/cowswap/commit/ad3452181287acb151b22d541feb156d208db482))
+
+## [1.9.0](https://github.com/cowprotocol/cowswap/compare/wallet-v1.8.1...wallet-v1.9.0) (2025-01-09)
+
+
+### Features
+
+* **wallets:** reapply "feat(wallets): add metaMask SDK connector ([#5028](https://github.com/cowprotocol/cowswap/issues/5028))" ([#5215](https://github.com/cowprotocol/cowswap/issues/5215)) ([#5223](https://github.com/cowprotocol/cowswap/issues/5223)) ([28fcda9](https://github.com/cowprotocol/cowswap/commit/28fcda95c7002a528c538917450bc38b67c0a5eb))
+
+## [1.8.1](https://github.com/cowprotocol/cowswap/compare/wallet-v1.8.0...wallet-v1.8.1) (2024-12-19)
+
+
+### Bug Fixes
+
+* allow any safe-like apps ([26e68ab](https://github.com/cowprotocol/cowswap/commit/26e68ab1d75905e33cc0c44fec050697447377be))
+
+## [1.8.0](https://github.com/cowprotocol/cowswap/compare/wallet-v1.7.0...wallet-v1.8.0) (2024-12-18)
+
+
+### Features
+
+* **wallets:** add coinshift to allowed domains ([#4931](https://github.com/cowprotocol/cowswap/issues/4931)) ([8be3a45](https://github.com/cowprotocol/cowswap/commit/8be3a458d7918bd79c3f2bb636620c77b560f3b2))
+* **wallets:** add metaMask SDK connector ([#5028](https://github.com/cowprotocol/cowswap/issues/5028)) ([fe8f376](https://github.com/cowprotocol/cowswap/commit/fe8f3767593684dc9d825d603a894c3b0934d894))
+
+## [1.7.0](https://github.com/cowprotocol/cowswap/compare/wallet-v1.6.1...wallet-v1.7.0) (2024-12-03)
+
+
+### Features
+
+* **base:** add base chain support ([#5044](https://github.com/cowprotocol/cowswap/issues/5044)) ([4cf0c91](https://github.com/cowprotocol/cowswap/commit/4cf0c91a300d6fcdc026364e74c45e5b2f729f2b))
+* **volume-fee:** add volume fee for Safe ([#5139](https://github.com/cowprotocol/cowswap/issues/5139)) ([bb14c6a](https://github.com/cowprotocol/cowswap/commit/bb14c6a6ecfaba7d1a9a1da5366fac054efb97aa))
+
 ## [1.6.1](https://github.com/cowprotocol/cowswap/compare/wallet-v1.6.0...wallet-v1.6.1) (2024-10-18)
 
 

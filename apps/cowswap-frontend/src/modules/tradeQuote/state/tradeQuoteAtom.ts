@@ -1,51 +1,61 @@
 import { atom } from 'jotai'
 
-import { OrderQuoteResponse, PriceQuality } from '@cowprotocol/cow-sdk'
-
-import type { LegacyFeeQuoteParams } from 'legacy/state/price/types'
+import { PriceQuality, QuoteAndPost } from '@cowprotocol/cow-sdk'
 
 import QuoteApiError from 'api/cowProtocol/errors/QuoteError'
 
+import { TradeQuoteFetchParams } from '../types'
+
+type SellTokenAddress = string
+
 export interface TradeQuoteState {
-  response: OrderQuoteResponse | null
+  quote: QuoteAndPost | null
+  fetchParams: TradeQuoteFetchParams | null
   error: QuoteApiError | null
-  isLoading: boolean
   hasParamsChanged: boolean
-  quoteParams: LegacyFeeQuoteParams | null
-  fetchStartTimestamp: number | null
+  isLoading: boolean
   localQuoteTimestamp: number | null
 }
 
 export const DEFAULT_TRADE_QUOTE_STATE: TradeQuoteState = {
-  response: null,
+  quote: null,
+  fetchParams: null,
   error: null,
-  isLoading: false,
   hasParamsChanged: false,
-  quoteParams: null,
-  fetchStartTimestamp: null,
+  isLoading: false,
   localQuoteTimestamp: null,
 }
 
-export const tradeQuoteAtom = atom<TradeQuoteState>(DEFAULT_TRADE_QUOTE_STATE)
+export const tradeQuotesAtom = atom<Record<SellTokenAddress, TradeQuoteState | undefined>>({})
 
-export const updateTradeQuoteAtom = atom(null, (get, set, nextState: Partial<TradeQuoteState>) => {
-  set(tradeQuoteAtom, () => {
-    const prevState = get(tradeQuoteAtom)
+export const updateTradeQuoteAtom = atom(
+  null,
+  (get, set, _sellTokenAddress: SellTokenAddress, nextState: Partial<TradeQuoteState>) => {
+    set(tradeQuotesAtom, () => {
+      const sellTokenAddress = _sellTokenAddress.toLowerCase()
+      const prevState = get(tradeQuotesAtom)
+      const prevQuote = prevState[sellTokenAddress] || DEFAULT_TRADE_QUOTE_STATE
 
-    // Don't update state if Fast quote finished after Optimal quote
-    if (
-      prevState.fetchStartTimestamp === nextState.fetchStartTimestamp &&
-      nextState.response &&
-      nextState.quoteParams?.priceQuality === PriceQuality.FAST
-    ) {
-      return { ...prevState }
-    }
+      // Don't update state if Fast quote finished after Optimal quote
+      if (
+        prevQuote.fetchParams?.fetchStartTimestamp === nextState.fetchParams?.fetchStartTimestamp &&
+        nextState.quote &&
+        nextState.fetchParams?.priceQuality === PriceQuality.FAST
+      ) {
+        return { ...prevState }
+      }
 
-    return {
-      ...prevState,
-      ...nextState,
-      quoteParams: typeof nextState.quoteParams === 'undefined' ? prevState.quoteParams : nextState.quoteParams,
-      localQuoteTimestamp: nextState.response ? Math.ceil(Date.now() / 1000) : null,
-    }
-  })
-})
+      const update: TradeQuoteState = {
+        ...prevQuote,
+        ...nextState,
+        quote: typeof nextState.quote === 'undefined' ? prevQuote.quote : nextState.quote,
+        localQuoteTimestamp: nextState.quote ? Math.ceil(Date.now() / 1000) : null,
+      }
+
+      return {
+        ...prevState,
+        [sellTokenAddress]: update,
+      }
+    })
+  },
+)

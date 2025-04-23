@@ -22,6 +22,8 @@ export function validateTradeForm(context: TradeFormValidationContext): TradeFor
     account,
     isPermitSupported,
     isInsufficientBalanceOrderAllowed,
+    isProviderNetworkUnsupported,
+    isOnline,
   } = context
 
   const { inputCurrency, outputCurrency, inputCurrencyAmount, inputCurrencyBalance, recipient } = derivedTradeState
@@ -35,6 +37,7 @@ export function validateTradeForm(context: TradeFormValidationContext): TradeFor
     !isPermitSupported && (approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING)
 
   const inputAmountIsNotSet = !inputCurrencyAmount || isFractionFalsy(inputCurrencyAmount)
+  const isFastQuote = tradeQuote.fetchParams?.priceQuality === PriceQuality.FAST
 
   if (!isWrapUnwrap && tradeQuote.error) {
     return TradeFormValidation.QuoteErrors
@@ -48,6 +51,10 @@ export function validateTradeForm(context: TradeFormValidationContext): TradeFor
     return TradeFormValidation.WalletNotSupported
   }
 
+  if (isProviderNetworkUnsupported) {
+    return TradeFormValidation.NetworkNotSupported
+  }
+
   if (isSafeReadonlyUser) {
     return TradeFormValidation.SafeReadonlyUser
   }
@@ -56,12 +63,12 @@ export function validateTradeForm(context: TradeFormValidationContext): TradeFor
     return TradeFormValidation.CurrencyNotSet
   }
 
-  if (isNativeIn) {
-    return TradeFormValidation.SellNativeToken
-  }
-
   if (inputAmountIsNotSet) {
     return TradeFormValidation.InputAmountNotSet
+  }
+
+  if (!isOnline) {
+    return TradeFormValidation.BrowserOffline
   }
 
   if (!isWrapUnwrap) {
@@ -73,22 +80,15 @@ export function validateTradeForm(context: TradeFormValidationContext): TradeFor
       return TradeFormValidation.CurrencyNotSupported
     }
 
-    if (!tradeQuote.response) {
+    if (isFastQuote || !tradeQuote.quote) {
       return TradeFormValidation.QuoteLoading
     }
 
     if (
       derivedTradeState.tradeType !== TradeType.LIMIT_ORDER &&
       !tradeQuote.isLoading &&
-      tradeQuote.quoteParams?.priceQuality !== PriceQuality.FAST &&
-      isQuoteExpired({
-        expirationDate: tradeQuote.response?.expiration,
-        deadlineParams: {
-          validFor: tradeQuote.quoteParams?.validFor,
-          quoteValidTo: tradeQuote.response.quote.validTo,
-          localQuoteTimestamp: tradeQuote.localQuoteTimestamp,
-        },
-      })
+      !isFastQuote &&
+      isQuoteExpired(tradeQuote)
     ) {
       return TradeFormValidation.QuoteExpired
     }
@@ -108,11 +108,19 @@ export function validateTradeForm(context: TradeFormValidationContext): TradeFor
     return TradeFormValidation.WrapUnwrapFlow
   }
 
+  if (isNativeIn) {
+    return TradeFormValidation.SellNativeToken
+  }
+
   if (approvalRequired) {
     if (isBundlingSupported) {
       return TradeFormValidation.ApproveAndSwap
     }
     return TradeFormValidation.ApproveRequired
+  }
+
+  if (isNativeIn) {
+    return TradeFormValidation.SellNativeToken
   }
 
   return null
